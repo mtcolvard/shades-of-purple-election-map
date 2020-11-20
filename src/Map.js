@@ -3,10 +3,12 @@ import mapboxgl from 'mapbox-gl'
 import Legend from './components/Legend'
 import Optionsfield from './components/Optionsfield'
 import './Map.css'
-import data from './data.json'
+import election_data from './election_data.json'
+import data from './state_geometry.json'
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA'
+  'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
+
 
 const Map = () => {
   const options = [
@@ -51,24 +53,24 @@ const Map = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [5, 34],
-      zoom: 1.5
+      style: 'mapbox://styles/mtcolvard/ckhp8n7eg01mn19p7qkyeda6c',
+      center: [-95.4, 37.6],
+      zoom: 3.5
     })
 
     map.on('load', () => {
-      map.addSource('countries', {
+      map.addSource('state_geometry', {
         type: 'geojson',
         data
       })
 
-      map.setLayoutProperty('country-label', 'text-field', [
+      map.setLayoutProperty('purple-maps-data-join-2-6th2yr (1)', 'text-field', [
         'format',
-        ['get', 'name_en'],
+        ['get', 'NAME'],
         { 'font-scale': 1.2 },
         '\n',
         {},
-        ['get', 'name'],
+        ['get', 'STATEFP'],
         {
           'font-scale': 0.8,
           'text-font': [
@@ -80,14 +82,14 @@ const Map = () => {
 
       map.addLayer(
         {
-          id: 'countries',
+          id: 'STATEFP',
           type: 'fill',
-          source: 'countries'
+          source: 'data'
         },
-        'country-label'
+        'STATEFP'
       )
 
-      map.setPaintProperty('countries', 'fill-color', {
+      map.setPaintProperty('STATEFP', 'fill-color', {
         property: active.property,
         stops: active.stops
       })
@@ -105,7 +107,7 @@ const Map = () => {
 
   const paint = () => {
     if (map) {
-      map.setPaintProperty('countries', 'fill-color', {
+      map.setPaintProperty('STATEFP', 'fill-color', {
         property: active.property,
         stops: active.stops
       })
@@ -114,7 +116,7 @@ const Map = () => {
 
   const changeState = i => {
     setActive(options[i])
-    map.setPaintProperty('countries', 'fill-color', {
+    map.setPaintProperty('STATEFP', 'fill-color', {
       property: active.property,
       stops: active.stops
     })
