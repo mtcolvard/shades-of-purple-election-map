@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const Optionsfield = (props) => {
   const renderOptions = (option, i) => {
@@ -14,13 +14,13 @@ const Optionsfield = (props) => {
           {option.name}
         </div>
       </label>
-    );
-  };
+    )
+  }
   return (
     <div className="toggle-group absolute top left ml12 mt12 border border--2 border--white bg-white shadow-darken10 z1">
       {props.options.map(renderOptions)}
     </div>
-  );
-};
+  )
+}
 
-export default Optionsfield;
+export default Optionsfield

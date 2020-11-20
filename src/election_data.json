@@ -1,0 +1,512 @@
+[
+  {
+    "STATEFP": "01",
+    "State": "Ala.",
+    "dem_total_2020": 0.365,
+    "rep_total_2020": 0.621,
+    "percent_count_2020": 0.986,
+    "dem_percent_2020": 0.370182556,
+    "rep_percent_2020": 0.629817444,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": "02",
+    "State": "Alaska",
+    "dem_total_2020": 0.43,
+    "rep_total_2020": 0.531,
+    "percent_count_2020": 0.961,
+    "dem_percent_2020": 0.447450572,
+    "rep_percent_2020": 0.552549428,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": "04",
+    "State": "Ariz.",
+    "dem_total_2020": 0.4939,
+    "rep_total_2020": 0.4908,
+    "percent_count_2020": 0.9847,
+    "dem_percent_2020": 0.501574083,
+    "rep_percent_2020": 0.498425917,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": "05",
+    "State": "Ark.",
+    "dem_total_2020": 0.348,
+    "rep_total_2020": 0.624,
+    "percent_count_2020": 0.972,
+    "dem_percent_2020": 0.358024691,
+    "rep_percent_2020": 0.641975309,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": "06",
+    "State": "Calif.",
+    "dem_total_2020": 0.636,
+    "rep_total_2020": 0.342,
+    "percent_count_2020": 0.978,
+    "dem_percent_2020": 0.650306748,
+    "rep_percent_2020": 0.349693252,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": "08",
+    "State": "Colo.",
+    "dem_total_2020": 0.554,
+    "rep_total_2020": 0.419,
+    "percent_count_2020": 0.973,
+    "dem_percent_2020": 0.569373073,
+    "rep_percent_2020": 0.430626927,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": "09",
+    "State": "Conn.",
+    "dem_total_2020": 0.592,
+    "rep_total_2020": 0.392,
+    "percent_count_2020": 0.984,
+    "dem_percent_2020": 0.601626016,
+    "rep_percent_2020": 0.398373984,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 10,
+    "State": "Del.",
+    "dem_total_2020": 0.588,
+    "rep_total_2020": 0.398,
+    "percent_count_2020": 0.986,
+    "dem_percent_2020": 0.596348884,
+    "rep_percent_2020": 0.403651116,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 11,
+    "State": "D.C.",
+    "dem_total_2020": 0.921,
+    "rep_total_2020": 0.054,
+    "percent_count_2020": 0.975,
+    "dem_percent_2020": 0.944615385,
+    "rep_percent_2020": 0.055384615,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 12,
+    "State": "Fla.",
+    "dem_total_2020": 0.479,
+    "rep_total_2020": 0.512,
+    "percent_count_2020": 0.991,
+    "dem_percent_2020": 0.483350151,
+    "rep_percent_2020": 0.516649849,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 13,
+    "State": "Ga.",
+    "dem_total_2020": 0.4949,
+    "rep_total_2020": 0.4925,
+    "percent_count_2020": 0.9874,
+    "dem_percent_2020": 0.501215313,
+    "rep_percent_2020": 0.498784687,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 15,
+    "State": "Hawaii",
+    "dem_total_2020": 0.637,
+    "rep_total_2020": 0.343,
+    "percent_count_2020": 0.98,
+    "dem_percent_2020": 0.65,
+    "rep_percent_2020": 0.35,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 16,
+    "State": "Idaho",
+    "dem_total_2020": 0.331,
+    "rep_total_2020": 0.638,
+    "percent_count_2020": 0.969,
+    "dem_percent_2020": 0.341589267,
+    "rep_percent_2020": 0.658410733,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 17,
+    "State": "Ill.",
+    "dem_total_2020": 0.575,
+    "rep_total_2020": 0.406,
+    "percent_count_2020": 0.981,
+    "dem_percent_2020": 0.586136595,
+    "rep_percent_2020": 0.413863405,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 18,
+    "State": "Ind.",
+    "dem_total_2020": 0.409,
+    "rep_total_2020": 0.57,
+    "percent_count_2020": 0.979,
+    "dem_percent_2020": 0.417773238,
+    "rep_percent_2020": 0.582226762,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 19,
+    "State": "Iowa",
+    "dem_total_2020": 0.449,
+    "rep_total_2020": 0.532,
+    "percent_count_2020": 0.981,
+    "dem_percent_2020": 0.457696228,
+    "rep_percent_2020": 0.542303772,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 20,
+    "State": "Kan.",
+    "dem_total_2020": 0.413,
+    "rep_total_2020": 0.565,
+    "percent_count_2020": 0.978,
+    "dem_percent_2020": 0.422290389,
+    "rep_percent_2020": 0.577709611,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 21,
+    "State": "Ky.",
+    "dem_total_2020": 0.362,
+    "rep_total_2020": 0.621,
+    "percent_count_2020": 0.983,
+    "dem_percent_2020": 0.368260427,
+    "rep_percent_2020": 0.631739573,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 22,
+    "State": "La.",
+    "dem_total_2020": 0.399,
+    "rep_total_2020": 0.585,
+    "percent_count_2020": 0.984,
+    "dem_percent_2020": 0.405487805,
+    "rep_percent_2020": 0.594512195,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 23,
+    "State": "Maine",
+    "dem_total_2020": 0.534,
+    "rep_total_2020": 0.435,
+    "percent_count_2020": 0.969,
+    "dem_percent_2020": 0.551083591,
+    "rep_percent_2020": 0.448916409,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 24,
+    "State": "Md.",
+    "dem_total_2020": 0.656,
+    "rep_total_2020": 0.325,
+    "percent_count_2020": 0.981,
+    "dem_percent_2020": 0.668705403,
+    "rep_percent_2020": 0.331294597,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 25,
+    "State": "Mass.",
+    "dem_total_2020": 0.653,
+    "rep_total_2020": 0.324,
+    "percent_count_2020": 0.977,
+    "dem_percent_2020": 0.668372569,
+    "rep_percent_2020": 0.331627431,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 26,
+    "State": "Mich.",
+    "dem_total_2020": 0.506,
+    "rep_total_2020": 0.478,
+    "percent_count_2020": 0.984,
+    "dem_percent_2020": 0.514227642,
+    "rep_percent_2020": 0.485772358,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 27,
+    "State": "Minn.",
+    "dem_total_2020": 0.525,
+    "rep_total_2020": 0.454,
+    "percent_count_2020": 0.979,
+    "dem_percent_2020": 0.536261491,
+    "rep_percent_2020": 0.463738509,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 28,
+    "State": "Miss.",
+    "dem_total_2020": 0.41,
+    "rep_total_2020": 0.575,
+    "percent_count_2020": 0.985,
+    "dem_percent_2020": 0.416243655,
+    "rep_percent_2020": 0.583756345,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 29,
+    "State": "Mo.",
+    "dem_total_2020": 0.414,
+    "rep_total_2020": 0.567,
+    "percent_count_2020": 0.981,
+    "dem_percent_2020": 0.422018349,
+    "rep_percent_2020": 0.577981651,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 30,
+    "State": "Mont.",
+    "dem_total_2020": 0.404,
+    "rep_total_2020": 0.567,
+    "percent_count_2020": 0.971,
+    "dem_percent_2020": 0.416065911,
+    "rep_percent_2020": 0.583934089,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 31,
+    "State": "Neb.",
+    "dem_total_2020": 0.394,
+    "rep_total_2020": 0.585,
+    "percent_count_2020": 0.979,
+    "dem_percent_2020": 0.402451481,
+    "rep_percent_2020": 0.597548519,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 32,
+    "State": "Nev.",
+    "dem_total_2020": 0.501,
+    "rep_total_2020": 0.477,
+    "percent_count_2020": 0.978,
+    "dem_percent_2020": 0.512269939,
+    "rep_percent_2020": 0.487730061,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 33,
+    "State": "N.H.",
+    "dem_total_2020": 0.528,
+    "rep_total_2020": 0.455,
+    "percent_count_2020": 0.983,
+    "dem_percent_2020": 0.537131231,
+    "rep_percent_2020": 0.462868769,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 34,
+    "State": "N.J.",
+    "dem_total_2020": 0.572,
+    "rep_total_2020": 0.411,
+    "percent_count_2020": 0.983,
+    "dem_percent_2020": 0.581892167,
+    "rep_percent_2020": 0.418107833,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 35,
+    "State": "N.M.",
+    "dem_total_2020": 0.543,
+    "rep_total_2020": 0.435,
+    "percent_count_2020": 0.978,
+    "dem_percent_2020": 0.555214724,
+    "rep_percent_2020": 0.444785276,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 36,
+    "State": "N.Y.",
+    "dem_total_2020": 0.566,
+    "rep_total_2020": 0.419,
+    "percent_count_2020": 0.985,
+    "dem_percent_2020": 0.574619289,
+    "rep_percent_2020": 0.425380711,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 37,
+    "State": "N.C.",
+    "dem_total_2020": 0.486,
+    "rep_total_2020": 0.499,
+    "percent_count_2020": 0.985,
+    "dem_percent_2020": 0.493401015,
+    "rep_percent_2020": 0.506598985,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 38,
+    "State": "N.D.",
+    "dem_total_2020": 0.318,
+    "rep_total_2020": 0.651,
+    "percent_count_2020": 0.969,
+    "dem_percent_2020": 0.328173375,
+    "rep_percent_2020": 0.671826625,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 39,
+    "State": "Ohio",
+    "dem_total_2020": 0.452,
+    "rep_total_2020": 0.532,
+    "percent_count_2020": 0.984,
+    "dem_percent_2020": 0.459349593,
+    "rep_percent_2020": 0.540650407,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 40,
+    "State": "Okla.",
+    "dem_total_2020": 0.323,
+    "rep_total_2020": 0.654,
+    "percent_count_2020": 0.977,
+    "dem_percent_2020": 0.330603889,
+    "rep_percent_2020": 0.669396111,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 41,
+    "State": "Ore.",
+    "dem_total_2020": 0.565,
+    "rep_total_2020": 0.405,
+    "percent_count_2020": 0.97,
+    "dem_percent_2020": 0.582474227,
+    "rep_percent_2020": 0.417525773,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 42,
+    "State": "Pa.",
+    "dem_total_2020": 0.5,
+    "rep_total_2020": 0.488,
+    "percent_count_2020": 0.988,
+    "dem_percent_2020": 0.506072874,
+    "rep_percent_2020": 0.493927126,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 44,
+    "State": "R.I.",
+    "dem_total_2020": 0.596,
+    "rep_total_2020": 0.389,
+    "percent_count_2020": 0.985,
+    "dem_percent_2020": 0.605076142,
+    "rep_percent_2020": 0.394923858,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 45,
+    "State": "S.C.",
+    "dem_total_2020": 0.434,
+    "rep_total_2020": 0.551,
+    "percent_count_2020": 0.985,
+    "dem_percent_2020": 0.440609137,
+    "rep_percent_2020": 0.559390863,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 46,
+    "State": "S.D.",
+    "dem_total_2020": 0.356,
+    "rep_total_2020": 0.618,
+    "percent_count_2020": 0.974,
+    "dem_percent_2020": 0.36550308,
+    "rep_percent_2020": 0.63449692,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 47,
+    "State": "Tenn.",
+    "dem_total_2020": 0.374,
+    "rep_total_2020": 0.607,
+    "percent_count_2020": 0.981,
+    "dem_percent_2020": 0.381243629,
+    "rep_percent_2020": 0.618756371,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 48,
+    "State": "Texas",
+    "dem_total_2020": 0.465,
+    "rep_total_2020": 0.52,
+    "percent_count_2020": 0.985,
+    "dem_percent_2020": 0.472081218,
+    "rep_percent_2020": 0.527918782,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 49,
+    "State": "Utah",
+    "dem_total_2020": 0.377,
+    "rep_total_2020": 0.582,
+    "percent_count_2020": 0.959,
+    "dem_percent_2020": 0.393117831,
+    "rep_percent_2020": 0.606882169,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 50,
+    "State": "Vt.",
+    "dem_total_2020": 0.661,
+    "rep_total_2020": 0.307,
+    "percent_count_2020": 0.968,
+    "dem_percent_2020": 0.68285124,
+    "rep_percent_2020": 0.31714876,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 51,
+    "State": "Va.",
+    "dem_total_2020": 0.542,
+    "rep_total_2020": 0.44,
+    "percent_count_2020": 0.982,
+    "dem_percent_2020": 0.551934827,
+    "rep_percent_2020": 0.448065173,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 53,
+    "State": "Wash.",
+    "dem_total_2020": 0.584,
+    "rep_total_2020": 0.39,
+    "percent_count_2020": 0.974,
+    "dem_percent_2020": 0.599589322,
+    "rep_percent_2020": 0.400410678,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 54,
+    "State": "W.Va.",
+    "dem_total_2020": 0.297,
+    "rep_total_2020": 0.686,
+    "percent_count_2020": 0.983,
+    "dem_percent_2020": 0.302136317,
+    "rep_percent_2020": 0.697863683,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 55,
+    "State": "Wis.",
+    "dem_total_2020": 0.4945,
+    "rep_total_2020": 0.4883,
+    "percent_count_2020": 0.9828,
+    "dem_percent_2020": 0.503154253,
+    "rep_percent_2020": 0.496845747,
+    "percent_sum_2020": 1
+  },
+  {
+    "STATEFP": 56,
+    "State": "Wyo.",
+    "dem_total_2020": 0.266,
+    "rep_total_2020": 0.699,
+    "percent_count_2020": 0.965,
+    "dem_percent_2020": 0.275647668,
+    "rep_percent_2020": 0.724352332,
+    "percent_sum_2020": 1
+  }
+]
