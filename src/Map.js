@@ -48,6 +48,7 @@ const Map = () => {
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
+  const electionData = election_data
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -59,41 +60,23 @@ const Map = () => {
     })
 
     map.on('load', () => {
-      map.addSource('data', {
-        type: 'geojson',
-        data: 'FeatureCollection',
-        // features: [],
+      map.addSource('stateBoundaries', {
+        type: 'vector',
+        url: 'mapbox://styles/mtcolvard/ckhp8n7eg01mn19p7qkyeda6c'
       })
 
-      // map.setLayoutProperty('purple-maps-data-join-2-6th2yr (1)', 'text-field', [
-      //   'format',
-      //   ['get', 'NAME'],
-      //   { 'font-scale': 1.2 },
-      //   '\n',
-      //   {},
-      //   ['get', 'STATEFP'],
-      //   {
-      //     'font-scale': 0.8,
-      //     'text-font': [
-      //       'literal',
-      //       ['DIN Offc Pro Italic', 'Arial Unicode MS Regular']
-      //     ]
-      //   }
-      // ])
+      map.addLayer(
+        {
+          id: 'stateBoundaries',
+          type: 'fill',
+          source: 'stateBoundaries'
+        }
+      )
 
-      // map.addLayer(
-      //   {
-      //     id: 'data',
-      //     type: 'fill',
-      //     source: 'data'
-      //   },
-      //   'STATEFP'
-      // )
-
-      // map.setPaintProperty('STATEFP', 'fill-color', {
-      //   property: active.property,
-      //   stops: active.stops
-      // })
+      map.setPaintProperty('stateBoundaries', 'fill-color', {
+        property: active.property,
+        stops: active.stops
+      })
 
       setMap(map)
     })
@@ -122,6 +105,13 @@ const Map = () => {
       stops: active.stops
     })
   }
+
+  let matchExpression = ['match', ['get', 'STATEFP']]
+
+  electionData.forEach( electionResult => {
+    const color = stateElection['dem_percent_2020']
+
+  })
 
 
   return (
