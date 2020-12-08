@@ -60,18 +60,26 @@ const Map = () => {
     })
 
     map.on('load', () => {
-      map.addSource('stateBoundaries', {
-        type: 'vector',
-        url: 'mapbox://styles/mtcolvard/ckhp8n7eg01mn19p7qkyeda6c'
+      map.addSource('electionNumbers', {
+        'type': 'vector',
+        'url': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
       })
 
       map.addLayer(
         {
-          id: 'stateBoundaries',
-          type: 'fill',
-          source: 'stateBoundaries'
-        }
-      )
+          'id': 'purpleShade',
+          'type': 'fill',
+          'source': 'electionNumbers',
+          'source-layer': 'purple-maps-data-join-2-6th2yr',
+          'paint': {
+            'fill-color': [
+              'interpolate',
+              ['linear'],
+              ['*',['to-number',['get','Purple Maps State Results edit_dem_total']],100],
+              0, '#ff0000', 100, '#0000ff'
+            ]
+          }
+        })
 
       map.setPaintProperty('stateBoundaries', 'fill-color', {
         property: active.property,
