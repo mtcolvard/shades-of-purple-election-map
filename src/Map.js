@@ -1,16 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react'
+// import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import mapboxgl from 'mapbox-gl'
-import Legend from './components/Legend'
-import Optionsfield from './components/Optionsfield'
 import './Map.css'
-import election_data from './election_data.json'
-import data from './state_geometry.json'
+// import Legend from './components/Legend'
+// import Optionsfield from './components/Optionsfield'
+import electionNumbers from'./election_data_join.geojson'
+// import data from './state_geometry.json'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
 
 
-// const Map = () => {
+const Map = () => {
   // const options = [
   //   {
   //     name: 'Population',
@@ -47,22 +48,33 @@ mapboxgl.accessToken =
   // ]
   const mapContainerRef = useRef(null)
   // const [active, setActive] = useState(options[0])
-  const [map, setMap] = useState(null)
+  // const [map, setMap] = useState(null)
   // const electionData = election_data
 
   // Initialize map when component mounts
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mtcolvard/ckhp8n7eg01mn19p7qkyeda6c',
+      style: 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
       center: [-95.4, 37.6],
-      zoom: 3.5
+      zoom: 2.5
     })
 
     map.on('load', () => {
+      // map.addSource('stateBoundaries', {
+      //   'type': 'vector',
+      //   'url': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
+      // })
+      //
+      // map.addLayer({
+      //   id: 'boundaries',
+      //   type: 'fill',
+      //   source: 'stateBoundaries'
+      // }, 'purpleShade')
+
       map.addSource('electionNumbers', {
-        'type': 'vector',
-        'url': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
+        'type': 'geojson',
+        'data': electionNumbers
       })
 
       map.addLayer(
@@ -70,7 +82,7 @@ mapboxgl.accessToken =
           'id': 'purpleShade',
           'type': 'fill',
           'source': 'electionNumbers',
-          'source-layer': 'purple-maps-data-join-2-6th2yr',
+          // 'source-layer': 'purple-maps-data-join-2-6th2yr',
           'paint': {
             'fill-color': [
               'interpolate',
@@ -86,7 +98,7 @@ mapboxgl.accessToken =
       //   stops: active.stops
       // })
 
-      setMap(map)
+      // setMap(map)
     })
 
     // Clean up on unmount
@@ -130,9 +142,9 @@ mapboxgl.accessToken =
 
 export default Map
 
-<Legend active={active} stops={active.stops} />
-<Optionsfield
-  options={options}
-  property={active.property}
-  changeState={changeState}
-/>
+// <Legend active={active} stops={active.stops} />
+// <Optionsfield
+//   options={options}
+//   property={active.property}
+//   changeState={changeState}
+// />
