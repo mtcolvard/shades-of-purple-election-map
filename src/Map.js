@@ -132,9 +132,21 @@ const Map = () => {
   //   const color = stateElection['dem_percent_2020']
   // })
 
+  // <span className='leftGradient'>There are no </span><span className='red'>red</span> <span className='rightGradient'>states or</span> <span className='blue'>blue</span> states.
+
+
 
   return (
     <div>
+      <h1>
+      <div className='headline'> There are no red state or blue states.
+      </div>
+      <div className='headline'> Only the United States.
+      </div>
+      <div className='headline'>Shades of Purple
+      </div>
+      </h1>
+
       <div ref={mapContainerRef} className='map-container' />
     </div>
   )
