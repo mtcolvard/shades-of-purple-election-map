@@ -4,25 +4,14 @@ body {
 
 h1 {
   position: absolute;
-  height: 32%;
+  height: 23%;
   /* background: linear-gradient(#0000FF, #FF0000); */
-  background: linear-gradient(45deg, red 0%, #800080 36%, #800080 63%, blue 100%);
+  background: linear-gradient(42deg, red 0%, #800080 36%, #800080 63%, blue 100%);
 }
 
-.red {
-  color: #FF0000;
-}
-
-.blue {
-  color: #0000FF;
-}
 
 .lineOne {
-  /* background-image: linear-gradient(to right, #800080 0%,  #0000FF 25%, #FFFFFF 50%, #FF0000 70%,  #800080 100%); */
-  /* background-image: linear-gradient(110deg, #FF0000 0%, #FF0000 5%,  #FFFFFF 27%, #FFFFFF 60%,  #0000FF 95%, #0000FF 100%); */
-
-  background-image: linear-gradient(80deg, #FFFFFF 0%, #FFFFFF 5%, #FF0000 31%, #FF0000 34%,  #FFFFFF 50%, #FFFFFF 60%, #0000FF 75%, #0000FF 80%, #FFFFFF 100%);
-  /* background-image: linear-gradient(33deg, #800080 0%, #FF0000 25%,  #FFFFFF 48%, #FFFFFF 54%, #0000FF 75%, #0000FF 80%, #800080 85%, #800080 100%); */
+  background-image: linear-gradient(80deg, #FFFFFF 0%, #FFFFFF 7%, #FF0000 33%, #FF0000 35%,  #FFFFFF 45%, #FFFFFF 63%, #0000FF 71%, #0000FF 73%, #FFFFFF 93%, #FFFFFF 100%);
   background-size: 100%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
@@ -31,7 +20,9 @@ h1 {
 }
 .lineTwo {
   /* background-image: linear-gradient(to right, #800080 0%,  #0000FF 54%, #FF0000 57%,  #800080 100%); */
-  background-image: linear-gradient(45deg, #FF0000 0%,  #FFFFFF 40%, #FFFFFF 60%,  #0000FF 100%);
+  background-image: linear-gradient(80deg, #FFFFFF 0%, #FFFFFF 20%, #FF0000 21%, #FF0000 36%, #FFFFFF 37%, #FFFFFF 55%,  #0000FF 95%, #0000FF 96%, #FFFFFF 96%, #FFFFFF 100%);
+  /* background-image: linear-gradient(80deg, #FFFFFF 0%, #FFFFFF 38%, #FF0000 40%, #FF0000 46%,  #FFFFFF 56%, #FFFFFF 73%, #0000FF 86%, #0000FF 100%); */
+
   background-size: 100%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
@@ -41,7 +32,7 @@ h1 {
 
 .lineThree {
   /* background-image: linear-gradient(to right, #800080 0%,  #0000FF 54%, #FF0000 57%,  #800080 100%); */
-  background-image: linear-gradient(45deg, #FF0000 0%,  #FFFFFF 40%, #FFFFFF 60%,  #0000FF 100%);
+  background-image: linear-gradient(80deg, #FF0000 10%,  #FFFFFF 40%, #FFFFFF 60%,  #0000FF 90%);
   background-size: 100%;
   -webkit-background-clip: text;
   -moz-background-clip: text;
