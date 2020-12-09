@@ -138,12 +138,10 @@ const Map = () => {
 
   return (
     <div>
-      <h1>
-      <div className='headline'> There are no red state or blue states.
-      </div>
-      <div className='headline'> Only the United States.
-      </div>
-      <div className='headline'>Shades of Purple
+      <h1 className='headline'>
+      <div className='lineOne'> There are no red states or blue states.<br /><br />
+      <span className='lineTwo'>Only the United States.</span><br /><br />
+      <span className='lineThree'>Shades of Purple</span>
       </div>
       </h1>
 
