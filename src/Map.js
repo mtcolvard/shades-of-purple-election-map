@@ -74,16 +74,17 @@ const Map = () => {
           'id': 'purpleShade',
           'type': 'fill',
           'source': 'electionNumbers',
-          // 'source-layer': 'purple-maps-data-join-2-6th2yr',
           'paint': {
-            'fill-color':
-            ['interpolate',['linear'],['*',['to-number',['get', 'property']],100],
-              0, '#ff0000', 100, '#0000ff']
-          }
+                'fill-color': [
+                  'interpolate',
+                  ['linear'],
+                  ['*',['to-number',['get', active.property]],100],
+                  0, '#ff0000', 100, '#0000ff'
+                ]
+              }
         })
-
-      map.setPaintProperty('purpleShade', 'fill-color', ['interpolate',['linear'],['*',['to-number',['get', 'property']],100],
-        0, '#ff0000', 100, '#0000ff'], {
+      //
+      map.setPaintProperty('purpleShade', 'fill-color', {
         property: active.property
       })
 
@@ -100,8 +101,7 @@ const Map = () => {
 
   const paint = () => {
     if (map) {
-      map.setPaintProperty('purpleShade', 'fill-color', ['interpolate',['linear'],['*',['to-number',['get', 'property']],100],
-        0, '#ff0000', 100, '#0000ff'], {
+      map.setPaintProperty('purpleShade', 'fill-color', {
         property: active.property
       })
     }
@@ -109,8 +109,7 @@ const Map = () => {
   //
   const changeState = i => {
     setActive(options[i])
-    map.setPaintProperty('purpleShade', 'fill-color', ['interpolate',['linear'],['*',['to-number',['get', 'property']],100],
-      0, '#ff0000', 100, '#0000ff'], {
+    map.setPaintProperty('purpleShade', 'fill-color', {
       property: active.property
     })
   }
