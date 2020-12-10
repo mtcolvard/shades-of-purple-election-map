@@ -8,3 +8,11 @@ with open('election_data_join.geojson') as f:
 
     with open('election_data_join.geojson', 'w') as f:
         json.dump(data, f)
+
+# with open('2020_election_results.json') as f:
+#     data = json.load(f)
+#     for item in data:
+#         item['FIPS'] = int(item['FIPS'])
+#
+#     with open('2020_election_results.json', 'w') as f:
+#         json.dump(data, f)
