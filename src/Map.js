@@ -15,12 +15,13 @@ const Map = () => {
     {
       name: '2020',
       description: '2020 Election Results',
-      property: 'Purple Maps State Results edit_dem_total',
+      // property: 'Purple Maps State Results edit_dem_total',
+      property: '2016_dem_pct',
     },
     {
       name: '2016',
       description: '2016 Election Results',
-      property: 'Purple Maps State Results edit_rep_total',
+      property: '2012_dem_pct',
     }
   ]
   const mapContainerRef = useRef(null)
@@ -37,21 +38,30 @@ const Map = () => {
     })
 
     map.on('load', () => {
-      // map.addSource('stateBoundaries', {
-      //   'type': 'vector',
-      //   'url': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
-      // })
-      //
-      // map.addLayer({
-      //   id: 'boundaries',
-      //   type: 'fill',
-      //   source: 'stateBoundaries'
-      // }, 'purpleShade')
-
-      map.addSource('electionNumbers', {
-        'type': 'geojson',
-        'data': electionNumbers
+      map.addSource('stateBoundaries', {
+        'type': 'vector',
+        'url': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
       })
+      //
+      map.addLayer({
+        'id': 'purpleShade',
+        'type': 'fill',
+        'source': 'stateBoundaries',
+        'source-layer': 'historical-pres-elections-state',
+        'paint': {
+              'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['*',['to-number',['get', active.property]],100],
+                0, '#ff0000', 100, '#0000ff'
+              ]
+            }
+      })
+
+      // map.addSource('electionNumbers', {
+      //   'type': 'geojson',
+      //   'data': electionNumbers
+      // })
 // this addLayer version works
       // map.addLayer(
       //   {
@@ -69,20 +79,20 @@ const Map = () => {
       //     }
       //   })
 // this addLayer version is experimental
-      map.addLayer(
-        {
-          'id': 'purpleShade',
-          'type': 'fill',
-          'source': 'electionNumbers',
-          'paint': {
-                'fill-color': [
-                  'interpolate',
-                  ['linear'],
-                  ['*',['to-number',['get', active.property]],100],
-                  0, '#ff0000', 100, '#0000ff'
-                ]
-              }
-        })
+      // map.addLayer(
+      //   {
+      //     'id': 'purpleShade',
+      //     'type': 'fill',
+      //     'source': 'electionNumbers',
+      //     'paint': {
+      //           'fill-color': [
+      //             'interpolate',
+      //             ['linear'],
+      //             ['*',['to-number',['get', active.property]],100],
+      //             0, '#ff0000', 100, '#0000ff'
+      //           ]
+      //         }
+      //   })
       //
       map.setPaintProperty('purpleShade', 'fill-color', {
         property: active.property
