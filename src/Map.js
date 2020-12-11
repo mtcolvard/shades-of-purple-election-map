@@ -4,7 +4,8 @@ import mapboxgl from 'mapbox-gl'
 import './Map.css'
 // import Legend from './components/Legend'
 import Optionsfield from './components/Optionsfield'
-import electionNumbers from'./election_data_join.geojson'
+// import electionNumbers from './election_data_join.geojson'
+// import jsonElectionNumbers from './2020_election_results.json'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
@@ -13,15 +14,18 @@ mapboxgl.accessToken =
 const Map = () => {
   const options = [
     {
-      name: '2020',
-      description: '2020 Election Results',
-      // property: 'Purple Maps State Results edit_dem_total',
-      property: 'Purple Maps State Results edit_dem_total',
-    },
-    {
       name: '2016',
       description: '2016 Election Results',
+      // property: 'Purple Maps State Results edit_dem_total',
+      property: '2016_dem_pct',
+      stops: [[0, '#FF0000'],[100, '#0000FF']]
+    },
+    {
+      name: '2012',
+      description: '2012 Election Results',
       property: '2012_dem_pct',
+      stops: [[0, '#FF0000'],[100, '#0000FF']]
+
     }
   ]
   const mapContainerRef = useRef(null)
@@ -38,37 +42,17 @@ const Map = () => {
     })
 
     map.on('load', () => {
-      // map.addSource('stateBoundaries', {
-      //   'type': 'vector',
-      //   'url': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
-      // })
-      // //
-      // map.addLayer({
-      //   'id': 'purpleShade',
-      //   'type': 'fill',
-      //   'source': 'stateBoundaries',
-      //   'source-layer': 'historical-pres-elections-state',
-      //   'paint': {
-      //     'fill-color': [
-      //       'interpolate',
-      //       ['linear'],
-      //       ['*',['to-number',['get', active.property]],100],
-      //       0, '#ff0000', 100, '#0000ff'
-      //     ]
-      //   }
-      // })
-
-      map.addSource('electionNumbers', {
-        'type': 'geojson',
-        'data': electionNumbers
+      map.addSource('vectorElectionNumbers', {
+        'type': 'vector',
+        'data': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
       })
-// this addLayer version works
+
       map.addLayer(
         {
-          'id': 'purpleShade',
+          'id': 'historical-pres-elections-state',
           'type': 'fill',
-          'source': 'electionNumbers',
-          // 'source-layer': 'purple-maps-data-join-2-6th2yr',
+          'source': 'vectorElectionNumbers',
+          'source-layer': 'historical-pres-elections-state',
           'paint': {
             'fill-color': [
               'interpolate',
@@ -79,9 +63,35 @@ const Map = () => {
           }
         })
 
-      map.setPaintProperty('purpleShade', 'fill-color', {
-        property: active.property
+      map.setPaintProperty('historical-pres-elections-state', 'fill-color', {
+        property: active.property,
+        stops: active.stops
       })
+
+      // map.addSource('jsonElectionNumbers', {
+      //   'type': 'geojson',
+      //   'data': electionNumbers
+      // })
+      //
+      // map.addLayer(
+      //   {
+      //     'id': '2020-pres-elections-state',
+      //     'type': 'fill',
+      //     'source': 'jsonElectionNumbers',
+      //     'paint': {
+      //       'fill-color': [
+      //         'interpolate',
+      //         ['linear'],
+      //         ['*',['to-number',['get', active.property]],100],
+      //         0, '#ff0000', 100, '#0000ff'
+      //       ]
+      //     }
+      //   })
+      //
+      // map.setPaintProperty('2020-pres-elections-state', 'fill-color', {
+      //   property: active.property,
+      //   stops: active.stops
+      // })
 
       setMap(map)
     })
@@ -96,19 +106,21 @@ const Map = () => {
 
   const paint = () => {
     if (map) {
-      map.setPaintProperty('purpleShade', 'fill-color', {
-        property: active.property
+      map.setPaintProperty('historical-pres-elections-state', 'fill-color', {
+        property: active.property,
+        stops: active.stops
       })
     }
   }
   //
   const changeState = i => {
     setActive(options[i])
-    map.setPaintProperty('purpleShade', 'fill-color', {
-      property: active.property
+    map.setPaintProperty('historical-pres-elections-state', 'fill-color', {
+      property: active.property,
+      stops: active.stops
     })
   }
-
+// This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
   return (
     <div>
       <div>
