@@ -1,4 +1,4 @@
-jsonElectionNumbers = [
+election_results_2020 = [
   {
     "FIPS": "01",
     "State": "Ala.",

@@ -5,7 +5,7 @@ import './Map.css'
 // import Legend from './components/Legend'
 import Optionsfield from './components/Optionsfield'
 // import electionNumbers from './election_data_join.geojson'
-// import jsonElectionNumbers from './2020_election_results.json'
+import election_results_2020 from './2020_election_results.json'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
@@ -41,7 +41,21 @@ const Map = () => {
       zoom: 2.5
     })
 
+    // let data_2020 = new Map()
+
     map.on('load', () => {
+      // getJSON('./election_results_2020.json', (err, data) => {
+      //   if(err !== null) {
+      //     console.log('error fetching file')
+      //   } else {
+      //     data.forEach((election_result) => {
+      //
+      //     })
+      //   }
+      // }
+      // election_results_2020.forEach((election_result) => {
+      //   election_result['FIPS'] = election_result['2020_dem_pct']
+      // }
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
         'data': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
