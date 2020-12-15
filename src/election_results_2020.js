@@ -1,4 +1,4 @@
-election_results_2020 = [
+const election_result_2020 = [
   {
     "FIPS": "01",
     "State": "Ala.",

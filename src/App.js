@@ -1,10 +1,10 @@
 import React from 'react'
-import Map from './Map'
+import Maps from './Maps'
 
 function App() {
   return (
     <div>
-      <Map />
+      <Maps />
     </div>
   )
 }

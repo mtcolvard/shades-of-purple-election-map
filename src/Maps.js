@@ -5,18 +5,22 @@ import './Map.css'
 // import Legend from './components/Legend'
 import Optionsfield from './components/Optionsfield'
 // import electionNumbers from './election_data_join.geojson'
-import election_results_2020 from './2020_election_results.json'
+// import election_result_2020 from './election_results_2020'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
 
-
-const Map = () => {
+const Maps = () => {
   const options = [
+    {
+      name: '2020',
+      description: '2020 Election Results',
+      property: '2020_dem_pct',
+      stops: [[0, '#FF0000'],[100, '#0000FF']]
+    },
     {
       name: '2016',
       description: '2016 Election Results',
-      // property: 'Purple Maps State Results edit_dem_total',
       property: '2016_dem_pct',
       stops: [[0, '#FF0000'],[100, '#0000FF']]
     },
@@ -28,6 +32,7 @@ const Map = () => {
 
     }
   ]
+
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
@@ -37,28 +42,19 @@ const Map = () => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
+      // style: 'mapbox://styles/mtcolvard/ckip70h8a3vgu17mu2x5q8wj5',
       center: [-95.4, 37.6],
       zoom: 2.5
     })
-
-    // let data_2020 = new Map()
+    // let newdata = new Map()
 
     map.on('load', () => {
-      // getJSON('./election_results_2020.json', (err, data) => {
-      //   if(err !== null) {
-      //     console.log('error fetching file')
-      //   } else {
-      //     data.forEach((election_result) => {
-      //
-      //     })
-      //   }
-      // }
-      // election_results_2020.forEach((election_result) => {
-      //   election_result['FIPS'] = election_result['2020_dem_pct']
-      // }
+
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
         'data': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
+        // 'generateId': true
+        // 'data': 'mapbox://styles/mtcolvard/ckip70h8a3vgu17mu2x5q8wj5',
       })
 
       map.addLayer(
@@ -67,42 +63,35 @@ const Map = () => {
           'type': 'fill',
           'source': 'vectorElectionNumbers',
           'source-layer': 'historical-pres-elections-state',
-          'paint': {
-            'fill-color': [
-              'interpolate',
-              ['linear'],
-              ['*',['to-number',['get', active.property]],100],
-              0, '#ff0000', 100, '#0000ff'
-            ]
-          }
-        })
-
+      //     // 'paint': {
+      //       // 'fill-color': [
+      //       //   'interpolate',
+      //       //   ['linear'],
+      //       //   ['to-number',['get', active.property]],
+      //       //   0, '#ff0000', 100, '#0000ff'
+      //       // ]
+      //     // }
+    })
       map.setPaintProperty('historical-pres-elections-state', 'fill-color', {
         property: active.property,
         stops: active.stops
       })
-
-      // map.addSource('jsonElectionNumbers', {
-      //   'type': 'geojson',
-      //   'data': electionNumbers
-      // })
-      //
-      // map.addLayer(
-      //   {
-      //     'id': '2020-pres-elections-state',
-      //     'type': 'fill',
-      //     'source': 'jsonElectionNumbers',
-      //     'paint': {
-      //       'fill-color': [
-      //         'interpolate',
-      //         ['linear'],
-      //         ['*',['to-number',['get', active.property]],100],
-      //         0, '#ff0000', 100, '#0000ff'
-      //       ]
-      //     }
-      //   })
-      //
-      // map.setPaintProperty('2020-pres-elections-state', 'fill-color', {
+      map.addLayer(
+        {
+          'id': 'fips-fixed-export-0s3h8j',
+          'type': 'fill',
+          'source': 'vectorElectionNumbers',
+          'source-layer': 'fips-fixed-export-0s3h8j',
+          // 'paint': {
+          //   'fill-color': [
+          //     'interpolate',
+          //     ['linear'],
+          //     ['*',['to-number',['get', active.property]],100],
+          //     0, '#ff0000', 100, '#0000ff'
+          //   ]
+          // }
+        })
+      // map.setPaintProperty('fips-fixed-export-0s3h8j', 'fill-color', {
       //   property: active.property,
       //   stops: active.stops
       // })
@@ -120,6 +109,10 @@ const Map = () => {
 
   const paint = () => {
     if (map) {
+      // map.setPaintProperty('fips-fixed-export-0s3h8j', 'fill-color', {
+      //   property: active.property,
+      //   stops: active.stops
+      // })
       map.setPaintProperty('historical-pres-elections-state', 'fill-color', {
         property: active.property,
         stops: active.stops
@@ -129,6 +122,10 @@ const Map = () => {
   //
   const changeState = i => {
     setActive(options[i])
+    // map.setPaintProperty('fips-fixed-export-0s3h8j', 'fill-color', {
+    //   property: active.property,
+    //   stops: active.stops
+    // })
     map.setPaintProperty('historical-pres-elections-state', 'fill-color', {
       property: active.property,
       stops: active.stops
@@ -155,7 +152,53 @@ const Map = () => {
   )
 }
 
-export default Map
+export default Maps
 
-// <Legend active={active} stops={active.stops} />
+// election_result_2020.forEach((election_result) => {
+//   const dem_result = election_result['2020_dem_pct']
+//   const id = election_result['FIPS']
+//   newdata[id] = { '2020_dem_pct': dem_result
+//   }
+// })
 //
+// const initLayers = () => {
+//   map.addSource('vectorElectionNumbers', {
+//     'type': 'vector',
+//     'data': 'mapbox://styles/mtcolvard/ckifazn3008wo19o2faxvjc7c',
+//   })
+//
+//   map.addLayer({
+//     'id': 'results_2020',
+//     'type': 'fill',
+//     'source': 'vectorElectionNumbers',
+//     'source-layer': 'results_new',
+//     'paint': {
+//       'fill-color': ['feature-state', 'color']
+//     }
+//   })
+//
+//   const setStatesColor = () => {
+//     for (let key in newdata) {
+//       map.setFeatureState({
+//         'source': 'vectorElectionNumbers',
+//         'sourceLayer': 'result_new',
+//         'id': key
+//       }, {
+//         'color': newdata[key]['2020_dem_pct']
+//       })
+//     }
+//   }
+//   const setAfterLoad = (e) => {
+//     if(e.sourceId === 'vectorElectionNumbers' && e.isSourceLoaded) {
+//       setStatesColor()
+//       map.off('sourcedata', setAfterLoad)
+//     }
+//   }
+//
+//   if (map.isSourceLoaded('vectorElectionNumbers')) {
+//     setStatesColor()
+//   } else {
+//     map.on('sourcedata', setAfterLoad)
+//   }
+// }
+// initLayers()
