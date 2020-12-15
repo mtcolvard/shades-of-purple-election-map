@@ -1,16 +1,20 @@
 import React, { useRef, useEffect, useState } from 'react'
-// import React, { useRef, useEffect } from 'react'
 import mapboxgl from 'mapbox-gl'
 import './Map.css'
-// import Legend from './components/Legend'
 import Optionsfield from './components/Optionsfield'
-// import electionNumbers from './election_data_join.geojson'
-// import election_result_2020 from './election_results_2020'
+// import Legend from './components/Legend'
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
 
 const Maps = () => {
+
+  const mapContainerRef = useRef(null)
+  const [active, setActive] = useState(options[0])
+  const [map, setMap] = useState(null)
+
+  const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
+
   const options = [
     {
       name: '2020',
@@ -59,10 +63,7 @@ const Maps = () => {
     }
   ]
 
-  const mapContainerRef = useRef(null)
-  const [active, setActive] = useState(options[0])
-  const [map, setMap] = useState(null)
-  const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
+
 
   // Initialize map when component mounts
   useEffect(() => {
