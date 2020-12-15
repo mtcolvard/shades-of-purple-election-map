@@ -2,13 +2,25 @@
   background-color: #800080;
 } */
 
+
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+/* We tell all items to be 100% width, via flex-basis */
+.wrapper > * {
+  flex: 1 100%;
+}
+
 h1 {
   position: absolute;
   height: 23%;
   /* background: linear-gradient(#0000FF, #FF0000); */
   background: linear-gradient(42deg, red 0%, #800080 36%, #800080 63%, blue 100%);
 }
-
+.toggle-container {
+}
 
 .lineOne {
   background-image: linear-gradient(80deg, #FFFFFF 0%, #FFFFFF 7%, #FF0000 33%, #FF0000 35%,  #FFFFFF 45%, #FFFFFF 63%, #0000FF 71%, #0000FF 73%, #FFFFFF 93%, #FFFFFF 100%);
@@ -82,6 +94,8 @@ h1 {
   left: 0;
   right: 0;
 }
+
+
 
 .mapboxgl-popup {
   max-width: 400px;
