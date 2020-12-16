@@ -5,6 +5,7 @@ import Optionsfield from './components/Optionsfield'
 import Legend from './components/Legend'
 import electionData from './historicElectionResults.json'
 var _ = require('lodash')
+var d3 = require('d3')
 
 
 mapboxgl.accessToken =
@@ -142,6 +143,7 @@ const Maps = () => {
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
+  const [legendProps, setLegendProps] = useState(null)
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
 
@@ -155,7 +157,6 @@ const Maps = () => {
       center: [-95.4, 37.6],
       zoom: 2.5
     })
-    // let newdata = new Map()
 
     map.on('load', () => {
       map.addSource('vectorElectionNumbers', {
@@ -183,17 +184,14 @@ const Maps = () => {
     paint()
   }, [active])
 
- useEffect(() => {
-   testData()
- })
+  useEffect(() => {
+    testData()
+  }, [active])
 
   const testData = () => {
 
-    // const demElectionYearData = electionData[active.dem_data]
     const demElectionYearData = _.omit(electionData[active.dem_data], ['11'])
-
     const repElectionYearData = electionData[active.rep_data]
-    _.omit(repElectionYearData, ['11'])
 
 
     const mostPartisanDemFIPS = _.maxBy(_.keys(demElectionYearData), o => demElectionYearData[o])
@@ -204,18 +202,29 @@ const Maps = () => {
     const mostPartisanRepState = stateKey[mostPartisanRepFIPS]
     const mostPartisanRepStatePercent = repElectionYearData[mostPartisanRepFIPS]
 
-    console.log('mostPartisanDemState', mostPartisanDemState, mostPartisanDemStatePercent)
-    console.log('mostPartisanRepState', mostPartisanRepState, mostPartisanRepStatePercent )
+    const repPurpleShade = (mostPartisanRepStatePercent/((demElectionYearData[mostPartisanRepFIPS])+mostPartisanRepStatePercent))*100
+    const demPurpleShade = (mostPartisanDemStatePercent/(mostPartisanDemStatePercent+(repElectionYearData[mostPartisanDemFIPS])))*100
 
+    const purpleScale = d3.scaleLinear()
+    .domain([0, 100])
+    .range(['#FF0000', '#0000FF'])
+
+    const demPurple = purpleScale(demPurpleShade)
+    const repPurple = purpleScale(repPurpleShade)
+
+    let legendProps = [[mostPartisanDemState, mostPartisanDemStatePercent, demPurple], [mostPartisanRepState, mostPartisanRepStatePercent, repPurple]]
+
+    console.log('mostPartisanDemState', mostPartisanDemState, mostPartisanDemStatePercent, demPurple)
+    console.log('mostPartisanRepState', mostPartisanRepState, mostPartisanRepStatePercent, repPurple)
+    setLegendProps(legendProps)
   }
-
 
   const paint = () => {
     if (map) {
       map.setPaintProperty('purple-maps-master-edit-geojs-9gxg35', 'fill-color', fillColorExpression)
     }
   }
-  //
+
   const changeState = i => {
     setActive(options[i])
     map.setPaintProperty('purple-maps-master-edit-geojs-9gxg35', 'fill-color', fillColorExpression)
@@ -233,7 +242,7 @@ const Maps = () => {
         </h1>
         </header>
         <article className='main'>
-        <Legend active={active} stops={active.election} />
+        <Legend active={active} stops={legendProps} />
         <Optionsfield
           options={options}
           property={active.property}
