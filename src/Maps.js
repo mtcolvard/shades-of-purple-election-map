@@ -86,68 +86,11 @@ const Maps = () => {
     }
   ]
 
-  const stateKey = {
-  '01': 'Alabama',
-  '02': 'Alaska',
-  '04': 'Arizona',
-  '05': 'Arkansas',
-  '06': 'California',
-  '08': 'Colorado',
-  '09': 'Connecticut',
-  '10': 'Delaware',
-  '11': 'District of Columbia',
-  '12': 'Florida',
-  '13': 'Georgia',
-  '15': 'Hawaii',
-  '16': 'Idaho',
-  '17': 'Illinois',
-  '18': 'Indiana',
-  '19': 'Iowa',
-  '20': 'Kansas',
-  '21': 'Kentucky',
-  '22': 'Louisiana',
-  '23': 'Maine',
-  '24': 'Maryland',
-  '25': 'Massachusetts',
-  '26': 'Michigan',
-  '27': 'Minnesota',
-  '28': 'Mississippi',
-  '29': 'Missouri',
-  '30': 'Montana',
-  '31': 'Nebraska',
-  '32': 'Nevada',
-  '33': 'New Hampshire',
-  '34': 'New Jersey',
-  '35': 'New Mexico',
-  '36': 'New York',
-  '37': 'North Carolina',
-  '38': 'North Dakota',
-  '39': 'Ohio',
-  '40': 'Oklahoma',
-  '41': 'Oregon',
-  '42': 'Pennsylvania',
-  '44': 'Rhode Island',
-  '45': 'South Carolina',
-  '46': 'South Dakota',
-  '47': 'Tennessee',
-  '48': 'Texas',
-  '49': 'Utah',
-  '50': 'Vermont',
-  '51': 'Virginia',
-  '53': 'Washington',
-  '54': 'West Virginia',
-  '55': 'Wisconsin',
-  '56': 'Wyoming'}
-
-
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
-  const [legendProps, setLegendProps] = useState(null)
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
-
-
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -184,41 +127,6 @@ const Maps = () => {
     paint()
   }, [active])
 
-  useEffect(() => {
-    testData()
-  }, [active])
-
-  const testData = () => {
-
-    const demElectionYearData = _.omit(electionData[active.dem_data], ['11'])
-    const repElectionYearData = electionData[active.rep_data]
-
-
-    const mostPartisanDemFIPS = _.maxBy(_.keys(demElectionYearData), o => demElectionYearData[o])
-    const mostPartisanDemState = stateKey[mostPartisanDemFIPS]
-    const mostPartisanDemStatePercent = demElectionYearData[mostPartisanDemFIPS]
-
-    const mostPartisanRepFIPS = _.maxBy(_.keys(repElectionYearData), o => repElectionYearData[o])
-    const mostPartisanRepState = stateKey[mostPartisanRepFIPS]
-    const mostPartisanRepStatePercent = repElectionYearData[mostPartisanRepFIPS]
-
-    const repPurpleShade = (mostPartisanRepStatePercent/((demElectionYearData[mostPartisanRepFIPS])+mostPartisanRepStatePercent))*100
-    const demPurpleShade = (mostPartisanDemStatePercent/(mostPartisanDemStatePercent+(repElectionYearData[mostPartisanDemFIPS])))*100
-
-    const purpleScale = d3.scaleLinear()
-    .domain([0, 100])
-    .range(['#FF0000', '#0000FF'])
-
-    const demPurple = purpleScale(demPurpleShade)
-    const repPurple = purpleScale(repPurpleShade)
-
-    let legendProps = [[mostPartisanDemState, mostPartisanDemStatePercent, demPurple], [mostPartisanRepState, mostPartisanRepStatePercent, repPurple]]
-
-    console.log('mostPartisanDemState', mostPartisanDemState, mostPartisanDemStatePercent, demPurple)
-    console.log('mostPartisanRepState', mostPartisanRepState, mostPartisanRepStatePercent, repPurple)
-    setLegendProps(legendProps)
-  }
-
   const paint = () => {
     if (map) {
       map.setPaintProperty('purple-maps-master-edit-geojs-9gxg35', 'fill-color', fillColorExpression)
@@ -230,6 +138,7 @@ const Maps = () => {
     map.setPaintProperty('purple-maps-master-edit-geojs-9gxg35', 'fill-color', fillColorExpression)
   }
 // This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
+
   return (
     <div>
       <div className="wrapper">
@@ -241,14 +150,14 @@ const Maps = () => {
           </div>
         </h1>
         </header>
-        <article className='main'>
-        <Legend active={active} stops={legendProps} />
+        <div className='main'>
+        <Legend active={active} />
         <Optionsfield
           options={options}
           property={active.property}
           changeState={changeState}
         />
-        </article>
+        </div>
       </div>
       <div ref={mapContainerRef} className='map-container' />
     </div>
