@@ -104,6 +104,7 @@ const Legend = (props) => {
             </div>
     )
   }
+  // <span className="txt-s txt-bold block  align-middle">Polarized </span>
 
   return (
     <>
@@ -111,10 +112,10 @@ const Legend = (props) => {
         <div className="mb6">
           <h2 className="txt-bold txt-m mb6 block">{props.active.description}</h2>
         </div>
-        <div className="grid grid--gut4 flex-parent--stretch-cross">
+        <div className="grid grid--gut6 w300 flex-parent--stretch-cross">
           <div className="col col--4">
             <div className="h-full">
-              <span className="txt-s txt-bold block"> Most Polarized </span>
+              <span className="txt-s txt-bold block  align-middle">Most Polarized:</span>
             </div>
           </div>
           <div className="col col--8">
@@ -123,10 +124,10 @@ const Legend = (props) => {
             </div>
           </div>
         </div>
-        <div className="grid grid--gut4 flex-parent--stretch-cross">
+        <div className="grid grid--gut6 flex-parent--stretch-cross">
           <div className="col col--4">
             <div className="h-full">
-              <span className="txt-s txt-bold block"> Most Purple </span>
+              <span className="txt-s txt-bold block align-middle">Most Purple:</span>
             </div>
           </div>
           <div className="col col--8">

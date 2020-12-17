@@ -16,14 +16,14 @@ const Maps = () => {
   const options = [
     {
       name: '2020',
-      description: '2020 Election Results',
+      description: '2020 Election',
       property: '2020_dem_perc',
       dem_data: 'dem_total_2020',
       rep_data: 'rep_total_2020'
     },
     {
       name: '2016',
-      description: '2016 Election Results',
+      description: '2016 Election',
       property: '2016_dem_perc',
       dem_data: 'dem_total_2016',
       rep_data: 'rep_total_2016'
@@ -31,7 +31,7 @@ const Maps = () => {
     },
     {
       name: '2012',
-      description: '2012 Election Results',
+      description: '2012 Election',
       property: '2012_dem_perc',
       dem_data: 'dem_total_2012',
       rep_data: 'rep_total_2012'
@@ -39,7 +39,7 @@ const Maps = () => {
     },
     {
       name: '2008',
-      description: '2008 Election Results',
+      description: '2008 Election',
       property: '2008_dem_perc',
       dem_data: 'dem_total_2008',
       rep_data: 'rep_total_2008'
@@ -47,7 +47,7 @@ const Maps = () => {
     },
     {
       name: '2004',
-      description: '2004 Election Results',
+      description: '2004 Election',
       property: '2004_dem_perc',
       dem_data: 'dem_total_2004',
       rep_data: 'rep_total_2004'
@@ -55,7 +55,7 @@ const Maps = () => {
     },
     {
       name: '2000',
-      description: '2000 Election Results',
+      description: '2000 Election',
       property: '2000_dem_perc',
       dem_data: 'dem_total_2000',
       rep_data: 'rep_total_2000'
@@ -63,7 +63,7 @@ const Maps = () => {
     },
     {
       name: '1996',
-      description: '1996 Election Results',
+      description: '1996 Election',
       property: '1996_dem_perc',
       dem_data: 'dem_total_1996',
       rep_data: 'rep_total_1996'
@@ -71,7 +71,7 @@ const Maps = () => {
     },
     {
       name: '1992',
-      description: '1992 Election Results',
+      description: '1992 Election',
       property: '1992_dem_perc',
       dem_data: 'dem_total_1992',
       rep_data: 'rep_total_1992'
@@ -79,7 +79,7 @@ const Maps = () => {
     },
     {
       name: '1988',
-      description: '1988 Election Results',
+      description: '1988 Election',
       property: '1988_dem_perc',
       dem_data: 'dem_total_1988',
       rep_data: 'rep_total_1988'
@@ -89,7 +89,7 @@ const Maps = () => {
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
-  
+
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
 
   // Initialize map when component mounts
@@ -144,9 +144,10 @@ const Maps = () => {
       <div className="wrapper">
         <header className='header'>
         <h1 className='headline'>
-          <div className='lineOne'> There are no red states or blue states.<br /><br />
+          <div className='lineOne'> We are not as polarized as the Electoral College map leads us to believe.<br /><br />
+          <span className='lineOne'> There are no red states or blue states.</span><br /><br />
           <span className='lineTwo'>Only the United States.</span><br /><br />
-          <span className='lineThree'>Shades of Purple</span>
+          <span className='lineThree'>And everywhere you look, it's shades of purple.</span>
           </div>
         </h1>
         </header>
