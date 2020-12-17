@@ -89,7 +89,7 @@ const Maps = () => {
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
-
+  
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
 
   // Initialize map when component mounts
