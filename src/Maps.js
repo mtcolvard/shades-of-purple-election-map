@@ -1,9 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
+import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import './Map.css'
 import Optionsfield from './components/Optionsfield'
 import Legend from './components/Legend'
+import Tooltip from './components/Tooltip'
 import electionData from './historicElectionResults.json'
+import electionDataLayer from './electionResultsKeyed.json'
 var _ = require('lodash')
 var d3 = require('d3')
 
@@ -87,10 +91,14 @@ const Maps = () => {
   ]
 
   const mapContainerRef = useRef(null)
+  const tooltipRef = useRef(new mapboxgl.Popup({ offset: 15, closeButton: false,
+            closeOnClick: false}))
+
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
+
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -102,9 +110,11 @@ const Maps = () => {
     })
 
     map.on('load', () => {
+      axios.get('./mtsElectionData.geojson')
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
-        'data': 'mapbox://styles/mtcolvard/ckiq46ygw162e17nkl6jgkccj',
+        'data': 'mapbox://mtcolvard.7kwx6btv',
+        // 'promoteId': 'GEOID'
       })
 
       map.addLayer({
@@ -112,13 +122,126 @@ const Maps = () => {
           'type': 'fill',
           'source': 'vectorElectionNumbers',
           'source-layer': 'purple-maps-master-edit-geojs-9gxg35',
+          'fill-opacity': [
+            'case', ['boolean', ['feature-state', 'hover'], false],
+            1,
+            0.5
+          ]
       })
 
       map.setPaintProperty('purple-maps-master-edit-geojs-9gxg35', 'fill-color', fillColorExpression
       )
-      setMap(map)
+
+      // // map.addLayer({
+      // //     'id': 'state-line',
+      // //     'type': 'line',
+      // //     'source': 'vectorElectionNumbers',
+      // //     'source-layer': 'purple-maps-master-edit-geojs-9gxg35',
+      // //     'layout': {
+      // //         'line-join': 'round',
+      // //         'line-cap': 'round'
+      // //     },
+      // //     'paint': {
+      // //         'line-color': '#D8CAC1',
+      // //         'line-width': 1
+      // //     }
+      // // })
+      //
+      //
+      //
+      // const loadDataIntoFeatureState = () => {
+      //   for (let key in electionDataLayer) {
+      //     map.setFeatureState({
+      //       source: 'vectorElectionNumbers',
+      //       sourceLayer: 'purple-maps-master-edit-geojs-9gxg35',
+      //       id: key
+      //     },
+      //     {
+      //       state:  electionDataLayer[key]['State'],
+      //       dem_total_1988:  electionDataLayer[key]['dem_total_1988'],
+      //       rep_total_1988:  electionDataLayer[key]['rep_total_1988'],
+      //       protest_vote_1988:  electionDataLayer[key]['protest_vote_1988'],
+      //       dem_total_1992:  electionDataLayer[key]['dem_total_1992'],
+      //       rep_total_1992:  electionDataLayer[key]['rep_total_1992'],
+      //       protest_vote_1992:  electionDataLayer[key]['protest_vote_1992'],
+      //       dem_total_1996:  electionDataLayer[key]['dem_total_1996'],
+      //       rep_total_1996:  electionDataLayer[key]['rep_total_1996'],
+      //       protest_vote_1996:  electionDataLayer[key]['protest_vote_1996'],
+      //       dem_total_2000:  electionDataLayer[key]['dem_total_2000'],
+      //       rep_total_2000:  electionDataLayer[key]['rep_total_2000'],
+      //       protest_vote_2000:  electionDataLayer[key]['protest_vote_2000'],
+      //       dem_total_2004:  electionDataLayer[key]['dem_total_2004'],
+      //       rep_total_2004:  electionDataLayer[key]['rep_total_2004'],
+      //       protest_vote_2004:  electionDataLayer[key]['protest_vote_2004'],
+      //       dem_total_2008:  electionDataLayer[key]['dem_total_2008'],
+      //       rep_total_2008:  electionDataLayer[key]['rep_total_2008'],
+      //       protest_vote_2008:  electionDataLayer[key]['protest_vote_2008'],
+      //       dem_total_2012:  electionDataLayer[key]['dem_total_2012'],
+      //       rep_total_2012:  electionDataLayer[key]['rep_total_2012'],
+      //       protest_vote_2012:  electionDataLayer[key]['protest_vote_2012'],
+      //       dem_total_2016:  electionDataLayer[key]['dem_total_2016'],
+      //       rep_total_2016:  electionDataLayer[key]['rep_total_2016'],
+      //       protest_vote_2016: electionDataLayer[key]['protest_vote_2016'],
+      //       dem_total_2020: electionDataLayer[key]['dem_total_2020'],
+      //       rep_total_2020: electionDataLayer[key]['rep_total_2020'],
+      //       protest_vote_2020: electionDataLayer[key]['protest_vote_2020']
+      //     })
+      //   }
+      // }
+      // loadDataIntoFeatureState()
+
+
+    map.on('mouseenter', e => {
+      if (e.features.length) {
+        map.getCanvas().style.cursor = 'pointer'
+      }
     })
 
+    map.on('mouseleave', () => {
+      map.getCanvas().style.cursor = ''
+    })
+    let hoveredStateId = null
+    map.on('mousemove', 'purple-maps-master-edit-geojs-9gxg35', (e) => {
+      const features = map.queryRenderedFeatures(e.point, { layers: ['purple-maps-master-edit-geojs-9gxg35']})
+      // if (features.length) {
+      //   const feature = features[0]
+      //   const tooltipNode = document.createElement('div')
+      //
+      //   ReactDOM.render(
+      //     <Tooltip
+      //       feature={feature}
+      //       dem_vote={active.dem_data}
+      //       rep_vote={active.rep_data}
+      //       />, tooltipNode)
+      //
+      //   tooltipRef.current
+      //     .setLngLat(e.lngLat)
+      //     .setDOMContent(tooltipNode)
+      //     .addTo(map)
+      // }
+
+      if (e.features.length > 0) {
+        if (hoveredStateId) {
+          map.featureState({
+            source: 'vectorElectionNumbers',
+            sourceLayer: 'purple-maps-master-edit-geojs-9gxg35',
+            id: hoveredStateId
+          }, {
+            hover: false
+          })
+        }
+        hoveredStateId = e.features[0].id
+        map.setFeatureState({
+          source: 'vectorElectionNumbers',
+          sourceLayer: 'purple-maps-master-edit-geojs-9gxg35',
+          id: hoveredStateId
+        }, {
+          hover: true
+        })
+      }
+    })
+    setMap(map)
+  })
     // Clean up on unmount
     return () => map.remove()
   }, [])
