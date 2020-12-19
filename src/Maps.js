@@ -117,7 +117,7 @@ const Maps = () => {
 
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
-        'url': 'mapbox://mtcolvard.dolzyc8d',
+        'url': 'mapbox://mtcolvard.bfyaufs1',
       })
 
       map.addLayer({
@@ -134,23 +134,48 @@ const Maps = () => {
           'source-layer': 'ocean_shapefile',
       }, 'vector-fill-layer')
 
+      map.addLayer({
+          'id': 'MexiCan-layer',
+          'type': 'fill',
+          'source': 'vectorElectionNumbers',
+          'source-layer': 'mexicoAndCanada',
+      }, 'vector-fill-layer')
+
       map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
       map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
       map.setPaintProperty('water-layer', 'fill-opacity', 0)
-
-      // map.on('mouseenter', (e) => {
-      //   if (e.features.length > 0) {
-      //     map.getCanvas().style.cursor = 'pointer'
-      //   }
-      // })
-      //
-      // map.on('mouseleave', () => {
-      //   map.getCanvas().style.cursor = ''
-      // })
+      map.setPaintProperty('MexiCan-layer', 'fill-opacity', 0)
 
       let hoveredStateId = null
 
       map.on('mousemove', 'water-layer', (e) => {
+        // if (e.features[0].id === 155) {
+        if (e.features.length > 0) {
+          console.log('hoveredStateId', hoveredStateId)
+          // hoveredStateId = e.features[0].id
+          if (hoveredStateId) {
+            map.setFeatureState({
+              source: 'vectorElectionNumbers',
+              sourceLayer: 'mtsElectionData',
+              id: hoveredStateId
+            }, {
+              hover: false
+            })
+          }
+          hoveredStateId = e.features[0].id
+          console.log(hoveredStateId)
+          console.log(e.features.length)
+          map.setFeatureState({
+            source: 'vectorElectionNumbers',
+            sourceLayer: 'mtsElectionData',
+            id: hoveredStateId
+          }, {
+            hover: true
+          })
+        }
+      })
+
+      map.on('mousemove', 'MexiCan-layer', (e) => {
         // if (e.features[0].id === 155) {
         if (e.features.length > 0) {
           console.log('hoveredStateId', hoveredStateId)
