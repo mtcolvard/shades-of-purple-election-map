@@ -94,9 +94,12 @@ const Maps = () => {
 
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
+  // const [forceUpdate, setForceUpdate] = useState(0)
+  // const [tooltipNode, setTooltipNode] = useState(document.createElement('div'))
+
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
-  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
+  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 0.9, 1]
 
 
   // Initialize map when component mounts
@@ -188,36 +191,41 @@ const Maps = () => {
       hoveredStateId = null
     })
 
-    // map.on('mousemove', (e) => {
-    //   let features = map.queryRenderedFeatures(e.point)
-    //   // console.log('features', features)
-    //   if (features.length) {
-    //     let feature = features[0]
-    //
-    //     const tooltipNode = document.createElement('div')
-    //     ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
-    //
-    //     tooltipRef.current
-    //       .setLngLat(e.lngLat)
-    //       .setDOMContent(tooltipNode)
-    //       .addTo(map)
-    //   }
-    // })
+    map.on('mousemove', (e) => {
+      const features = map.queryRenderedFeatures(e.point)
+      // console.log('features', features)
+      if (features.length) {
+        const feature = features[0]
+        const tooltipNode = document.createElement('div')
+        ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
+        // ReactDOM.unmountComponentAtNode(tooltipNode)
 
-    // map.on('render', () => {
-    //
-    // })
 
+      // if (tooltipRef.current)
+        tooltipRef.current
+          .setLngLat(e.lngLat)
+          .setDOMContent(tooltipNode)
+          .addTo(map)
+      }
+    })
 
       // map.on('render', () => {
       //   map.off('mousemove')
       // })
+    // React.unmountComponentAtNode(id='pickels')
 
     setMap(map)
   })
     // Clean up on unmount
     return () => map.remove()
   }, [])
+
+  // const refreshTooltipNode = () => {
+  //   if(tooltipNode) {
+  //     setTooltipNode(document.createElement(''))
+  //   }
+  //   setTooltipNode(document.createElement('div'))
+  // }
 
   const tooltipRef = useRef(new mapboxgl.Popup({
     anchor: 'left',
@@ -227,6 +235,24 @@ const Maps = () => {
     className: 'my-1'
   }))
 
+  useEffect(() => {
+    paint()
+  }, [active])
+
+  const paint = () => {
+    if (map) {
+      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+    }
+  }
+
+  const changeState = i => {
+    setActive(options[i])
+    // tooltipNode.remove()
+    // refreshTooltipNode()
+    map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+    map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+  }
   // function useTooltip() {
   //   const tooltipRef = useRef(new mapboxgl.Popup({
   //     anchor: 'left',
@@ -243,39 +269,6 @@ const Maps = () => {
   //   }, [])
   //   return tooltipRef
   // }
-
-
-  useEffect(() => {
-    paint()
-  }, [active])
-
-  const paint = () => {
-    if (map) {
-      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
-      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
-    }
-  }
-
-  const changeState = i => {
-    setActive(options[i])
-    map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
-    map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
-    map.on('mousemove', (e) => {
-      let features = map.queryRenderedFeatures(e.point)
-      // console.log('features', features)
-      if (features.length) {
-        let feature = features[0]
-
-        const tooltipNode = document.createElement('div')
-        ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
-
-        tooltipRef.current
-          .setLngLat(e.lngLat)
-          .setDOMContent(tooltipNode)
-          .addTo(map)
-      }
-    })
-  }
 
 
 // This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
