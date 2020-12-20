@@ -1,12 +1,12 @@
 import json
 # import .'mtsElectionData.geojson'
 
-with open('mtsElectionData.geojson') as f:
+with open('elections_vector_and_data.geojson') as f:
     data = json.load(f)
     for item in data['features']:
         item['id'] = int(item['properties']['GEOID'])
 
-    with open('mtsElectionData.geojson', 'w') as f:
+    with open('elections_vector_and_data.geojson', 'w') as f:
         json.dump(data, f)
 
 # with open('election_results_2020.json') as f:

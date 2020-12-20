@@ -11,7 +11,7 @@ const Optionsfield = (props) => {
           type="radio"
         />
         <div className="toggle txt-s py3 toggle--active-white">
-          {option.name}
+          {option.year}
         </div>
       </label>
     )

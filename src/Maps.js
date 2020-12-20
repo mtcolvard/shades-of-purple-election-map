@@ -19,135 +19,151 @@ const Maps = () => {
 
   const options = [
     {
-      name: '2020',
+      year: '2020',
       description: '2020 Election',
-      property: '2020_dem_perc',
+      property: 'pct_purple_2020',
       dem_data: 'dem_total_2020',
       rep_data: 'rep_total_2020'
     },
     {
-      name: '2016',
+      year: '2016',
       description: '2016 Election',
-      property: '2016_dem_perc',
+      property: 'pct_purple_2016',
       dem_data: 'dem_total_2016',
       rep_data: 'rep_total_2016'
 
     },
     {
-      name: '2012',
+      year: '2012',
       description: '2012 Election',
-      property: '2012_dem_perc',
+      property: 'pct_purple_2012',
       dem_data: 'dem_total_2012',
       rep_data: 'rep_total_2012'
 
     },
     {
-      name: '2008',
+      year: '2008',
       description: '2008 Election',
-      property: '2008_dem_perc',
+      property: 'pct_purple_2008',
       dem_data: 'dem_total_2008',
       rep_data: 'rep_total_2008'
 
     },
     {
-      name: '2004',
+      year: '2004',
       description: '2004 Election',
-      property: '2004_dem_perc',
+      property: 'pct_purple_2004',
       dem_data: 'dem_total_2004',
       rep_data: 'rep_total_2004'
 
     },
     {
-      name: '2000',
+      year: '2000',
       description: '2000 Election',
-      property: '2000_dem_perc',
+      property: 'pct_purple_2000',
       dem_data: 'dem_total_2000',
       rep_data: 'rep_total_2000'
 
     },
     {
-      name: '1996',
+      year: '1996',
       description: '1996 Election',
-      property: '1996_dem_perc',
+      property: 'pct_purple_1996',
       dem_data: 'dem_total_1996',
       rep_data: 'rep_total_1996'
 
     },
     {
-      name: '1992',
+      year: '1992',
       description: '1992 Election',
-      property: '1992_dem_perc',
+      property: 'pct_purple_1992',
       dem_data: 'dem_total_1992',
       rep_data: 'rep_total_1992'
 
     },
     {
-      name: '1988',
+      year: '1988',
       description: '1988 Election',
-      property: '1988_dem_perc',
+      property: 'pct_purple_1988',
       dem_data: 'dem_total_1988',
       rep_data: 'rep_total_1988'
     }
   ]
 
   const mapContainerRef = useRef(null)
-  const tooltipRef = useRef(new mapboxgl.Popup({ offset: 15, closeButton: false,
-            closeOnClick: false}))
+  const tooltipRef = useRef(new mapboxgl.Popup({
+    anchor: 'left',
+    offset: 15,
+    closeButton: false,
+    closeOnClick: false,
+    className: 'my-1'
+  }))
 
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
-  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 0.7, 1]
+  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
 
 
   // Initialize map when component mounts
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: 'mapbox://styles/mtcolvard/ckiq46ygw162e17nkl6jgkccj',
+      style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
       center: [-95.4, 37.6],
       zoom: 2.5
     })
     map.on('load', () => {
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
-        'url': 'mapbox://mtcolvard.12xkvbk6',
+        'url': 'mapbox://mtcolvard.6ucwbkgb',
       })
 
-      map.addLayer({
-          'id': 'vector-fill-layer',
-          'type': 'fill',
-          'source': 'vectorElectionNumbers',
-          'source-layer': 'mtsElectionData',
-      })
+
+   //    map.addLayer({
+   //     'id': 'state-lines',
+   //     'type': 'line',
+   //     'source': 'vectorElectionNumbers',
+   //     'source-layer': 'elections_vector_and_data',
+   //     'layout': {
+   //         'line-join': 'round',
+   //         'line-cap': 'round'
+   //     },
+   //     'paint': {
+   //         'line-color': ['feature-state', '#D8CAC1'],
+   //         'line-width': ['feature-state', '1']
+   //     }
+   // })
+
+   map.addLayer({
+     'id': 'vector-fill-layer',
+     'type': 'fill',
+     'source': 'vectorElectionNumbers',
+     'source-layer': 'elections_vector_and_data',
+   })
+
+
 
       map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
       map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
-      map.setPaintProperty('water-layer', 'fill-opacity', 0)
-      map.setPaintProperty('MexiCan-layer', 'fill-opacity', 0)
+
+      map.on('mouseenter', 'vector-fill-layer', (e) => {
+          map.getCanvas().style.cursor = 'pointer'
+        })
+
+      map.on('mouseleave', 'vector-fill-layer', (e) => {
+        map.getCanvas().style.cursor = ''
+      })
 
       let hoveredStateId = null
 
-      // map.on('mousemove', 'vector-fill-layer', (e) => {
-      //   if ( hoveredStateId > 150) {
-      //     map.getCanvas().style.cursor = ''
-      //   } else {
-      //     map.getCanvas().style.cursor = 'pointer'
-      //   }
-      // })
-
-      // map.on('mouseleave', () => {
-      //   map.getCanvas().style.cursor = ''
-      // })
-
       map.on('mousemove', 'vector-fill-layer', (e) => {
-        // map.getCanvas().style.cursor = 'pointer'
         if (e.features.length > 0) {
           if (hoveredStateId) {
             map.setFeatureState({
               source: 'vectorElectionNumbers',
-              sourceLayer: 'mtsElectionData',
+              sourceLayer: 'elections_vector_and_data',
               id: hoveredStateId
             }, {
               hover: false
@@ -155,11 +171,9 @@ const Maps = () => {
           }
 
           hoveredStateId = e.features[0].id
-          console.log(hoveredStateId)
-          console.log(e.features.length)
           map.setFeatureState({
             source: 'vectorElectionNumbers',
-            sourceLayer: 'mtsElectionData',
+            sourceLayer: 'elections_vector_and_data',
             id: hoveredStateId
           }, {
             hover: true
@@ -171,7 +185,7 @@ const Maps = () => {
         if (hoveredStateId) {
           map.setFeatureState({
             source: 'vectorElectionNumbers',
-            sourceLayer: 'mtsElectionData',
+            sourceLayer: 'elections_vector_and_data',
             id: hoveredStateId
           }, {
               hover: false
@@ -181,106 +195,26 @@ const Maps = () => {
       })
 
 
-    //   // // map.addLayer({
-    //   // //     'id': 'state-line',
-    //   // //     'type': 'line',
-    //   // //     'source': 'vectorElectionNumbers',
-    //   // //     'source-layer': 'mtsElectionData',
-    //   // //     'layout': {
-    //   // //         'line-join': 'round',
-    //   // //         'line-cap': 'round'
-    //   // //     },
-    //   // //     'paint': {
-    //   // //         'line-color': '#D8CAC1',
-    //   // //         'line-width': 1
-    //   // //     }
-    //   // // })
-    //   //
-    //   //
-    //   //
-    //   // const loadDataIntoFeatureState = () => {
-    //   //   for (let key in electionDataLayer) {
-    //   //     map.setFeatureState({
-    //   //       source: 'vectorElectionNumbers',
-    //   //       sourceLayer: 'mtsElectionData',
-    //   //       id: key
-    //   //     },
-    //   //     {
-    //   //       state:  electionDataLayer[key]['State'],
-    //   //       dem_total_1988:  electionDataLayer[key]['dem_total_1988'],
-    //   //       rep_total_1988:  electionDataLayer[key]['rep_total_1988'],
-    //   //       protest_vote_1988:  electionDataLayer[key]['protest_vote_1988'],
-    //   //       dem_total_1992:  electionDataLayer[key]['dem_total_1992'],
-    //   //       rep_total_1992:  electionDataLayer[key]['rep_total_1992'],
-    //   //       protest_vote_1992:  electionDataLayer[key]['protest_vote_1992'],
-    //   //       dem_total_1996:  electionDataLayer[key]['dem_total_1996'],
-    //   //       rep_total_1996:  electionDataLayer[key]['rep_total_1996'],
-    //   //       protest_vote_1996:  electionDataLayer[key]['protest_vote_1996'],
-    //   //       dem_total_2000:  electionDataLayer[key]['dem_total_2000'],
-    //   //       rep_total_2000:  electionDataLayer[key]['rep_total_2000'],
-    //   //       protest_vote_2000:  electionDataLayer[key]['protest_vote_2000'],
-    //   //       dem_total_2004:  electionDataLayer[key]['dem_total_2004'],
-    //   //       rep_total_2004:  electionDataLayer[key]['rep_total_2004'],
-    //   //       protest_vote_2004:  electionDataLayer[key]['protest_vote_2004'],
-    //   //       dem_total_2008:  electionDataLayer[key]['dem_total_2008'],
-    //   //       rep_total_2008:  electionDataLayer[key]['rep_total_2008'],
-    //   //       protest_vote_2008:  electionDataLayer[key]['protest_vote_2008'],
-    //   //       dem_total_2012:  electionDataLayer[key]['dem_total_2012'],
-    //   //       rep_total_2012:  electionDataLayer[key]['rep_total_2012'],
-    //   //       protest_vote_2012:  electionDataLayer[key]['protest_vote_2012'],
-    //   //       dem_total_2016:  electionDataLayer[key]['dem_total_2016'],
-    //   //       rep_total_2016:  electionDataLayer[key]['rep_total_2016'],
-    //   //       protest_vote_2016: electionDataLayer[key]['protest_vote_2016'],
-    //   //       dem_total_2020: electionDataLayer[key]['dem_total_2020'],
-    //   //       rep_total_2020: electionDataLayer[key]['rep_total_2020'],
-    //   //       protest_vote_2020: electionDataLayer[key]['protest_vote_2020']
-    //   //     })
-    //   //   }
-    //   // }
-    //   // loadDataIntoFeatureState()
-    //
-    //
-    //
-    // let hoveredStateId = null
-    // map.on('mousemove', 'mtsElectionData', (e) => {
-    //   const features = map.queryRenderedFeatures(e.point, { layers: ['mtsElectionData']})
-    //   // if (features.length) {
-    //   //   const feature = features[0]
-    //   //   const tooltipNode = document.createElement('div')
-    //   //
-    //   //   ReactDOM.render(
-    //   //     <Tooltip
-    //   //       feature={feature}
-    //   //       dem_vote={active.dem_data}
-    //   //       rep_vote={active.rep_data}
-    //   //       />, tooltipNode)
-    //   //
-    //   //   tooltipRef.current
-    //   //     .setLngLat(e.lngLat)
-    //   //     .setDOMContent(tooltipNode)
-    //   //     .addTo(map)
-    //   // }
-    //
-    //   if (e.features.length > 0) {
-    //     if (hoveredStateId) {
-    //       map.featureState({
-    //         source: 'vectorElectionNumbers',
-    //         sourceLayer: 'mtsElectionData',
-    //         id: hoveredStateId
-    //       }, {
-    //         hover: false
-    //       })
-    //     }
-    //     hoveredStateId = e.features[0].id
-    //     map.setFeatureState({
-    //       source: 'vectorElectionNumbers',
-    //       sourceLayer: 'mtsElectionData',
-    //       id: hoveredStateId
-    //     }, {
-    //       hover: true
-    //     })
-    //   }
-    // })
+      map.on('mousemove', (e) => {
+        const features = map.queryRenderedFeatures(e.point)
+        // console.log('features', features)
+        if (features.length) {
+          const feature = features[0]
+          const tooltipNode = document.createElement('div')
+          ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
+          tooltipRef.current
+            .setLngLat(e.lngLat)
+            .setDOMContent(tooltipNode)
+            .addTo(map)
+        }
+      })
+
+      // map.on('mouseleave', 'vector-fill-layer', () => {
+      //      tooltipRef.current
+      //       .remove()
+      //     }
+      // )
+
     setMap(map)
   })
     // Clean up on unmount
