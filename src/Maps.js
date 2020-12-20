@@ -98,7 +98,7 @@ const Maps = () => {
   const [map, setMap] = useState(null)
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
-  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 0.6, 1]
+  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 0.7, 1]
 
 
   // Initialize map when component mounts
@@ -110,14 +110,9 @@ const Maps = () => {
       zoom: 2.5
     })
     map.on('load', () => {
-    //   axios.get('./electionResultsKeyed.json')
-    //     .then(data => this.setState({ cheeses: res.data }))
-    //     .catch(err => console.log(err));
-
-
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
-        'url': 'mapbox://mtcolvard.bfyaufs1',
+        'url': 'mapbox://mtcolvard.12xkvbk6',
       })
 
       map.addLayer({
@@ -127,20 +122,6 @@ const Maps = () => {
           'source-layer': 'mtsElectionData',
       })
 
-      map.addLayer({
-          'id': 'water-layer',
-          'type': 'fill',
-          'source': 'vectorElectionNumbers',
-          'source-layer': 'ocean_shapefile',
-      }, 'vector-fill-layer')
-
-      map.addLayer({
-          'id': 'MexiCan-layer',
-          'type': 'fill',
-          'source': 'vectorElectionNumbers',
-          'source-layer': 'mexicoAndCanada',
-      }, 'vector-fill-layer')
-
       map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
       map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
       map.setPaintProperty('water-layer', 'fill-opacity', 0)
@@ -148,63 +129,20 @@ const Maps = () => {
 
       let hoveredStateId = null
 
-      map.on('mousemove', 'water-layer', (e) => {
-        // if (e.features[0].id === 155) {
-        if (e.features.length > 0) {
-          console.log('hoveredStateId', hoveredStateId)
-          // hoveredStateId = e.features[0].id
-          if (hoveredStateId) {
-            map.setFeatureState({
-              source: 'vectorElectionNumbers',
-              sourceLayer: 'mtsElectionData',
-              id: hoveredStateId
-            }, {
-              hover: false
-            })
-          }
-          hoveredStateId = e.features[0].id
-          console.log(hoveredStateId)
-          console.log(e.features.length)
-          map.setFeatureState({
-            source: 'vectorElectionNumbers',
-            sourceLayer: 'mtsElectionData',
-            id: hoveredStateId
-          }, {
-            hover: true
-          })
-        }
-      })
+      // map.on('mousemove', 'vector-fill-layer', (e) => {
+      //   if ( hoveredStateId > 150) {
+      //     map.getCanvas().style.cursor = ''
+      //   } else {
+      //     map.getCanvas().style.cursor = 'pointer'
+      //   }
+      // })
 
-      map.on('mousemove', 'MexiCan-layer', (e) => {
-        // if (e.features[0].id === 155) {
-        if (e.features.length > 0) {
-          console.log('hoveredStateId', hoveredStateId)
-          // hoveredStateId = e.features[0].id
-          if (hoveredStateId) {
-            map.setFeatureState({
-              source: 'vectorElectionNumbers',
-              sourceLayer: 'mtsElectionData',
-              id: hoveredStateId
-            }, {
-              hover: false
-            })
-          }
-          hoveredStateId = e.features[0].id
-          console.log(hoveredStateId)
-          console.log(e.features.length)
-          map.setFeatureState({
-            source: 'vectorElectionNumbers',
-            sourceLayer: 'mtsElectionData',
-            id: hoveredStateId
-          }, {
-            hover: true
-          })
-        }
-      })
+      // map.on('mouseleave', () => {
+      //   map.getCanvas().style.cursor = ''
+      // })
 
       map.on('mousemove', 'vector-fill-layer', (e) => {
         // map.getCanvas().style.cursor = 'pointer'
-
         if (e.features.length > 0) {
           if (hoveredStateId) {
             map.setFeatureState({
@@ -228,6 +166,20 @@ const Maps = () => {
           })
         }
       })
+
+      map.on('mouseleave', 'vector-fill-layer', () => {
+        if (hoveredStateId) {
+          map.setFeatureState({
+            source: 'vectorElectionNumbers',
+            sourceLayer: 'mtsElectionData',
+            id: hoveredStateId
+          }, {
+              hover: false
+            })
+          }
+        hoveredStateId = null
+      })
+
 
     //   // // map.addLayer({
     //   // //     'id': 'state-line',
@@ -288,15 +240,6 @@ const Maps = () => {
     //   // loadDataIntoFeatureState()
     //
     //
-    // map.on('mouseenter', e => {
-    //   if (e.features.length) {
-    //     map.getCanvas().style.cursor = 'pointer'
-    //   }
-    // })
-    //
-    // map.on('mouseleave', () => {
-    //   map.getCanvas().style.cursor = ''
-    // })
     //
     // let hoveredStateId = null
     // map.on('mousemove', 'mtsElectionData', (e) => {
