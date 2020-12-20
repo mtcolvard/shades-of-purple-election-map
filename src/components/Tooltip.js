@@ -3,7 +3,6 @@ import React from 'react'
 const Tooltip = (props) => {
   const { id, properties } = props.feature
   const { year, dem_data, rep_data } = props.active
-  console.log(dem_data)
 
   // <div className='flex-parent flex-parent--center-main '>
     // </div>

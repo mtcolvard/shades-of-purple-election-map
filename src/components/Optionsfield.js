@@ -1,11 +1,15 @@
 import React from "react"
+// props.useTooltip(i)
 
 const Optionsfield = (props) => {
   const renderOptions = (option, i) => {
     return (
       <label key={i} className="toggle-container">
         <input
-          onChange={() => props.changeState(i)}
+          onChange={() =>
+            props.changeState(i)
+
+        }
           checked={option.property === props.property}
           name="toggle"
           type="radio"

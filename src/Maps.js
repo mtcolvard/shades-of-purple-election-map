@@ -91,13 +91,6 @@ const Maps = () => {
   ]
 
   const mapContainerRef = useRef(null)
-  const tooltipRef = useRef(new mapboxgl.Popup({
-    anchor: 'left',
-    offset: 15,
-    closeButton: false,
-    closeOnClick: false,
-    className: 'my-1'
-  }))
 
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
@@ -143,83 +136,114 @@ const Maps = () => {
      'source-layer': 'elections_vector_and_data',
    })
 
+    map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+    map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
 
-
-      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
-      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
-
-      map.on('mouseenter', 'vector-fill-layer', (e) => {
-          map.getCanvas().style.cursor = 'pointer'
-        })
-
-      map.on('mouseleave', 'vector-fill-layer', (e) => {
-        map.getCanvas().style.cursor = ''
+    map.on('mouseenter', 'vector-fill-layer', (e) => {
+        map.getCanvas().style.cursor = 'pointer'
       })
 
-      let hoveredStateId = null
+    map.on('mouseleave', 'vector-fill-layer', (e) => {
+      map.getCanvas().style.cursor = ''
+    })
 
-      map.on('mousemove', 'vector-fill-layer', (e) => {
-        if (e.features.length > 0) {
-          if (hoveredStateId) {
-            map.setFeatureState({
-              source: 'vectorElectionNumbers',
-              sourceLayer: 'elections_vector_and_data',
-              id: hoveredStateId
-            }, {
-              hover: false
-            })
-          }
+    let hoveredStateId = null
 
-          hoveredStateId = e.features[0].id
-          map.setFeatureState({
-            source: 'vectorElectionNumbers',
-            sourceLayer: 'elections_vector_and_data',
-            id: hoveredStateId
-          }, {
-            hover: true
-          })
-        }
-      })
-
-      map.on('mouseleave', 'vector-fill-layer', () => {
+    map.on('mousemove', 'vector-fill-layer', (e) => {
+      if (e.features.length > 0) {
         if (hoveredStateId) {
           map.setFeatureState({
             source: 'vectorElectionNumbers',
             sourceLayer: 'elections_vector_and_data',
             id: hoveredStateId
           }, {
-              hover: false
-            })
-          }
-        hoveredStateId = null
-      })
-
-
-      map.on('mousemove', (e) => {
-        const features = map.queryRenderedFeatures(e.point)
-        // console.log('features', features)
-        if (features.length) {
-          const feature = features[0]
-          const tooltipNode = document.createElement('div')
-          ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
-          tooltipRef.current
-            .setLngLat(e.lngLat)
-            .setDOMContent(tooltipNode)
-            .addTo(map)
+            hover: false
+          })
         }
-      })
 
-      // map.on('mouseleave', 'vector-fill-layer', () => {
-      //      tooltipRef.current
-      //       .remove()
-      //     }
-      // )
+        hoveredStateId = e.features[0].id
+        map.setFeatureState({
+          source: 'vectorElectionNumbers',
+          sourceLayer: 'elections_vector_and_data',
+          id: hoveredStateId
+        }, {
+          hover: true
+        })
+      }
+    })
+
+    map.on('mouseleave', 'vector-fill-layer', () => {
+      if (hoveredStateId) {
+        map.setFeatureState({
+          source: 'vectorElectionNumbers',
+          sourceLayer: 'elections_vector_and_data',
+          id: hoveredStateId
+        }, {
+            hover: false
+          })
+        tooltipRef.current
+          .remove()
+
+        }
+      hoveredStateId = null
+    })
+
+    // map.on('mousemove', (e) => {
+    //   let features = map.queryRenderedFeatures(e.point)
+    //   // console.log('features', features)
+    //   if (features.length) {
+    //     let feature = features[0]
+    //
+    //     const tooltipNode = document.createElement('div')
+    //     ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
+    //
+    //     tooltipRef.current
+    //       .setLngLat(e.lngLat)
+    //       .setDOMContent(tooltipNode)
+    //       .addTo(map)
+    //   }
+    // })
+
+    // map.on('render', () => {
+    //
+    // })
+
+
+      // map.on('render', () => {
+      //   map.off('mousemove')
+      // })
 
     setMap(map)
   })
     // Clean up on unmount
     return () => map.remove()
   }, [])
+
+  const tooltipRef = useRef(new mapboxgl.Popup({
+    anchor: 'left',
+    offset: 15,
+    closeButton: false,
+    closeOnClick: false,
+    className: 'my-1'
+  }))
+
+  // function useTooltip() {
+  //   const tooltipRef = useRef(new mapboxgl.Popup({
+  //     anchor: 'left',
+  //     offset: 15,
+  //     closeButton: false,
+  //     closeOnClick: false,
+  //     className: 'my-1'
+  //   }))
+  //
+  //   const [, setForceUpdate] = useState(Date.now())
+  //
+  //   useEffect(() => {
+  //     setForceUpdate()
+  //   }, [])
+  //   return tooltipRef
+  // }
+
 
   useEffect(() => {
     paint()
@@ -236,7 +260,24 @@ const Maps = () => {
     setActive(options[i])
     map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+    map.on('mousemove', (e) => {
+      let features = map.queryRenderedFeatures(e.point)
+      // console.log('features', features)
+      if (features.length) {
+        let feature = features[0]
+
+        const tooltipNode = document.createElement('div')
+        ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
+
+        tooltipRef.current
+          .setLngLat(e.lngLat)
+          .setDOMContent(tooltipNode)
+          .addTo(map)
+      }
+    })
   }
+
+
 // This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
 
   return (
@@ -266,3 +307,5 @@ const Maps = () => {
 }
 
 export default Maps
+
+// useTooltip={useTooltip}
