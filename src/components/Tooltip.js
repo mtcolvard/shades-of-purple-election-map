@@ -1,25 +1,28 @@
 import React from 'react'
 
-const Tooltip = (props) => {
-  const { id, properties } = props.feature
-  const { year, dem_data, rep_data } = props.active
+const Tooltip = ({feature, active}) => {
+  const { id, properties } = feature
+  const { year, dem_data, rep_data } = active.current
+  console.log(active)
 
-  // <div className='flex-parent flex-parent--center-main '>
-    // </div>
 
+  // <div className='flex-parent flex-parent--center-main '></div>
+
+  // <div
+  //   className="fl inline-block w24 h18 txt-h6 txt-bold "
+  //   style={{ backgroundColor: '#800080' }}>
+  // </div>
 
   return (
-    <div id={`tooltip-${id}`}>
-      <div className= "flex-child mr6 align-middle txt-h5">{properties.STUSPS}: {year}</div>
-        <div className=" mr6 w42 h18 inline-block color-gray-faint txt-h6 txt-bold px3 align-middle"
+    <div id={`tooltip-${id}`} className="mt-neg6 mb-neg12 mx-neg6">
+      <div className= "txt-h5 " >{properties.State}</div>
+        <div className="inline-block w42 h18 color-gray-faint txt-h6 txt-bold px3"
           style={{ backgroundColor: '#FF0000' }}>
           {(properties[rep_data]*100).toFixed(1)}%</div>
         <br />
-        <div className="flex-child mr6 w42 h18 inline-block color-gray-faint txt-h6 txt-bold px3 align-middle"
-        style={{ backgroundColor: '#0000FF' }}>
-      {(properties[dem_data]*100).toFixed(1)}%</div>
-        <br />
-
+        <div className="inline-block w42 h18 color-gray-faint txt-h6 txt-bold px3"
+          style={{ backgroundColor: '#0000FF' }}>
+        {(properties[dem_data]*100).toFixed(1)}%</div>
     </div>
   )
 }

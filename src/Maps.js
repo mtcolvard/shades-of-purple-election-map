@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useReducer, useRef, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
@@ -91,16 +91,19 @@ const Maps = () => {
   ]
 
   const mapContainerRef = useRef(null)
-
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
-  // const [forceUpdate, setForceUpdate] = useState(0)
-  // const [tooltipNode, setTooltipNode] = useState(document.createElement('div'))
-
+  const activeRef = useRef(options[0])
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
-  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 0.9, 1]
+  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
 
+  const tooltipRef = useRef(new mapboxgl.Popup({
+    anchor: 'left',
+    offset: 15,
+    closeButton: false,
+    closeOnClick: false,
+  }))
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -115,7 +118,6 @@ const Maps = () => {
         'type': 'vector',
         'url': 'mapbox://mtcolvard.6ucwbkgb',
       })
-
 
    //    map.addLayer({
    //     'id': 'state-lines',
@@ -151,7 +153,6 @@ const Maps = () => {
     })
 
     let hoveredStateId = null
-
     map.on('mousemove', 'vector-fill-layer', (e) => {
       if (e.features.length > 0) {
         if (hoveredStateId) {
@@ -186,22 +187,16 @@ const Maps = () => {
           })
         tooltipRef.current
           .remove()
-
         }
       hoveredStateId = null
     })
 
     map.on('mousemove', (e) => {
       const features = map.queryRenderedFeatures(e.point)
-      // console.log('features', features)
       if (features.length) {
         const feature = features[0]
         const tooltipNode = document.createElement('div')
-        ReactDOM.render(<Tooltip feature={feature} active={active}/>, tooltipNode)
-        // ReactDOM.unmountComponentAtNode(tooltipNode)
-
-
-      // if (tooltipRef.current)
+        ReactDOM.render(<Tooltip feature={feature} active={activeRef}/>, tooltipNode)
         tooltipRef.current
           .setLngLat(e.lngLat)
           .setDOMContent(tooltipNode)
@@ -209,31 +204,11 @@ const Maps = () => {
       }
     })
 
-      // map.on('render', () => {
-      //   map.off('mousemove')
-      // })
-    // React.unmountComponentAtNode(id='pickels')
-
     setMap(map)
   })
     // Clean up on unmount
     return () => map.remove()
   }, [])
-
-  // const refreshTooltipNode = () => {
-  //   if(tooltipNode) {
-  //     setTooltipNode(document.createElement(''))
-  //   }
-  //   setTooltipNode(document.createElement('div'))
-  // }
-
-  const tooltipRef = useRef(new mapboxgl.Popup({
-    anchor: 'left',
-    offset: 15,
-    closeButton: false,
-    closeOnClick: false,
-    className: 'my-1'
-  }))
 
   useEffect(() => {
     paint()
@@ -246,30 +221,13 @@ const Maps = () => {
     }
   }
 
+
   const changeState = i => {
     setActive(options[i])
-    // tooltipNode.remove()
-    // refreshTooltipNode()
+    activeRef.current = options[i]
     map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
   }
-  // function useTooltip() {
-  //   const tooltipRef = useRef(new mapboxgl.Popup({
-  //     anchor: 'left',
-  //     offset: 15,
-  //     closeButton: false,
-  //     closeOnClick: false,
-  //     className: 'my-1'
-  //   }))
-  //
-  //   const [, setForceUpdate] = useState(Date.now())
-  //
-  //   useEffect(() => {
-  //     setForceUpdate()
-  //   }, [])
-  //   return tooltipRef
-  // }
-
 
 // This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
 
@@ -300,5 +258,3 @@ const Maps = () => {
 }
 
 export default Maps
-
-// useTooltip={useTooltip}

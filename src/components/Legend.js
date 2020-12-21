@@ -15,21 +15,24 @@ const Legend = (props) => {
   const keysOfStateKey = Object.keys(stateKey)
   const electionYearDataDem = _.omit(electionData[props.active.dem_data], ['11'])
   const electionYearDataRep = electionData[props.active.rep_data]
+  console.log('electionYearDataDem', electionYearDataDem)
+
 
   useEffect(() => {
     findMostPolarizedStates()
-  }, [props.active])
+    console.log('effectfired')
+
+  }, [])
 
   useEffect(() => {
     findleastPolarizedState()
-  }, [props.active])
+  }, [])
 
   const purpleScale = d3.scaleLinear()
   .domain([0, 100])
   .range(['#FF0000', '#0000FF'])
 
   const findMostPolarizedStates = () => {
-
     const mostPartisanDemFIPS_id = _.maxBy(_.keys(electionYearDataDem), o => electionYearDataDem[o])
     const mostPartisanRepFIPS_id = _.maxBy(_.keys(electionYearDataRep), o => electionYearDataRep[o])
     const mostPartisanDemState = stateKey[mostPartisanDemFIPS_id]
@@ -45,65 +48,65 @@ const Legend = (props) => {
     setLegendProps_mostPartisan(legendProps_mostPartisan)
   }
 
-  const findleastPolarizedState = () => {
 
+  const findleastPolarizedState = () => {
     keysOfStateKey.forEach((stateId) => {
       statePurpleRating[stateId] = Math.abs(electionYearDataDem[stateId] - electionYearDataRep[stateId]).toFixed(6)
     })
-
     const lowestPurpleValue = _.minBy(_.values(statePurpleRating))
     const mostPurpleStateFIPS_id = Object.keys(statePurpleRating).find(mostPurpleStateFIPS_id => statePurpleRating[mostPurpleStateFIPS_id] === lowestPurpleValue)
-
     const mostPurpleState = stateKey[mostPurpleStateFIPS_id]
     const mostPurpleStateVoteDifference = Math.abs(electionYearDataDem[mostPurpleStateFIPS_id]-electionYearDataRep[mostPurpleStateFIPS_id])
-
-
     const mostPurpleStateColorRatio = (electionYearDataDem[mostPurpleStateFIPS_id]/(electionYearDataDem[mostPurpleStateFIPS_id]+(electionYearDataRep[mostPurpleStateFIPS_id])))*100
     const mostPurpleStatePurpleShade = purpleScale(mostPurpleStateColorRatio)
-
 
     const legendProps_mostPurpleState = [[mostPurpleState, (_.floor(mostPurpleStateVoteDifference*100, 3)), mostPurpleStatePurpleShade]]
     setLegendProps_mostPurpleState(legendProps_mostPurpleState)
   }
 
-
-  console.log('legendProps_mostPurpleState', legendProps_mostPurpleState)
-  // console.log('mostPartisanDemState', mostPartisanDemState, mostPartisanDemStateVotePercent, mostPartisanDemColorRatio)
-  // console.log('mostPartisanRepState', mostPartisanRepState, mostPartisanRepStateVotePercent, mostPartisanRepColorRatio)
-
-  const renderMostPartisanInfo = (stop, i) => {
+  const renderPartisan = (item, i) => {
     return (
             <div key={i} className="txt-s mb2">
-              <span className="mr6 ml6 align-middle">{`${stop[0]}`}</span>
+              <span className="mr6 ml6 align-middle">{`${item[0]}`}</span>
               <span
-                className="fr ml1 w24 h18 inline-block align-middle"
+                className="fr ml1 w30 h18 inline-block align-middle"
                 style={{ backgroundColor: '#800080' }}
               />
               <span
-                className="fr ml6 w24 h18 inline-block align-middle"
-                style={{ backgroundColor: stop[2] }}
+                className="fr ml6 w30 h18 inline-block align-middle"
+                style={{ backgroundColor: item[2] }}
               />
-              <span className="fr mr6 ml6 align-middle">{`${stop[1]}%`}</span>
+              <span className="fr mr6 align-middle">{`${item[1]}%`}</span>
+            </div>
+    )
+  }
+  const renderPurple = (item, i) => {
+    return (
+            <div key={i} className="txt-s mb2">
+              <span className="mr6 ml6 align-middle">{`${item[0]}`}</span>
+              <span
+                className="fr ml1 w30 h18 inline-block align-middle"
+                style={{ backgroundColor: '#800080' }}
+              />
+              <span
+                className="fr ml6 w30 h18 inline-block align-middle"
+                style={{ backgroundColor: item[2] }}
+              />
+              <span className="fr mr6 align-middle">{`${item[1]}%`}</span>
             </div>
     )
   }
 
-  const renderMostPurpleInfo = (stop, i) => {
-    return (
-          <div key={i} className="txt-s mb2">
-            <span className="mr6 ml6 align-middle">{`${stop[0]}`}</span>
-            <span
-              className="fr ml1 w24 h18 inline-block align-middle"
-              style={{ backgroundColor: '#800080' }}
-            />
-            <span
-              className="fr ml6 w24 h18 inline-block align-middle"
-              style={{ backgroundColor: stop[2] }}
-            />
-            <span className="fr mr6 ml6 align-middle">{`${stop[1]}%`}</span>
-            </div>
-    )
-  }
+  // const renderScaleInfo = (item, i) => {
+  //   return (
+  //         <div key={i} className="txt-s mb2">
+  //           <span
+  //             className="fr ml6 w60 h18 inline-block align-middle"
+  //             style={{ backgroundColor: item[2] }}
+  //           />
+  //           </div>
+  //   )
+  // }
   // <span className="txt-s txt-bold block  align-middle">Polarized </span>
 
   return (
@@ -120,7 +123,7 @@ const Legend = (props) => {
           </div>
           <div className="col col--8">
             <div className="h-full">
-              {legendProps_mostPartisan.map(renderMostPartisanInfo)}
+              {legendProps_mostPartisan.map(renderPartisan)}
             </div>
           </div>
         </div>
@@ -132,7 +135,7 @@ const Legend = (props) => {
           </div>
           <div className="col col--8">
             <div className="h-full">
-              {legendProps_mostPurpleState.map(renderMostPurpleInfo)}
+              {legendProps_mostPurpleState.map(renderPurple)}
             </div>
           </div>
         </div>
@@ -142,3 +145,17 @@ const Legend = (props) => {
 }
 
 export default Legend
+
+// <div className="grid grid--gut6 flex-parent--stretch-cross">
+//   <div className="col col--4">
+//     <div className="h-full">
+//       <span className="txt-s txt-bold block align-middle">Scale:</span>
+//     </div>
+//   </div>
+//   <div className="col col--8">
+//     <div className="h-full">
+//       {legendProps_mostPurpleState.map(renderScaleInfo)}
+//     </div>
+//   </div>
+// </div>
+//
