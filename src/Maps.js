@@ -94,16 +94,16 @@ const Maps = () => {
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
   const activeRef = useRef(options[0])
-
-  const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
-  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
-
   const tooltipRef = useRef(new mapboxgl.Popup({
     anchor: 'left',
     offset: 15,
     closeButton: false,
     closeOnClick: false,
+    className: 'my-1'
   }))
+
+  const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
+  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
 
   // Initialize map when component mounts
   useEffect(() => {
@@ -203,7 +203,6 @@ const Maps = () => {
           .addTo(map)
       }
     })
-
     setMap(map)
   })
     // Clean up on unmount
@@ -211,16 +210,14 @@ const Maps = () => {
   }, [])
 
   useEffect(() => {
-    paint()
-  }, [active])
-
-  const paint = () => {
-    if (map) {
-      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
-      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+    const paint = () => {
+      if (map) {
+        map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+        map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+      }
     }
-  }
-
+    paint()
+  }, [])
 
   const changeState = i => {
     setActive(options[i])
