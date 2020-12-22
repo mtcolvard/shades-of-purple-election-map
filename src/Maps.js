@@ -115,9 +115,6 @@ const Maps = () => {
     className: 'my-1'
   }))
 
-  const voter_turnout_test = active.dem_total_2020
-  console.log('turnout_test', voter_turnout_test)
-
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
   const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
@@ -159,9 +156,6 @@ const Maps = () => {
      'source': 'vectorElectionNumbers',
      'source-layer': 'elections_vector_and_data',
    })
-
-
-    map.querySourceFeatures('vectorElectionNumbers', 'elections_vector_and_data' )
 
     map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
@@ -232,14 +226,15 @@ const Maps = () => {
   }, [])
 
   useEffect(() => {
-    const paint = () => {
-      if (map) {
-        map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
-        map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
-      }
-    }
     paint()
-  }, [])
+  }, [active])
+
+  const paint = () => {
+    if (map) {
+      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+    }
+  }
 
   const changeState = i => {
     setActive(options[i])
