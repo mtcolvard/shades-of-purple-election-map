@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import electionData from '../historicElectionResults.json'
+import electionDataComplete from '../elections_vector_and_data.geojson'
 var _ = require('lodash')
 var d3 = require('d3')
 
@@ -12,23 +13,33 @@ const Legend = (props) => {
   const [legendProps_mostRepublican, setLegendProps_mostRepublican] = useState([[null]])
   const [legendProps_mostDemocrat, setLegendProps_mostDemocrat] = useState([[null]])
   const [legendProps_mostPurpleState, setLegendProps_mostPurpleState] = useState([[null]])
-  const [legendProps_scale] = useState([['Hue Spectrum:', null, null, '#800080']])
+  const [legendProps_scale] = useState([['Reference Spectrum:', null, null, '#800080']])
 
   const keysOfStateKey = Object.keys(stateKey)
   const electionYearDataDem = _.omit(electionData[props.active.dem_data], ['11'])
   const electionYearDataRep = electionData[props.active.rep_data]
-  console.log('electionYearDataDem', electionYearDataDem)
-
 
   useEffect(() => {
     findMostPolarizedStates()
-    console.log('effectfired')
-
   }, [props.active])
 
   useEffect(() => {
     findleastPolarizedState()
   }, [props.active])
+
+//   const electionYearVoterTurnout = electionData[props.active.rep_data]
+//   console.log('electionYearVoterTurnout',electionYearVoterTurnout)
+//
+//   useEffect(() => {
+//     findTotalParticipation()
+//   }, [props.active])
+//
+//   const findTotalParticipation = () => {
+//   electionYearVoterTurnout.reduce((sum, amount) => {
+//     console.log('sum', sum)
+//     return sum + amount
+//   }, 0)
+// }
 
   const purpleScale = d3.scaleLinear()
   .domain([0, 100])
@@ -46,10 +57,10 @@ const Legend = (props) => {
     const demPurpleShade = purpleScale(mostPartisanDemColorRatio)
     const repPurpleShade = purpleScale(mostPartisanRepColorRatio)
 
-    const legendProps_mostRepublican = [['Most Republican: ', mostPartisanRepState, (_.ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
+    const legendProps_mostRepublican = [['Most Partisan Republican: ', mostPartisanRepState, (_.ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
     setLegendProps_mostRepublican(legendProps_mostRepublican)
 
-    const legendProps_mostDemocrat = [['Most Democrat: ', mostPartisanDemState, (_.ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
+    const legendProps_mostDemocrat = [['Most Partisan Democrat: ', mostPartisanDemState, (_.ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
     setLegendProps_mostDemocrat(legendProps_mostDemocrat)
   }
 

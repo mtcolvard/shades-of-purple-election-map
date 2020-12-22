@@ -23,14 +23,18 @@ const Maps = () => {
       description: '2020 Election',
       property: 'pct_purple_2020',
       dem_data: 'dem_total_2020',
-      rep_data: 'rep_total_2020'
+      rep_data: 'rep_total_2020',
+      participation: "voter_turnout_2020",
+      protest_vote: "protest_vote_2020",
     },
     {
       year: '2016',
       description: '2016 Election',
       property: 'pct_purple_2016',
       dem_data: 'dem_total_2016',
-      rep_data: 'rep_total_2016'
+      rep_data: 'rep_total_2016',
+      participation: "voter_turnout_2016",
+      protest_vote: "protest_vote_2016"
 
     },
     {
@@ -38,7 +42,9 @@ const Maps = () => {
       description: '2012 Election',
       property: 'pct_purple_2012',
       dem_data: 'dem_total_2012',
-      rep_data: 'rep_total_2012'
+      rep_data: 'rep_total_2012',
+      participation: "voter_turnout_2012",
+      protest_vote: "protest_vote_2012"
 
     },
     {
@@ -46,7 +52,9 @@ const Maps = () => {
       description: '2008 Election',
       property: 'pct_purple_2008',
       dem_data: 'dem_total_2008',
-      rep_data: 'rep_total_2008'
+      rep_data: 'rep_total_2008',
+      participation: "voter_turnout_2008",
+      protest_vote: "protest_vote_2008"
 
     },
     {
@@ -54,39 +62,45 @@ const Maps = () => {
       description: '2004 Election',
       property: 'pct_purple_2004',
       dem_data: 'dem_total_2004',
-      rep_data: 'rep_total_2004'
-
+      rep_data: 'rep_total_2004',
+      participation: "voter_turnout_2004",
+      protest_vote: "protest_vote_2004"
     },
     {
       year: '2000',
       description: '2000 Election',
       property: 'pct_purple_2000',
       dem_data: 'dem_total_2000',
-      rep_data: 'rep_total_2000'
-
+      rep_data: 'rep_total_2000',
+      participation: "voter_turnout_2000",
+      protest_vote: "protest_vote_2000"
     },
     {
       year: '1996',
       description: '1996 Election',
       property: 'pct_purple_1996',
       dem_data: 'dem_total_1996',
-      rep_data: 'rep_total_1996'
-
+      rep_data: 'rep_total_1996',
+      participation: "voter_turnout_1996",
+      protest_vote: "protest_vote_1996"
     },
     {
       year: '1992',
       description: '1992 Election',
       property: 'pct_purple_1992',
       dem_data: 'dem_total_1992',
-      rep_data: 'rep_total_1992'
-
+      rep_data: 'rep_total_1992',
+      participation: "voter_turnout_1992",
+      protest_vote: "protest_vote_1992"
     },
     {
       year: '1988',
       description: '1988 Election',
       property: 'pct_purple_1988',
       dem_data: 'dem_total_1988',
-      rep_data: 'rep_total_1988'
+      rep_data: 'rep_total_1988',
+      participation: "voter_turnout_2020",
+      protest_vote: "protest_vote_2020"
     }
   ]
 
@@ -101,6 +115,10 @@ const Maps = () => {
     closeOnClick: false,
     className: 'my-1'
   }))
+
+  const voter_turnout_test = active.dem_total_2020
+  console.log('turnout_test', voter_turnout_test)
+
 
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
   const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
