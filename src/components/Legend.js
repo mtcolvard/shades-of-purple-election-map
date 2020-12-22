@@ -17,6 +17,15 @@ const Legend = (props) => {
   const electionYearDataDem = electionData[props.active.dem_data]
   const electionYearDataRep = electionData[props.active.rep_data]
   const electionYearVoterTurnout = _.ceil(electionData[props.active.participation]['155'], 3)*100
+  const protestVote = _.ceil(Object.values(electionData[props.active.protest_vote]).reduce((sum, amount) => {
+      return sum + amount
+    }, 0), 2)
+
+
+
+  console.log('protestVote', protestVote)
+
+
   console.log('electionYearVoterTurnout', electionYearVoterTurnout)
   useEffect(() => {
     findMostPolarizedStates()
@@ -44,10 +53,10 @@ const Legend = (props) => {
     const demPurpleShade = purpleScale(mostPartisanDemColorRatio)
     const repPurpleShade = purpleScale(mostPartisanRepColorRatio)
 
-    const legendProps_mostRepublican = [['Most Partisan Republican: ', mostPartisanRepState, (_.ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
+    const legendProps_mostRepublican = [['Most Republican: ', mostPartisanRepState, (_.ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
     setLegendProps_mostRepublican(legendProps_mostRepublican)
 
-    const legendProps_mostDemocrat = [['Most Partisan Democrat: ', mostPartisanDemState, (_.ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
+    const legendProps_mostDemocrat = [['Most Democrat: ', mostPartisanDemState, (_.ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
     setLegendProps_mostDemocrat(legendProps_mostDemocrat)
   }
 
@@ -81,8 +90,8 @@ const Legend = (props) => {
             style={{ backgroundColor: item[3] }}
           />
           <span className="col--2  flex-child">{`${item[2]}%`}</span>
-          <span className="col--2 fr   flex-child">{`${item[1]}`}</span>
-          <span className="col txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
+          <span className="col fl   flex-child">{`${item[1]}`}</span>
+          <span className="col--4 txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
         </div>
       </div>
     )
@@ -94,18 +103,28 @@ const Legend = (props) => {
         <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
           <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: 'linear-gradient(to right, #FF0000 0%,  #800080 50%, #0000FF 100%)'}}>
           </div>
-            <span className="col txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
+          <span className="col ml-neg3 txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
         </div>
       </div>
     )
   }
+  // <span className="txt-m fr">{`Turnout: ${electionYearVoterTurnout}%`}
+  // </span>
+
 
   return (
     <>
       <div className="bg-white absolute bottom right mb24 py12 px12 shadow-darken10 round z1 wmax600">
         <div className="mb6">
-          <h2 className="txt-bold txt-m mb6 ml-neg3 block">{props.active.description}</h2>
-          <h2 className="txt-bold txt-s mb6 ml-neg3 block">{`Voter Turnout: ${electionYearVoterTurnout}%`}</h2>
+          <h2 className="txt-bold txt-l mb6 ml-neg3 ">{props.active.description} </h2>
+        </div>
+        <div className="grid  gridLines grid--gut3 flex-parent flex-parent--row-reverse">
+        <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: '#FFFFFF'}}>
+        </div>
+        <span className="col--2 txt-s  flex-child ">{`${electionYearVoterTurnout}%`}</span>
+        <span className="col txt-s txt-bold  flex-child ">
+        </span>
+        <span className="col ml-neg3 txt-s txt-bold inline-block flex-child ">Voter Turnout:</span>
         </div>
         {legendProps_scale.map(renderScaleInfo)}
         {legendProps_mostRepublican.map(renderData)}
