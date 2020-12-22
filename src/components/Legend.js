@@ -94,7 +94,7 @@ const Legend = (props) => {
         <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
           <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: 'linear-gradient(to right, #FF0000 0%,  #800080 50%, #0000FF 100%)'}}>
           </div>
-            <span className="col ml-neg3 txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
+            <span className="col txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
         </div>
       </div>
     )
