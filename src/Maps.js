@@ -1,5 +1,6 @@
 import React, { useReducer, useRef, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
+import _ from 'lodash'
 import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import './Map.css'
@@ -8,9 +9,7 @@ import Legend from './components/Legend'
 import Tooltip from './components/Tooltip'
 import electionData from './historicElectionResults.json'
 const electionDataLayer = require('./electionResultsKeyed.json')
-var _ = require('lodash')
 var d3 = require('d3')
-
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
@@ -131,11 +130,13 @@ const Maps = () => {
       center: [-95.4, 37.6],
       zoom: 2.5
     })
+
     map.on('load', () => {
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
         'url': 'mapbox://mtcolvard.6ucwbkgb',
       })
+
 
    //    map.addLayer({
    //     'id': 'state-lines',
@@ -152,12 +153,15 @@ const Maps = () => {
    //     }
    // })
 
-   map.addLayer({
+    map.addLayer({
      'id': 'vector-fill-layer',
      'type': 'fill',
      'source': 'vectorElectionNumbers',
      'source-layer': 'elections_vector_and_data',
    })
+
+
+    map.querySourceFeatures('vectorElectionNumbers', 'elections_vector_and_data' )
 
     map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)

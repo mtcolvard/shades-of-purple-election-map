@@ -1,9 +1,7 @@
 import React, { useState, useEffect} from 'react'
-import electionData from '../historicElectionResults.json'
-import electionDataComplete from '../elections_vector_and_data.geojson'
-var _ = require('lodash')
+import electionData from '../data_for_legend_calculations_minus_dc.json'
+import _ from 'lodash'
 var d3 = require('d3')
-
 
 const Legend = (props) => {
   const stateKey = {
@@ -16,9 +14,10 @@ const Legend = (props) => {
   const [legendProps_scale] = useState([['Reference Spectrum:', null, null, '#800080']])
 
   const keysOfStateKey = Object.keys(stateKey)
-  const electionYearDataDem = _.omit(electionData[props.active.dem_data], ['11'])
+  const electionYearDataDem = electionData[props.active.dem_data]
   const electionYearDataRep = electionData[props.active.rep_data]
-
+  const electionYearVoterTurnout = _.ceil(electionData[props.active.participation]['155'], 3)*100
+  console.log('electionYearVoterTurnout', electionYearVoterTurnout)
   useEffect(() => {
     findMostPolarizedStates()
   }, [props.active])
@@ -27,19 +26,7 @@ const Legend = (props) => {
     findleastPolarizedState()
   }, [props.active])
 
-//   const electionYearVoterTurnout = electionData[props.active.rep_data]
-//   console.log('electionYearVoterTurnout',electionYearVoterTurnout)
-//
-//   useEffect(() => {
-//     findTotalParticipation()
-//   }, [props.active])
-//
-//   const findTotalParticipation = () => {
-//   electionYearVoterTurnout.reduce((sum, amount) => {
-//     console.log('sum', sum)
-//     return sum + amount
-//   }, 0)
-// }
+
 
   const purpleScale = d3.scaleLinear()
   .domain([0, 100])
@@ -94,8 +81,8 @@ const Legend = (props) => {
             style={{ backgroundColor: item[3] }}
           />
           <span className="col--2  flex-child">{`${item[2]}%`}</span>
-          <span className="col fl   flex-child">{`${item[1]}`}</span>
-          <span className="col--4 txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
+          <span className="col--2 fr   flex-child">{`${item[1]}`}</span>
+          <span className="col txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
         </div>
       </div>
     )
@@ -118,6 +105,7 @@ const Legend = (props) => {
       <div className="bg-white absolute bottom right mb24 py12 px12 shadow-darken10 round z1 wmax600">
         <div className="mb6">
           <h2 className="txt-bold txt-m mb6 ml-neg3 block">{props.active.description}</h2>
+          <h2 className="txt-bold txt-s mb6 ml-neg3 block">{`Voter Turnout: ${electionYearVoterTurnout}%`}</h2>
         </div>
         {legendProps_scale.map(renderScaleInfo)}
         {legendProps_mostRepublican.map(renderData)}
