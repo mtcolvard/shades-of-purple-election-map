@@ -12,16 +12,20 @@
   /* height: 50px; */
 }
 
-/* .gridLines {
-  display: grid;
-  grid-template-columns: 140px 260px;
-  /* grip-template-rows: 100%; */
-/* } */ */
+.gridLines {
+  padding-bottom: 1px;
+  width: 320px;
+}
+.break{
+  display: inline-block;
+  vertical-align: middle;
+  height: 3px;
+  background-image: '#FFFFFF';
+}
 
 .legendScale {
   float: right;
   margin-left: 6px;
-  width: 60px;
   height: 18px;
   display: inline-block;
   vertical-align: middle;

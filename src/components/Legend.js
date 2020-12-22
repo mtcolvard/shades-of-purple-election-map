@@ -12,7 +12,7 @@ const Legend = (props) => {
   const [legendProps_mostRepublican, setLegendProps_mostRepublican] = useState([[null]])
   const [legendProps_mostDemocrat, setLegendProps_mostDemocrat] = useState([[null]])
   const [legendProps_mostPurpleState, setLegendProps_mostPurpleState] = useState([[null]])
-  const [legendProps_scale] = useState([['Hue Spectrum'], null, null, ])
+  const [legendProps_scale] = useState([['Hue Spectrum:', null, null, '#800080']])
 
   const keysOfStateKey = Object.keys(stateKey)
   const electionYearDataDem = _.omit(electionData[props.active.dem_data], ['11'])
@@ -72,57 +72,46 @@ const Legend = (props) => {
 
     const renderData = (item, i) => {
     return (
-    <div key={i} className="txt-s mb2">
-      <div className="grid grid--gut3  flex-parent flex-parent--row-reverse w360">
-        <span
-          className="col--1  h18 inline-block  flex-child"
-          style={{ backgroundColor: '#800080' }}
-        />
-        <span
-          className="col--1  h18 inline-block  flex-child"
-          style={{ backgroundColor: item[3] }}
-        />
-        <span className="col--2  flex-child">{`${item[2]}%`}</span>
-        <span className="col--3 fl   flex-child">{`${item[1]}`}</span>
-        <span className="col txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
-
+      <div key={i} className="txt-s mb2">
+        <div className="grid gridLines grid--gut3  flex-parent flex-parent--row-reverse ">
+          <span
+            className="col--1 h18 inline-block  flex-child"
+            style={{ backgroundColor: '#800080' }}
+          />
+          <span
+            className="col--1  h18 inline-block  flex-child"
+            style={{ backgroundColor: item[3] }}
+          />
+          <span className="col--2  flex-child">{`${item[2]}%`}</span>
+          <span className="col fl   flex-child">{`${item[1]}`}</span>
+          <span className="col--4 txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
+        </div>
       </div>
-    </div>
     )
   }
 
-  // const renderScaleInfo = (item, i) => {
-  //   return (
-  //         <div key={i} className="txt-s">
-  //           <span
-  //             className="legendScale"
-  //             style={{ backgroundColor: item[2] }}
-  //           />
-  //           </div>
-  //   )
-  // }
+  const renderScaleInfo = (item, i) => {
+    return (
+      <div key={i} className="txt-s mb2">
+        <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
+          <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: 'linear-gradient(to right, #FF0000 0%,  #800080 50%, #0000FF 100%)'}}>
+          </div>
+            <span className="col ml-neg3 txt-s txt-bold inline-block flex-child ">{`${item[0]}`}</span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
-      <div className="bg-white absolute bottom right  mb24 py12 px12 shadow-darken10 round z1 wmax600">
+      <div className="bg-white absolute bottom right mb24 py12 px12 shadow-darken10 round z1 wmax600">
         <div className="mb6">
-          <h2 className="txt-bold txt-m mb6 block">{props.active.description}</h2>
+          <h2 className="txt-bold txt-m mb6 ml-neg3 block">{props.active.description}</h2>
         </div>
+        {legendProps_scale.map(renderScaleInfo)}
         {legendProps_mostRepublican.map(renderData)}
         {legendProps_mostDemocrat.map(renderData)}
         {legendProps_mostPurpleState.map(renderData)}
-        <div className="grid grid--gut12">
-          <div className="col">
-            <div>
-              <span className="txt-s txt-bold block align-middle">Hue Spectrum:</span>
-            </div>
-          </div>
-          <div>
-            <div>
-              {legendProps_mostPurpleState.map(renderScaleInfo)}
-            </div>
-          </div>
-        </div>
       </div>
     </>
   )
