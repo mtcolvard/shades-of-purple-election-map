@@ -12,6 +12,22 @@
   /* height: 50px; */
 }
 
+/* .gridLines {
+  display: grid;
+  grid-template-columns: 140px 260px;
+  /* grip-template-rows: 100%; */
+/* } */ */
+
+.legendScale {
+  float: right;
+  margin-left: 6px;
+  width: 60px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  background-image: linear-gradient(to right, #FF0000 0%,  #800080 50%, #0000FF 100%);
+}
+
 .wrapper {
   display: flex;
   flex-flow: row wrap;

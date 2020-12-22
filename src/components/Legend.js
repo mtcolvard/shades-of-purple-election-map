@@ -9,7 +9,8 @@ const Legend = (props) => {
   '01': 'Alabama','02': 'Alaska', '04': 'Arizona', '05': 'Arkansas', '06': 'California', '08': 'Colorado', '09': 'Connecticut', '10': 'Delaware', '11': 'District of Columbia', '12': 'Florida', '13': 'Georgia', '15': 'Hawaii', '16': 'Idaho', '17': 'Illinois', '18': 'Indiana', '19': 'Iowa', '20': 'Kansas', '21': 'Kentucky', '22': 'Louisiana', '23': 'Maine', '24': 'Maryland', '25': 'Massachusetts', '26': 'Michigan', '27': 'Minnesota', '28': 'Mississippi', '29': 'Missouri', '30': 'Montana', '31': 'Nebraska', '32': 'Nevada', '33': 'New Hampshire', '34': 'New Jersey', '35': 'New Mexico', '36': 'New York', '37': 'North Carolina', '38': 'North Dakota', '39': 'Ohio', '40': 'Oklahoma', '41': 'Oregon', '42': 'Pennsylvania', '44': 'Rhode Island', '45': 'South Carolina', '46': 'South Dakota', '47': 'Tennessee', '48': 'Texas', '49': 'Utah', '50': 'Vermont', '51': 'Virginia', '53': 'Washington', '54': 'West Virginia', '55': 'Wisconsin', '56': 'Wyoming'}
 
   const [statePurpleRating, setStatePurpleRating] = useState({null: null})
-  const [legendProps_mostPartisan, setLegendProps_mostPartisan] = useState([[null]])
+  const [legendProps_mostRepublican, setLegendProps_mostRepublican] = useState([[null]])
+  const [legendProps_mostDemocrat, setLegendProps_mostDemocrat] = useState([[null]])
   const [legendProps_mostPurpleState, setLegendProps_mostPurpleState] = useState([[null]])
 
   const keysOfStateKey = Object.keys(stateKey)
@@ -22,11 +23,11 @@ const Legend = (props) => {
     findMostPolarizedStates()
     console.log('effectfired')
 
-  }, [])
+  }, [props.active])
 
   useEffect(() => {
     findleastPolarizedState()
-  }, [])
+  }, [props.active])
 
   const purpleScale = d3.scaleLinear()
   .domain([0, 100])
@@ -44,10 +45,15 @@ const Legend = (props) => {
     const demPurpleShade = purpleScale(mostPartisanDemColorRatio)
     const repPurpleShade = purpleScale(mostPartisanRepColorRatio)
 
-    let legendProps_mostPartisan = [[mostPartisanRepState, (_.floor(mostPartisanRepStateVotePercent*100)), repPurpleShade], [mostPartisanDemState, (_.floor(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
-    setLegendProps_mostPartisan(legendProps_mostPartisan)
-  }
+    let legendProps_mostRepublican = [[mostPartisanRepState, (_.ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
+    setLegendProps_mostRepublican(legendProps_mostRepublican)
 
+
+    let legendProps_mostDemocrat = [[mostPartisanDemState, (_.ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
+    setLegendProps_mostDemocrat(legendProps_mostDemocrat)
+
+
+  }
 
   const findleastPolarizedState = () => {
     keysOfStateKey.forEach((stateId) => {
@@ -60,82 +66,104 @@ const Legend = (props) => {
     const mostPurpleStateColorRatio = (electionYearDataDem[mostPurpleStateFIPS_id]/(electionYearDataDem[mostPurpleStateFIPS_id]+(electionYearDataRep[mostPurpleStateFIPS_id])))*100
     const mostPurpleStatePurpleShade = purpleScale(mostPurpleStateColorRatio)
 
-    const legendProps_mostPurpleState = [[mostPurpleState, (_.floor(mostPurpleStateVoteDifference*100, 3)), mostPurpleStatePurpleShade]]
+    const legendProps_mostPurpleState = [[mostPurpleState, (_.ceil(mostPurpleStateVoteDifference*100, 2)), mostPurpleStatePurpleShade]]
     setLegendProps_mostPurpleState(legendProps_mostPurpleState)
   }
 
-  const renderPartisan = (item, i) => {
+  const mostRepublican = 'Most Republican'
+  const mostDemocrat = 'Most Democrat'
+  const mostCentrist = 'Most Centrist'
+  const centristPercent = '±${item[1]}%'
+
+  const renderRepData = (item, i) => {
     return (
-            <div key={i} className="txt-s mb2">
-              <span className="mr6 ml6 align-middle">{`${item[0]}`}</span>
-              <span
-                className="fr ml1 w30 h18 inline-block align-middle"
-                style={{ backgroundColor: '#800080' }}
-              />
-              <span
-                className="fr ml6 w30 h18 inline-block align-middle"
-                style={{ backgroundColor: item[2] }}
-              />
-              <span className="fr mr6 align-middle">{`${item[1]}%`}</span>
-            </div>
+    <div key={i} className="txt-s mb2">
+      <div className="grid grid--gut12  flex-parent flex-parent--row-reverse w300">
+        <span
+          className="col w30 h18 inline-block align-middle flex-child"
+          style={{ backgroundColor: '#800080' }}
+        />
+        <span
+          className="col w30 h18 inline-block align-middle flex-child"
+          style={{ backgroundColor: item[2] }}
+        />
+        <span className="col  w36 h18 align-middle flex-child">{`${item[1]}%`}</span>
+        <span className="col fl  align-middle flex-child">{`${item[0]}`}</span>
+        <span className="col txt-s txt-bold inline-block flex-child align-middle">Most Republican:</span>
+
+      </div>
+    </div>
     )
   }
-  const renderPurple = (item, i) => {
+  const renderDemData = (item, i) => {
     return (
-            <div key={i} className="txt-s mb2">
-              <span className="mr6 ml6 align-middle">{`${item[0]}`}</span>
-              <span
-                className="fr ml1 w30 h18 inline-block align-middle"
-                style={{ backgroundColor: '#800080' }}
-              />
-              <span
-                className="fr ml6 w30 h18 inline-block align-middle"
-                style={{ backgroundColor: item[2] }}
-              />
-              <span className="fr mr6 align-middle">{`${item[1]}%`}</span>
-            </div>
+    <div key={i} className="txt-s mb2">
+      <div className="grid grid--gut12  flex-parent flex-parent--row-reverse w300">
+        <span
+          className="col w30 h18 inline-block align-middle flex-child"
+          style={{ backgroundColor: '#800080' }}
+        />
+        <span
+          className="col w30 h18 inline-block align-middle flex-child"
+          style={{ backgroundColor: item[2] }}
+        />
+        <span className="col  w36 h18 align-middle flex-child">{`${item[1]}%`}</span>
+        <span className="col fl  align-middle flex-child">{`${item[0]}`}</span>
+        <span className="col txt-s txt-bold inline-block flex-child align-middle">Most Republican:</span>
+
+      </div>
+    </div>
+    )
+  }
+  const renderCentristData = (item, i) => {
+    return (
+      <div key={i} className="txt-s">
+      <div className="grid grid--gut12 w300">
+        <span className="col txt-s txt-bold block  align-middle">Most Centrist:</span>
+        <span
+          className="col w30 h18 inline-block align-middle flex-child"
+          style={{ backgroundColor: '#800080' }}
+        />
+        <span
+          className="col w30 h18 inline-block align-middle flex-child"
+          style={{ backgroundColor: item[2] }}
+        />
+      <span className="col w36 h18 align-middle flex-child">{`±${item[1]}%`}</span>
+      <span className="col fl align-middle flex-child">{`${item[0]}`}</span>
+        </div>
+    </div>
     )
   }
 
-  // const renderScaleInfo = (item, i) => {
-  //   return (
-  //         <div key={i} className="txt-s mb2">
-  //           <span
-  //             className="fr ml6 w60 h18 inline-block align-middle"
-  //             style={{ backgroundColor: item[2] }}
-  //           />
-  //           </div>
-  //   )
-  // }
-  // <span className="txt-s txt-bold block  align-middle">Polarized </span>
+  const renderScaleInfo = (item, i) => {
+    return (
+          <div key={i} className="txt-s">
+            <span
+              className="legendScale"
+              style={{ backgroundColor: item[2] }}
+            />
+            </div>
+    )
+  }
 
   return (
     <>
-      <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax600">
+      <div className="bg-white absolute bottom right  mb24 py12 px12 shadow-darken10 round z1 wmax600">
         <div className="mb6">
           <h2 className="txt-bold txt-m mb6 block">{props.active.description}</h2>
         </div>
-        <div className="grid grid--gut6 w300 flex-parent--stretch-cross">
-          <div className="col col--4">
-            <div className="h-full">
-              <span className="txt-s txt-bold block  align-middle">Most Polarized:</span>
+        {legendProps_mostRepublican.map(renderRepData)}
+        {legendProps_mostDemocrat.map(renderDemData)}
+        {legendProps_mostPurpleState.map(renderCentristData)}
+        <div className="grid grid--gut12">
+          <div className="col">
+            <div>
+              <span className="txt-s txt-bold block align-middle">Hue Spectrum:</span>
             </div>
           </div>
-          <div className="col col--8">
-            <div className="h-full">
-              {legendProps_mostPartisan.map(renderPartisan)}
-            </div>
-          </div>
-        </div>
-        <div className="grid grid--gut6 flex-parent--stretch-cross">
-          <div className="col col--4">
-            <div className="h-full">
-              <span className="txt-s txt-bold block align-middle">Most Purple:</span>
-            </div>
-          </div>
-          <div className="col col--8">
-            <div className="h-full">
-              {legendProps_mostPurpleState.map(renderPurple)}
+          <div>
+            <div>
+              {legendProps_mostPurpleState.map(renderScaleInfo)}
             </div>
           </div>
         </div>
@@ -145,17 +173,3 @@ const Legend = (props) => {
 }
 
 export default Legend
-
-// <div className="grid grid--gut6 flex-parent--stretch-cross">
-//   <div className="col col--4">
-//     <div className="h-full">
-//       <span className="txt-s txt-bold block align-middle">Scale:</span>
-//     </div>
-//   </div>
-//   <div className="col col--8">
-//     <div className="h-full">
-//       {legendProps_mostPurpleState.map(renderScaleInfo)}
-//     </div>
-//   </div>
-// </div>
-//
