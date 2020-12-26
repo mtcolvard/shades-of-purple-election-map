@@ -4,24 +4,23 @@ import React from "react"
 const Optionsfield = (props) => {
   const renderOptions = (option, i) => {
     return (
-      <label key={i} className="toggle-container">
+      <label key={i} className="toggle-container toggle-group--s">
         <input
           onChange={() =>
             props.changeState(i)
-
         }
           checked={option.property === props.property}
-          name="toggle"
+          name="toggle-small"
           type="radio"
         />
-        <div className="toggle txt-s py3 toggle--active-white">
+        <div className="toggle toggle--s txt-s py3 px3 px12-mm toggle--active-white">
           {option.year}
         </div>
       </label>
     )
   }
   return (
-    <div className="toggle-group absolute top left ml12 mt12 border border--2 border--white bg-white shadow-darken10 z1">
+    <div className={props.classNames}>
       {props.options.map(renderOptions)}
     </div>
   )

@@ -104,7 +104,7 @@ const Legend = (props) => {
         <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
           <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: 'linear-gradient(to right, #FF0000 0%,  #800080 50%, #0000FF 100%)'}}>
           </div>
-          <span className="col ml-neg3 txt-s txt-bold inline-block flex-child">{`${item[0]}`}</span>
+          <span className="col ml-neg3 txt-s txt-bold flex-child">{`${item[0]}`}</span>
         </div>
       </div>
     )
@@ -113,9 +113,9 @@ const Legend = (props) => {
 
   const renderOtherInfo = (item, i) => {
     return(
-      <div className="grid  gridLines grid--gut3 flex-parent flex-parent--row-reverse">
+      <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
         <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: '#FFFFFF'}}></div>
-        <span className="col--2 txt-s  flex-child">{`${item[2]}%`}</span>
+        <span className="col--2 txt-s flex-child">{`${item[2]}%`}</span>
         <span className="col txt-s txt-bold  flex-child"></span>
         <span className="col ml-neg3 txt-s txt-bold inline-block flex-child">{`${item[0]}`}</span>
       </div>
@@ -125,7 +125,7 @@ const Legend = (props) => {
 
   return (
     <>
-      <div className="bg-white absolute bottom right mb24 py12 px12 shadow-darken10 round z1 wmax600">
+      <div className={props.classNames}>
         <div className="mb6">
           <h2 className="txt-bold txt-l mb6 ml-neg3">{props.active.description} </h2>
         </div>
@@ -133,8 +133,9 @@ const Legend = (props) => {
         {legendProps_mostRepublican.map(renderData)}
         {legendProps_mostDemocrat.map(renderData)}
         {legendProps_mostPurpleState.map(renderData)}
-        <br />
+        <div className="pt6">
         {legendProps_otherInfo.map(renderOtherInfo)}
+        </div>
       </div>
     </>
   )

@@ -125,13 +125,13 @@ const Maps = () => {
       container: mapContainerRef.current,
       style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
       center: [-95.4, 37.6],
-      zoom: 2.5
+      zoom: 2.2
     })
 
     map.on('load', () => {
       map.addSource('vectorElectionNumbers', {
         'type': 'vector',
-        'url': 'mapbox://mtcolvard.6ucwbkgb',
+        'url': 'mapbox://mtcolvard.9cx8ngi9',
       })
 
 
@@ -245,29 +245,38 @@ const Maps = () => {
 
 // This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
 
+// <span className='lineOne'> There are no red states or blue states.</span><br /><br />
+// <span className='lineTwo'>Only the United States.</span><br /><br />
+
+
   return (
-    <div>
-      <div className="wrapper">
-        <header className='header'>
-        <h1 className='headline'>
-          <div className='lineOne'> We are not as polarized as the Electoral College map leads us to believe.<br /><br />
-          <span className='lineOne'> There are no red states or blue states.</span><br /><br />
-          <span className='lineTwo'>Only the United States.</span><br /><br />
-          <span className='lineThree'>And everywhere you look, it's shades of purple.</span>
+  <div>
+      <div>
+        <div className="header-field">
+          <div className='headline'>
+            <div className='lineOne'> We are not as polarized as the Electoral College map leads us to believe.<br /><br />
           </div>
-        </h1>
-        </header>
-        <div className='main'>
-        <Legend active={active} />
-        <Optionsfield
-          options={options}
-          property={active.property}
-          changeState={changeState}
-        />
         </div>
       </div>
-      <div ref={mapContainerRef} className='map-container' />
+      <div className='w-full'>
+        <div className="txt-h4 lineThree">Everywhere you look, it's shades of purple.</div>
+      </div>
+        <div ref={mapContainerRef} className='map-container' />
+      <div className="absolute bottom">
+        <div>
+          <Optionsfield
+            options={options}
+            property={active.property}
+            changeState={changeState}
+            classNames={"toggle-group toggle-group--s relative bottom mt12 border border--2 border--white bg-white shadow-darken10 z2"}
+          />
+        </div>
+        <div>
+          <Legend active={active} classNames={"bg-white right-mm z5 px60-mm py12 px24 shadow-darken10 round "} />
+        </div>
+      </div>
     </div>
+  </div>
   )
 }
 
