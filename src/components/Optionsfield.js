@@ -13,7 +13,7 @@ const Optionsfield = (props) => {
           name="toggle-small"
           type="radio"
         />
-        <div className="toggle toggle--s txt-s py3 px3 px12-mm toggle--active-white">
+        <div className="toggle toggle--s txt-s  px12-mm toggle--active-white toggle-padding">
           {option.year}
         </div>
       </label>

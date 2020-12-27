@@ -125,7 +125,7 @@ const Maps = () => {
       container: mapContainerRef.current,
       style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
       center: [-95.4, 37.6],
-      zoom: 2.2
+      zoom: 2.1
     })
 
     map.on('load', () => {
@@ -245,30 +245,35 @@ const Maps = () => {
 
 // This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
 
-// <span className='lineOne'> There are no red states or blue states.</span><br /><br />
 // <span className='lineTwo'>Only the United States.</span><br /><br />
+
+
+// <div className='mb6 align-center w-full bg-white shadow-darken10 round'>
+//   <h4 className='txt-h4 lineThree'> There are no  <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+//   <h4 className="txt-h4 lineThree">By and large, we are all just shades of purple.</h4>
+// </div>
 
 
   return (
   <div>
-      <div>
-        <div className="header-field">
-          <div className='headline'>
-            <div className='lineOne'> We are not as polarized as the Electoral College map leads us to believe.<br /><br />
-          </div>
+    <div>
+        <div className='headline '>
+          <h1 className='lineOne pb6 align-center '> We are not as polarized as the Electoral College Map leads us to believe.
+          </h1>
         </div>
-      </div>
-      <div className='w-full'>
-        <div className="txt-h4 lineThree">Everywhere you look, it's shades of purple.</div>
-      </div>
-        <div ref={mapContainerRef} className='map-container' />
-      <div className="absolute bottom">
+        <div className='mt6'>
+          <h4 className='lineTwo txt-h4 align-center '> There are no </h4>
+          <h4 className='lineTwo txt-h4 align-center '><span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+          <h4 className="lineTwo txt-h4 align-center ">Mostly, we're just shades of purple.</h4>
+        </div>
+      <div ref={mapContainerRef} className='map-container' />
+      <div className="absolute bottom w-full w-auto-mm z5">
         <div>
           <Optionsfield
             options={options}
             property={active.property}
             changeState={changeState}
-            classNames={"toggle-group toggle-group--s relative bottom mt12 border border--2 border--white bg-white shadow-darken10 z2"}
+            classNames={"toggle-group toggle-group--s relative bottom my3 border border--2 border--white bg-white shadow-darken10 z2"}
           />
         </div>
         <div>
