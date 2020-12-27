@@ -23,7 +23,7 @@
 .headline {
   background: linear-gradient(42deg, red 0%, #800080 36%, #800080 63%, blue 100%);
   /* text-padding: 0.5em; */
-  font-size: 2.3em;
+  font-size: 2.5em;
   padding: 0.25em 0.5em 0.25em 0.5em ;
   color: hsl(300, 78%, 18%);
   display: inline-block;
@@ -31,7 +31,7 @@
 }
 
 .lineOne {
-  background-image: linear-gradient(80deg, #FFFFFF 0%, #FFFFFF 7%, #FF0000 33%, #FF0000 35%,  #FFFFFF 45%, #FFFFFF 63%, #0000FF 71%, #0000FF 73%, #FFFFFF 93%, #FFFFFF 100%);
+  background-image: linear-gradient(42deg, #FFFFFF 0%, #FFFFFF 7%, #FF0000 32%,  #FFFFFF 47%, #FFFFFF 53%,  #0000FF 68%, #FFFFFF 93%, #FFFFFF 100%);
   /* background-size: 100%; */
   -webkit-background-clip: text;
   -moz-background-clip: text;

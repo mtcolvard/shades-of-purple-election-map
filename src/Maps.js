@@ -124,7 +124,8 @@ const Maps = () => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
-      center: [-95.4, 37.6],
+      center: [-96.09, 38.83],
+
       zoom: 2.1
     })
 
@@ -254,17 +255,21 @@ const Maps = () => {
 // </div>
 
 
+// <h4 className='lineTwo txt-h4 align-center '> There are no </h4>
+// <h4 className='lineTwo txt-h4 align-center '><span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+
+
   return (
   <div>
     <div>
         <div className='headline '>
-          <h1 className='lineOne pb6 align-center '> We are not as polarized as the Electoral College Map leads us to believe.
+          <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College Map leads us to believe.
           </h1>
         </div>
         <div className='mt6'>
-          <h4 className='lineTwo txt-h4 align-center '> There are no </h4>
-          <h4 className='lineTwo txt-h4 align-center '><span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-          <h4 className="lineTwo txt-h4 align-center ">Mostly, we're just shades of purple.</h4>
+        <h4 className='lineTwo txt-h4 align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+
+          <h4 className="lineTwo txt-h4 align-center ">Mostly, we're shades of purple.</h4>
         </div>
       <div ref={mapContainerRef} className='map-container' />
       <div className="absolute bottom w-full w-auto-mm z5">
