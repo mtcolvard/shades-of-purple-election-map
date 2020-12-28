@@ -23,23 +23,25 @@ body {
   height: 100%;
 }
 
-
 .map-container {
   position: relative;
   /* height: calc(100vh - 215px - var(--height) + 'px'); */
   height: calc(var(--mapContainer) * 1px);
-  height: 100%;
+  /* height: 100%; */
 }
 /* calc(var(--mapContainerHeight) * 1px) */
 
+
 .mapboxgl-canvas-container {
-  height: inherit;
+  height: calc(var(--mapContainer) * 1px);
 }
 
 .mapboxgl-canvas {
   position: relative;
   height: inherit;
 }
+
+
 
 
 .divThree {

@@ -104,10 +104,12 @@ const Maps = () => {
   ]
 
   const mapContainerRef = useRef(null)
+  const activeRef = useRef(options[0])
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
-  const [mapContainer, setMapContainer] = useState(225)
-  const activeRef = useRef(options[0])
+  const [mapContainer, setMapContainer] = useState(null)
+  const [headerHeight, setHeaderHeight] = useState(0)
+
   const tooltipRef = useRef(new mapboxgl.Popup({
     anchor: 'left',
     offset: 15,
@@ -116,10 +118,22 @@ const Maps = () => {
     className: 'my-1'
   }))
 
+  const viewportHeight = document.body.clientHeight
+  const measuredRef = useCallback(node => {
+    if (node !== null) {
+      setHeaderHeight(node.getBoundingClientRect().height)
+    }
+  }, [])
+  const calculatedMapContainerHeight = viewportHeight - headerHeight - 225
+
+  useEffect(() => {
+    setMapContainer(calculatedMapContainerHeight)
+  }, [mapContainer])
+
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
   const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
-
   const bounds = [[-126.121674, 28.199061], [-69.915619,48.365146]]
+
   // Initialize map when component mounts
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -129,7 +143,7 @@ const Maps = () => {
       zoom: 2.1,
       attributionControl: true,
       // trackResize: true,
-      // bounds: bounds,
+      bounds: bounds,
     })
 
     // map.setPadding({left:1, right:1, top:1, bottom:1})
@@ -148,28 +162,16 @@ const Maps = () => {
         'url': 'mapbox://mtcolvard.9cx8ngi9',
       })
 
-
-   //    map.addLayer({
-   //     'id': 'state-lines',
-   //     'type': 'line',
-   //     'source': 'vectorElectionNumbers',
-   //     'source-layer': 'elections_vector_and_data',
-   //     'layout': {
-   //         'line-join': 'round',
-   //         'line-cap': 'round'
-   //     },
-   //     'paint': {
-   //         'line-color': ['feature-state', '#D8CAC1'],
-   //         'line-width': ['feature-state', '1']
-   //     }
-   // })
-
     map.addLayer({
      'id': 'vector-fill-layer',
      'type': 'fill',
      'source': 'vectorElectionNumbers',
      'source-layer': 'elections_vector_and_data',
-   })
+    })
+
+    // map.onMapLoaded(event) {
+    // event.map.resize()
+    // }
 
     map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
@@ -239,6 +241,18 @@ const Maps = () => {
     return () => map.remove()
   }, [])
 
+  // useEffect(() => {
+  //   checkSize()
+  // }, [mapContainer])
+  //
+  // const checkSize = () => {
+  //   if (map) {
+  //     if (mapContainer !== 225) {
+  //       map.resize()
+  //     }
+  //   }
+  // }
+
   useEffect(() => {
     paint()
   }, [active])
@@ -257,36 +271,23 @@ const Maps = () => {
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
   }
 
-    const [headerHeight, setHeaderHeight] = useState(0)
-    const measuredRef = useCallback(node => {
-      if (node !== null) {
-        setHeaderHeight(node.getBoundingClientRect().height)
-      }
-    }, [])
-
-    const viewportHeight = document.body.clientHeight
-    const mapContainerHeight = viewportHeight - headerHeight - 215
-
-    useEffect(() => {
-      setMapContainer(mapContainerHeight)
-    }, [mapContainer])
 
     console.log('headerHeight', headerHeight)
     console.log('viewportHeight', viewportHeight)
-    console.log('mapContainerHeight', mapContainerHeight)
+    console.log('calculatedMapContainerHeight', calculatedMapContainerHeight)
     console.log('mapContainer', mapContainer)
 
     // <div ref={mapContainerRef} className="map" style={{height: 100 + 'vh' - 215 + 'px' - height + 'px'}} />
     // let mapboxglCanvas = document.querySelector('Canvas')
     //
     // useEffect(() => {
-    //   mapCanvasSizeRef.current = mapContainerHeight
+    //   mapCanvasSizeRef.current = calculatedMapContainerHeight
     //   let mapboxglCanvas = document.getElementsByClassName('mapboxgl-canvas')
     //   // let mapboxglCanvas = document.getElementsByClassName('map-container')
-    //   mapboxglCanvas.style.setProperty('--mapContainerHeight', mapCanvasSizeRef)
+    //   mapboxglCanvas.style.setProperty('--calculatedMapContainerHeight', mapCanvasSizeRef)
     // })
 
-    // <div ref={mapContainerRef} className="map-container" style={{height: mapContainerHeight}} />
+    // <div ref={mapContainerRef} className="map-container" style={{height: calculatedMapContainerHeight}} />
 
 
   return (
