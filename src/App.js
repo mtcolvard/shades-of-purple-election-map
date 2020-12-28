@@ -3,7 +3,7 @@ import Maps from './Maps'
 
 function App() {
   return (
-    <div>
+    <div className="divZero">
       <Maps />
     </div>
   )

@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useEffect, useState } from 'react'
+import React, { useCallback, useRef, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import axios from 'axios'
@@ -106,6 +106,7 @@ const Maps = () => {
   const mapContainerRef = useRef(null)
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
+  const [mapContainer, setMapContainer] = useState(225)
   const activeRef = useRef(options[0])
   const tooltipRef = useRef(new mapboxgl.Popup({
     anchor: 'left',
@@ -115,19 +116,31 @@ const Maps = () => {
     className: 'my-1'
   }))
 
-
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
   const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
 
+  const bounds = [[-126.121674, 28.199061], [-69.915619,48.365146]]
   // Initialize map when component mounts
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
       center: [-96.09, 38.83],
-
-      zoom: 2.1
+      zoom: 2.1,
+      attributionControl: true,
+      // trackResize: true,
+      // bounds: bounds,
     })
+
+    // map.setPadding({left:1, right:1, top:1, bottom:1})
+    map.scrollZoom.disable()
+
+    map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}))
+    // const containerForBounds = map.cameraForBounds(bounds)
+    // map.setZoom(containerForBounds[1])
+
+    // map.resize()
+    // map.setMaxBounds(bounds)
 
     map.on('load', () => {
       map.addSource('vectorElectionNumbers', {
@@ -244,46 +257,64 @@ const Maps = () => {
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
   }
 
-// This is a map that show the votes of the American people.  The shades of the map are a mix of primary red and primary blue depending on the proportion of votes cast in each state. ..how each state voted
+    const [headerHeight, setHeaderHeight] = useState(0)
+    const measuredRef = useCallback(node => {
+      if (node !== null) {
+        setHeaderHeight(node.getBoundingClientRect().height)
+      }
+    }, [])
 
-// <span className='lineTwo'>Only the United States.</span><br /><br />
+    const viewportHeight = document.body.clientHeight
+    const mapContainerHeight = viewportHeight - headerHeight - 215
 
+    useEffect(() => {
+      setMapContainer(mapContainerHeight)
+    }, [mapContainer])
 
-// <div className='mb6 align-center w-full bg-white shadow-darken10 round'>
-//   <h4 className='txt-h4 lineThree'> There are no  <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-//   <h4 className="txt-h4 lineThree">By and large, we are all just shades of purple.</h4>
-// </div>
+    console.log('headerHeight', headerHeight)
+    console.log('viewportHeight', viewportHeight)
+    console.log('mapContainerHeight', mapContainerHeight)
+    console.log('mapContainer', mapContainer)
 
+    // <div ref={mapContainerRef} className="map" style={{height: 100 + 'vh' - 215 + 'px' - height + 'px'}} />
+    // let mapboxglCanvas = document.querySelector('Canvas')
+    //
+    // useEffect(() => {
+    //   mapCanvasSizeRef.current = mapContainerHeight
+    //   let mapboxglCanvas = document.getElementsByClassName('mapboxgl-canvas')
+    //   // let mapboxglCanvas = document.getElementsByClassName('map-container')
+    //   mapboxglCanvas.style.setProperty('--mapContainerHeight', mapCanvasSizeRef)
+    // })
 
-// <h4 className='lineTwo txt-h4 align-center '> There are no </h4>
-// <h4 className='lineTwo txt-h4 align-center '><span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+    // <div ref={mapContainerRef} className="map-container" style={{height: mapContainerHeight}} />
 
 
   return (
-  <div>
-    <div>
-        <div className='headline '>
-          <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College Map leads us to believe.
-          </h1>
-        </div>
-        <div className='mt6'>
-        <h4 className='lineTwo txt-h4 align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-
-          <h4 className="lineTwo txt-h4 align-center ">Mostly, we're shades of purple.</h4>
-        </div>
-      <div ref={mapContainerRef} className='map-container' />
-      <div className="absolute bottom w-full w-auto-mm z5">
-        <div>
-          <Optionsfield
-            options={options}
-            property={active.property}
-            changeState={changeState}
-            classNames={"toggle-group toggle-group--s relative bottom my3 border border--2 border--white bg-white shadow-darken10 z2"}
-          />
-        </div>
-        <div>
-          <Legend active={active} classNames={"bg-white right-mm z5 px60-mm py12 px24 shadow-darken10 round "} />
-        </div>
+  <div className="divOne">
+    <div className="divTwo">
+      <div ref={measuredRef}>
+      <div  className='headline '>
+        <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
+        </h1>
+      </div>
+      <div className='mt6'>
+        <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+        <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
+      </div>
+      </div>
+      <div ref={mapContainerRef} className="map-container" style={{height: mapContainer}} />
+        <div className="absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
+          <div>
+            <Optionsfield
+              options={options}
+              property={active.property}
+              changeState={changeState}
+              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z2"}
+            />
+          </div>
+          <div>
+            <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
+          </div>
       </div>
     </div>
   </div>

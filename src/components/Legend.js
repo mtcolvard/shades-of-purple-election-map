@@ -19,11 +19,6 @@ const Legend = (props) => {
   const electionYearVoterTurnout = _.ceil(electionData[props.active.participation]['155']*100, 3).toPrecision(3)
   const protestVote = _.ceil(electionData[props.active.protest_vote]['155']*100, 2).toPrecision(3)
 
-
-  console.log('protestVote', protestVote)
-
-
-  console.log('electionYearVoterTurnout', electionYearVoterTurnout)
   useEffect(() => {
     findMostPolarizedStates()
   }, [props.active])
