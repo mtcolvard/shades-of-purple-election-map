@@ -14,6 +14,7 @@ var d3 = require('d3')
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
 
+
 const Maps = () => {
 
   const options = [
@@ -127,27 +128,19 @@ const Maps = () => {
   const mapContainerWidth = window.innerWidth
   const [mapContainerHeight, setMapContainerHeight] = useState(null)
   const viewportHeight = document.body.clientHeight
-  const calculatedMapContainerHeight = viewportHeight - headerHeight - 215
+  const calculatedMapContainerHeight = viewportHeight - headerHeight - 190
   console.log('mapContainerWidth', mapContainerWidth)
 
   useEffect(() => {
     setMapContainerHeight(calculatedMapContainerHeight)
-  }, [mapContainerHeight])
+    setMapCanvasHeight(calculatedMapContainerHeight)
+    updateCSSVariables()
+  }, [calculatedMapContainerHeight])
 
-  useEffect(() => {
-    setCSSVariables()
-  }, [])
-
-  // const [canvas, setCanvas] = useState(230)
-  // setCanvas(canvas)
-
-
-  const mapCanvasHeight = null
-  const mapCanvasWidth = null
-  console.log('mapCanvasWidth', mapCanvasWidth)
-  console.log('mapCanvasHeight', mapCanvasHeight)
-  // const mapCanvasWidth = 375
-  const setCSSVariables = () => {
+  const [mapCanvasHeight, setMapCanvasHeight] = useState(mapContainerHeight)
+  const [mapCanvasWidth, setMapCanvasWidth] = useState(mapContainerWidth)
+  const [mapVisibility, setMapVisibility] = useState('false')
+  const updateCSSVariables = () => {
       document.documentElement.style.setProperty(`--${mapCanvasHeight}`, mapContainerHeight)
       document.documentElement.style.setProperty(`--${mapCanvasWidth}`, mapContainerWidth)
       // element.style.setProperty(`--${mapCanvasHeight}`, mapContainerHeight)
@@ -160,22 +153,14 @@ const Maps = () => {
   const bounds = [[-122.121674, 21.199061], [-69.915619,48.365146]]
 
   const [canvas, setCanvas] = useState(null)
+  const [inspectMapContainer, setInspectMapContainer] = useState(null)
   const [gl, setGL] = useState(null)
 
   useEffect(() => {
     setCanvas(document.querySelector('.mapboxgl-canvas'))
+    setInspectMapContainer(document.querySelector('.map-container'))
     // setGL(canvas.getContext("webgl"))
   }, [])
-  const resizeCanvasToDisplaySize = (canvas) => {
-    const displayHeight = mapContainerHeight
-    const displayWidth = mapContainerWidth
-    const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight
-    if (needResize) {
-      canvas.width = displayWidth
-      canvas.height = displayHeight
-    }
-    return needResize
-  }
 
 
   // Initialize map when component mounts
@@ -195,7 +180,7 @@ const Maps = () => {
       // map.setPadding({left:1, right:1, top:1, bottom:1})
       map.scrollZoom.disable()
 
-      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}))
+      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}), 'top-left')
       // const containerForBounds = map.cameraForBounds(bounds)
       // map.setZoom(containerForBounds[1])
 
@@ -287,7 +272,7 @@ const Maps = () => {
     return () => map.remove()
   // }
     // Clean up on unmount
-  }, [])
+  }, [mapCanvasHeight])
 
 
 
@@ -307,7 +292,63 @@ const Maps = () => {
   // const p0 = [0, 222.75]
   // const p1 = [375, 543]
   // map.fitScreenCoordinates(p0, p1, 0)
+  console.log('inspectMapContainer', inspectMapContainer)
+  console.log('canvas', canvas)
+  console.log('headerHeight', headerHeight)
+  console.log('viewportHeight', viewportHeight)
+  console.log('calculatedMapContainerHeight', calculatedMapContainerHeight)
+  console.log('mapContainerHeight', mapContainerHeight)
+  console.log('mapCanvasWidth', mapCanvasWidth)
+  console.log('mapCanvasHeight', mapCanvasHeight)
+  console.log('break', 0)
 
+
+  // const mapVisibilityS = getComputedStyle('.map-container').getPropertyValue('--mapVisibility')
+  // console.log('mapVisibilityS', mapVisibilityS)
+
+  useEffect(() => {
+    targetMapVisibility()
+  }, [calculatedMapContainerHeight])
+
+  // const [mapContainer, setMapContainer] = useState(document.querySelector('.map-container'))
+  const targetMapVisibility = () => {
+    const mapContainer = document.querySelector('.map-container')
+    setMapVisibility('true')
+    // document.documentElement.style.setProperty(`--${mapVisibility}`, mapVisibility)
+    mapContainer.style.setProperty(`--${mapVisibility}`, mapVisibility)
+    resizeCanvasToDisplaySize()
+  }
+
+
+  const resizeCanvasToDisplaySize = () => {
+    if (map) {
+    //   map.on('idle', () => {
+    //     map.getCanvas().style.
+    //   })
+      let mapDiv = document.querySelector('.map-container')
+      if (mapDiv.style.visibility === true) {
+        map.resize()
+        map.on('resize', () => {
+          console.log('a resize event has occured')
+        })
+      }
+    }
+  }
+
+
+    // if (map) {
+    //   const displayHeight = mapContainerHeight
+    //   const displayWidth = mapContainerWidth
+    //   const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight
+    //   if (needResize) {
+    //     // canvas.width = displayWidth
+    //     // canvas.height = displayHeight
+    //     updateCSSVariables()
+    //     map.resize()
+    //   }
+    //   return needResize
+    // }
+  // }
 
   useEffect(() => {
     paint()
@@ -327,15 +368,6 @@ const Maps = () => {
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
   }
 
-  console.log('canvas', canvas)
-
-
-    console.log('headerHeight', headerHeight)
-    console.log('viewportHeight', viewportHeight)
-    console.log('calculatedMapContainerHeight', calculatedMapContainerHeight)
-    console.log('mapContainerHeight', mapContainerHeight)
-
-    console.log('break', 0)
 
     // <div ref={mapContainerRef} className="map" style={{height: 100 + 'vh' - 215 + 'px' - height + 'px'}} />
     //

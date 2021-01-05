@@ -4,12 +4,15 @@
 
 
 /* :root {
-  --mapCanvasHeight: 250px;
-  --mapCanvasWidth: 500px;
+  --mapCanvasHeight: 215px;
+  --mapVisibility: 'false';
 } */
 
 html {
   height: 100%;
+  /* --mapCanvasHeight: 215px;
+  --mapVisibility: 'false'; */
+
 }
 body {
   height: 100%;
@@ -35,8 +38,11 @@ body {
 }
 
 .map-container {
+  /* visibility: 'false'; */
+  visibility: var(--mapVisibility);
   position: relative;
   height: calc(var(--mapCanvasHeight) * 1px);
+  /* height: 230px; */
   /* height: 100%; */
   width: 100%;
 
@@ -64,7 +70,7 @@ body {
   /* height: 230px; */
   height: calc(var(--mapCanvasHeight) * 1px);
   width: 100%;
-  display: block;
+  /* display: block; */
   /* height: inherit; */
 
   /* width: 66%; */
