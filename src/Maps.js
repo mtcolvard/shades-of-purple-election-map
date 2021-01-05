@@ -108,6 +108,23 @@ const Maps = () => {
   const activeRef = useRef(options[0])
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
+  const [mapCounter, setMapCounter] = useState(0)
+  const [mapTrue, setMapTrue] = useState(false)
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const measureHeaderRef = useCallback(node => {
+    if (node !== null) {
+      setHeaderHeight(node.getBoundingClientRect().height)
+    }
+  }, [])
+  const mapContainerWidth = window.innerWidth
+  const [mapCanvasHeight, setMapCanvasHeight] = useState(null)
+  const viewportHeight = document.body.clientHeight
+  const calculatedMapContainerHeight = viewportHeight - headerHeight - 215
+
+
+  const updateCSSVariables = () => {
+      document.documentElement.style.setProperty(`--${mapCanvasHeight}`, mapCanvasHeight)
+    }
 
   const tooltipRef = useRef(new mapboxgl.Popup({
     anchor: 'left',
@@ -117,70 +134,54 @@ const Maps = () => {
     className: 'my-1'
   }))
 
-  const [headerHeight, setHeaderHeight] = useState(0)
-  const measureHeaderRef = useCallback(node => {
-    if (node !== null) {
-      setHeaderHeight(node.getBoundingClientRect().height)
-    }
-  }, [])
-
-  // const [mapContainerWidth, setMapContainerWidth] = useState(null)
-  const mapContainerWidth = window.innerWidth
-  const [mapContainerHeight, setMapContainerHeight] = useState(null)
-  const viewportHeight = document.body.clientHeight
-  const calculatedMapContainerHeight = viewportHeight - headerHeight - 190
-  console.log('mapContainerWidth', mapContainerWidth)
-
-  useEffect(() => {
-    setMapContainerHeight(calculatedMapContainerHeight)
-    setMapCanvasHeight(calculatedMapContainerHeight)
-    updateCSSVariables()
-  }, [calculatedMapContainerHeight])
-
-  const [mapCanvasHeight, setMapCanvasHeight] = useState(mapContainerHeight)
-  const [mapCanvasWidth, setMapCanvasWidth] = useState(mapContainerWidth)
-  const [mapVisibility, setMapVisibility] = useState('false')
-  const updateCSSVariables = () => {
-      document.documentElement.style.setProperty(`--${mapCanvasHeight}`, mapContainerHeight)
-      document.documentElement.style.setProperty(`--${mapCanvasWidth}`, mapContainerWidth)
-      // element.style.setProperty(`--${mapCanvasHeight}`, mapContainerHeight)
-  //     document.documentElement.style.setProperty(`--${mapCanvasWidth}`, viewportWidth)
-    }
-
-
   const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
   const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
   const bounds = [[-122.121674, 21.199061], [-69.915619,48.365146]]
 
-  const [canvas, setCanvas] = useState(null)
-  const [inspectMapContainer, setInspectMapContainer] = useState(null)
-  const [gl, setGL] = useState(null)
-
   useEffect(() => {
-    setCanvas(document.querySelector('.mapboxgl-canvas'))
-    setInspectMapContainer(document.querySelector('.map-container'))
-    // setGL(canvas.getContext("webgl"))
-  }, [])
+    if (mapCounter <= 3) {
+      setMapCanvasHeight(calculatedMapContainerHeight)
+      updateCSSVariables()
+      setMapCounter(mapCounter + 1)
+      console.log('mapCounter', mapCounter)
+      console.log('mapCanvasHeight', mapCanvasHeight)
+      console.log('map container ref', mapContainerRef.current)
+    }
+  })
 
+  // useEffect(() => {
+  //   if (mapCounter < 2) {
+  //     setMapTrue(false)
+  //   } else {
+  //     setMapTrue(true)
+  //     console.log('mapCounter', mapCounter)
+  //   }
+  // })
 
+  // useEffect(() => {
+    // if (mapCounter === 3) {
+      // initializeMap()
+    // }
+  // })
   // Initialize map when component mounts
-  useLayoutEffect(() => {
-    // if (mapContainerHeight) {
+  // const initializeMap = () => {
+  useEffect(() => {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
         center: [-96.09, 38.83],
         zoom: 2.1,
         attributionControl: true,
-        // trackResize: true,
+        trackResize: true,
         bounds: bounds,
-        fitBoundsOptions: { padding: {left:15, right:15, top:15, bottom:0}}
+        fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}},
+        // maxBounds: bounds
       })
 
       // map.setPadding({left:1, right:1, top:1, bottom:1})
       map.scrollZoom.disable()
 
-      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}), 'top-left')
+      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}), 'bottom-left')
       // const containerForBounds = map.cameraForBounds(bounds)
       // map.setZoom(containerForBounds[1])
 
@@ -201,17 +202,11 @@ const Maps = () => {
        'source-layer': 'elections_vector_and_data',
       })
 
-      // map.onMapLoaded(event) {
-      // event.map.resize()
-      // }
-
       map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
       map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
-
       map.on('mouseenter', 'vector-fill-layer', (e) => {
           map.getCanvas().style.cursor = 'pointer'
         })
-
       map.on('mouseleave', 'vector-fill-layer', (e) => {
         map.getCanvas().style.cursor = ''
       })
@@ -228,7 +223,6 @@ const Maps = () => {
               hover: false
             })
           }
-
           hoveredStateId = e.features[0].id
           map.setFeatureState({
             source: 'vectorElectionNumbers',
@@ -239,7 +233,6 @@ const Maps = () => {
           })
         }
       })
-
       map.on('mouseleave', 'vector-fill-layer', () => {
         if (hoveredStateId) {
           map.setFeatureState({
@@ -254,7 +247,6 @@ const Maps = () => {
           }
         hoveredStateId = null
       })
-
       map.on('mousemove', (e) => {
         const features = map.queryRenderedFeatures(e.point)
         if (features.length) {
@@ -267,88 +259,25 @@ const Maps = () => {
             .addTo(map)
           }
         })
+      // map.once('load', () => {
+      //   map.resize()
+      //   console.log('A resize event has occured')
+      // })
       setMap(map)
     })
     return () => map.remove()
-  // }
     // Clean up on unmount
-  }, [mapCanvasHeight])
-
-
+  }, [])
 
 
   // useEffect(() => {
-  //   checkSize()
-  // }, [mapContainerHeight])
-  //
-  // const checkSize = () => {
-  //   if (map) {
-  //     if (mapContainerHeight !== 225) {
+  //   if (map){
+  //     map.once('idle', () => {
   //       map.resize()
-  //     }
+  //     })
+  //     console.log('A resize event has occured')
   //   }
-  // }
-
-  // const p0 = [0, 222.75]
-  // const p1 = [375, 543]
-  // map.fitScreenCoordinates(p0, p1, 0)
-  console.log('inspectMapContainer', inspectMapContainer)
-  console.log('canvas', canvas)
-  console.log('headerHeight', headerHeight)
-  console.log('viewportHeight', viewportHeight)
-  console.log('calculatedMapContainerHeight', calculatedMapContainerHeight)
-  console.log('mapContainerHeight', mapContainerHeight)
-  console.log('mapCanvasWidth', mapCanvasWidth)
-  console.log('mapCanvasHeight', mapCanvasHeight)
-  console.log('break', 0)
-
-
-  // const mapVisibilityS = getComputedStyle('.map-container').getPropertyValue('--mapVisibility')
-  // console.log('mapVisibilityS', mapVisibilityS)
-
-  useEffect(() => {
-    targetMapVisibility()
-  }, [calculatedMapContainerHeight])
-
-  // const [mapContainer, setMapContainer] = useState(document.querySelector('.map-container'))
-  const targetMapVisibility = () => {
-    const mapContainer = document.querySelector('.map-container')
-    setMapVisibility('true')
-    // document.documentElement.style.setProperty(`--${mapVisibility}`, mapVisibility)
-    mapContainer.style.setProperty(`--${mapVisibility}`, mapVisibility)
-    resizeCanvasToDisplaySize()
-  }
-
-
-  const resizeCanvasToDisplaySize = () => {
-    if (map) {
-    //   map.on('idle', () => {
-    //     map.getCanvas().style.
-    //   })
-      let mapDiv = document.querySelector('.map-container')
-      if (mapDiv.style.visibility === true) {
-        map.resize()
-        map.on('resize', () => {
-          console.log('a resize event has occured')
-        })
-      }
-    }
-  }
-
-
-    // if (map) {
-    //   const displayHeight = mapContainerHeight
-    //   const displayWidth = mapContainerWidth
-    //   const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight
-    //   if (needResize) {
-    //     // canvas.width = displayWidth
-    //     // canvas.height = displayHeight
-    //     updateCSSVariables()
-    //     map.resize()
-    //   }
-    //   return needResize
-    // }
-  // }
+  // }, [mapCanvasHeight])
 
   useEffect(() => {
     paint()
@@ -368,36 +297,23 @@ const Maps = () => {
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
   }
 
-
-    // <div ref={mapContainerRef} className="map" style={{height: 100 + 'vh' - 215 + 'px' - height + 'px'}} />
-    //
-    // useEffect(() => {
-    //   mapCanvasSizeRef.current = calculatedMapContainerHeight
-    //   let mapboxglCanvas = document.getElementsByClassName('mapboxgl-canvas')
-    //   // let mapboxglCanvas = document.getElementsByClassName('map-container')
-    //   mapboxglCanvas.style.setProperty('--calculatedMapContainerHeight', mapCanvasSizeRef)
-    // })
-
-    // <div ref={mapContainerRef} className="map-container" style={{height: calculatedMapContainerHeight}} />
-
-    // <div ref={mapContainerRef} className="map-container" style={{height: mapContainerHeight}} />
-
   return (
-  <div className="divOne">
-    <div className="divTwo">
-      <div ref={measureHeaderRef}>
-        <div  className='headline '>
-          <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
-          </h1>
+    <div className="divOne">
+      <div className="divTwo">
+        <div ref={measureHeaderRef}>
+          <div  className='headline '>
+            <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
+            </h1>
+          </div>
+          <div className='mt6'>
+            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
+          </div>
         </div>
-        <div className='mt6'>
-          <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-          <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
-        </div>
+        <div className="flex-parent flex-parent--column">
+        <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
       </div>
-      <div ref={mapContainerRef} className="map-container" />
-
-        <div className="absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
+        <div className="flex-child absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
           <div>
             <Optionsfield
               options={options}
@@ -409,10 +325,12 @@ const Maps = () => {
           <div>
             <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
           </div>
+        </div>
       </div>
     </div>
-  </div>
   )
 }
 
 export default Maps
+
+// absolute bottom right-mm
