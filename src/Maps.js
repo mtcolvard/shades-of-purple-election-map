@@ -8,8 +8,6 @@ import Tooltip from './components/Tooltip'
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY
 
-
-
 const Maps = () => {
 
   const options = [
@@ -105,9 +103,9 @@ const Maps = () => {
   const [map, setMap] = useState(null)
 
   const tooltipRef = useRef(new mapboxgl.Popup({
-    anchor: 'left',
+    // anchor: 'left',
     offset: 15,
-    closeButton: false,
+    closeButton: true,
     closeOnClick: false,
     className: 'my-1'
   }))
@@ -125,12 +123,14 @@ const Maps = () => {
         zoom: 2.1,
         attributionControl: true,
         trackResize: true,
+        doubleClickZoom: false,
+        scrollZoom: false,
         bounds: bounds,
         fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}},
       })
-      map.scrollZoom.disable()
+      // map.scrollZoom.disable()
 
-      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}), 'bottom-left')
+      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org'], compact: false}), 'bottom-left')
 
       map.on('load', () => {
         map.addSource('vectorElectionNumbers', {
@@ -195,6 +195,7 @@ const Maps = () => {
         if (features.length) {
           const feature = features[0]
           const tooltipNode = document.createElement('div')
+          // tooltipNode.setAttribute('style', 'margin-right: -24px;')
           ReactDOM.render(<Tooltip feature={feature} active={activeRef}/>, tooltipNode)
           tooltipRef.current
             .setLngLat(e.lngLat)
@@ -228,7 +229,7 @@ const Maps = () => {
   return (
     <div className="divOne">
       <div className="divTwo">
-          <div  className='headline '>
+          <div  className='headline'>
             <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
             </h1>
           </div>
@@ -245,7 +246,7 @@ const Maps = () => {
               options={options}
               property={active.property}
               changeState={changeState}
-              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z2"}
+              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z5"}
             />
           </div>
           <div>

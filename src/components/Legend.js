@@ -110,11 +110,13 @@ const Legend = (props) => {
 
   const renderOtherInfo = (item, i) => {
     return(
-      <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
-        <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: '#FFFFFF'}}></div>
-        <span className="col--2 txt-s flex-child">{`${item[2]}%`}</span>
-        <span className="col txt-s txt-bold  flex-child"></span>
-        <span className="col ml-neg3 txt-s txt-bold inline-block flex-child">{`${item[0]}`}</span>
+      <div key={i} className="txt-s mb2">
+        <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
+          <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: '#FFFFFF'}}></div>
+          <span className="col--2 txt-s flex-child">{`${item[2]}%`}</span>
+          <span className="col txt-s txt-bold  flex-child"></span>
+          <span className="col ml-neg3 txt-s txt-bold inline-block flex-child">{`${item[0]}`}</span>
+        </div>
       </div>
 
     )
