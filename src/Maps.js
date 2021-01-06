@@ -6,8 +6,8 @@ import Optionsfield from './components/Optionsfield'
 import Legend from './components/Legend'
 import Tooltip from './components/Tooltip'
 
-mapboxgl.accessToken =
-  'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY
+
 
 
 const Maps = () => {
