@@ -124,16 +124,11 @@ const Maps = () => {
         attributionControl: true,
         trackResize: true,
         doubleClickZoom: false,
-        touchZoomRotate: false,
-        dragPan: false,
-        dragRotate: false,
-        dragPitch: false,
         scrollZoom: false,
         bounds: bounds,
         fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}},
       })
       // map.scrollZoom.disable()
-      map.touchPitch.disable()
 
       map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org'], compact: false}), 'bottom-left')
 
@@ -238,30 +233,24 @@ const Maps = () => {
             <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
             </h1>
           </div>
+          <div className='mt6'>
+            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
+          </div>
+        <div className="flex-parent flex-parent--column">
+        <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
+      </div>
+        <div className="flex-child absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
           <div>
-            <h4 className='lineTwo py3 txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-            <h4 className="lineThree mt3 pb3 txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
+            <Optionsfield
+              options={options}
+              property={active.property}
+              changeState={changeState}
+              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z5"}
+            />
           </div>
-        <div className="flex-parent flex-parent--column mx60-mm">
-          <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
-        </div>
-        <div className="flex-child  mx30-mm">
-          <div className=" absolute bottom w-full-mm  z5 bg-white shadow-darken10 round mb12-ml ">
-            <div className="left right align-center">
-              <Optionsfield
-                options={options}
-                property={active.property}
-                changeState={changeState}
-                classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z5 "}
-              />
-            </div>
-            <div className="grid">
-              <div className="col wmax0 wmax-full-mm">
-              </div>
-              <div className="col">
-                <Legend active={active} classNames={" right-mm z5 py12 px24"} />
-                </div>
-          </div>
+          <div>
+            <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
           </div>
         </div>
       </div>
@@ -270,13 +259,3 @@ const Maps = () => {
 }
 
 export default Maps
-
-// <div className="flex-parent">
-//   <div className="flex-child--grow wmax0 wmax-full-mm">
-//   </div>
-//   <div className="flex-child--no-shrink">
-//     <Legend active={active} classNames={" right-mm z5 py12 px24 "} />
-//   </div>
-//   <div className="flex-child--grow wmax0 wmax-full-mm">
-//   </div>
-// </div>
