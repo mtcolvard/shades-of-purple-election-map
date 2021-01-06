@@ -1,7 +1,11 @@
 import React, { useState, useEffect} from 'react'
 import electionData from '../data_for_legend_calculations_minus_dc.json'
-import _ from 'lodash'
-var d3 = require('d3')
+import ceil from 'lodash/ceil'
+import maxBy from 'lodash/maxBy'
+import minBy from 'lodash/minBy'
+import keys from 'lodash/keys'
+import values from 'lodash/values'
+import { scaleLinear } from 'd3-scale'
 
 const Legend = (props) => {
   const stateKey = {
@@ -16,8 +20,8 @@ const Legend = (props) => {
   const keysOfStateKey = Object.keys(stateKey)
   const electionYearDataDem = electionData[props.active.dem_data]
   const electionYearDataRep = electionData[props.active.rep_data]
-  const electionYearVoterTurnout = _.ceil(electionData[props.active.participation]['155']*100, 3).toPrecision(3)
-  const protestVote = _.ceil(electionData[props.active.protest_vote]['155']*100, 2).toPrecision(3)
+  const electionYearVoterTurnout = ceil(electionData[props.active.participation]['155']*100, 3).toPrecision(3)
+  const protestVote = ceil(electionData[props.active.protest_vote]['155']*100, 2).toPrecision(3)
 
   useEffect(() => {
     findMostPolarizedStates()
@@ -27,15 +31,13 @@ const Legend = (props) => {
     findleastPolarizedState()
   }, [props.active])
 
-
-
-  const purpleScale = d3.scaleLinear()
+  const purpleScale = scaleLinear()
   .domain([0, 100])
   .range(['#FF0000', '#0000FF'])
 
   const findMostPolarizedStates = () => {
-    const mostPartisanDemFIPS_id = _.maxBy(_.keys(electionYearDataDem), o => electionYearDataDem[o])
-    const mostPartisanRepFIPS_id = _.maxBy(_.keys(electionYearDataRep), o => electionYearDataRep[o])
+    const mostPartisanDemFIPS_id = maxBy(keys(electionYearDataDem), o => electionYearDataDem[o])
+    const mostPartisanRepFIPS_id = maxBy(keys(electionYearDataRep), o => electionYearDataRep[o])
     const mostPartisanDemState = stateKey[mostPartisanDemFIPS_id]
     const mostPartisanRepState = stateKey[mostPartisanRepFIPS_id]
     const mostPartisanDemStateVotePercent = electionYearDataDem[mostPartisanDemFIPS_id]
@@ -45,10 +47,10 @@ const Legend = (props) => {
     const demPurpleShade = purpleScale(mostPartisanDemColorRatio)
     const repPurpleShade = purpleScale(mostPartisanRepColorRatio)
 
-    const legendProps_mostRepublican = [['Most Republican: ', mostPartisanRepState, (_.ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
+    const legendProps_mostRepublican = [['Most Republican: ', mostPartisanRepState, (ceil(mostPartisanRepStateVotePercent*100)), repPurpleShade]]
     setLegendProps_mostRepublican(legendProps_mostRepublican)
 
-    const legendProps_mostDemocrat = [['Most Democrat: ', mostPartisanDemState, (_.ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
+    const legendProps_mostDemocrat = [['Most Democrat: ', mostPartisanDemState, (ceil(mostPartisanDemStateVotePercent*100)), demPurpleShade]]
     setLegendProps_mostDemocrat(legendProps_mostDemocrat)
   }
 
@@ -56,20 +58,20 @@ const Legend = (props) => {
     keysOfStateKey.forEach((stateId) => {
       statePurpleRating[stateId] = Math.abs(electionYearDataDem[stateId] - electionYearDataRep[stateId]).toFixed(6)
     })
-    const lowestPurpleValue = _.minBy(_.values(statePurpleRating))
+    const lowestPurpleValue = minBy(values(statePurpleRating))
     const mostPurpleStateFIPS_id = Object.keys(statePurpleRating).find(mostPurpleStateFIPS_id => statePurpleRating[mostPurpleStateFIPS_id] === lowestPurpleValue)
     const mostPurpleState = stateKey[mostPurpleStateFIPS_id]
     const mostPurpleStateVoteDifference = Math.abs(electionYearDataDem[mostPurpleStateFIPS_id]-electionYearDataRep[mostPurpleStateFIPS_id])
     const mostPurpleStateColorRatio = (electionYearDataDem[mostPurpleStateFIPS_id]/(electionYearDataDem[mostPurpleStateFIPS_id]+(electionYearDataRep[mostPurpleStateFIPS_id])))*100
     const mostPurpleStatePurpleShade = purpleScale(mostPurpleStateColorRatio)
     const plusMinus = '±'
-    const centristVoteDifference = (_.ceil(mostPurpleStateVoteDifference*100, 2)).toString()
+    const centristVoteDifference = (ceil(mostPurpleStateVoteDifference*100, 2)).toString()
 
     const legendProps_mostPurpleState = [['Most Centrist: ', mostPurpleState, plusMinus.concat( centristVoteDifference), mostPurpleStatePurpleShade]]
     setLegendProps_mostPurpleState(legendProps_mostPurpleState)
   }
 
-  const legendProps_otherInfo = [['Voter Turnout:', null, _.ceil(electionYearVoterTurnout, 4), null], [' Votes 3rd-Party:', null, protestVote, null]]
+  const legendProps_otherInfo = [['Voter Turnout:', null, ceil(electionYearVoterTurnout, 4), null], [' Votes 3rd-Party:', null, protestVote, null]]
 
 
 
@@ -108,11 +110,13 @@ const Legend = (props) => {
 
   const renderOtherInfo = (item, i) => {
     return(
-      <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
-        <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: '#FFFFFF'}}></div>
-        <span className="col--2 txt-s flex-child">{`${item[2]}%`}</span>
-        <span className="col txt-s txt-bold  flex-child"></span>
-        <span className="col ml-neg3 txt-s txt-bold inline-block flex-child">{`${item[0]}`}</span>
+      <div key={i} className="txt-s mb2">
+        <div className="grid gridLines grid--gut3 flex-parent flex-parent--row-reverse">
+          <div className="col--2  h18 inline-block  flex-child" style={{ backgroundImage: '#FFFFFF'}}></div>
+          <span className="col--2 txt-s flex-child">{`${item[2]}%`}</span>
+          <span className="col txt-s txt-bold  flex-child"></span>
+          <span className="col ml-neg3 txt-s txt-bold inline-block flex-child">{`${item[0]}`}</span>
+        </div>
       </div>
 
     )

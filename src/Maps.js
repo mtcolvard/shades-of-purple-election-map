@@ -1,19 +1,13 @@
-import React, {useLayoutEffect, useCallback, useRef, useEffect, useState } from 'react'
+import React, {useRef, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import _ from 'lodash'
-import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import './Map.css'
 import MapContainer from './components/MapContainer'
 import Optionsfield from './components/Optionsfield'
 import Legend from './components/Legend'
 import Tooltip from './components/Tooltip'
-import electionData from './historicElectionResults.json'
-const electionDataLayer = require('./electionResultsKeyed.json')
-var d3 = require('d3')
 
-mapboxgl.accessToken =
-  'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY
 
 const Maps = () => {
 
@@ -110,108 +104,158 @@ const Maps = () => {
 
 
   const tooltipRef = useRef(new mapboxgl.Popup({
-    anchor: 'left',
+    // anchor: 'left',
     offset: 15,
-    closeButton: false,
+    closeButton: true,
     closeOnClick: false,
     className: 'my-1'
   }))
 
-  const [headerHeight, setHeaderHeight] = useState(0)
-  const measureHeaderRef = useCallback(node => {
-    if (node !== null) {
-      setHeaderHeight(node.getBoundingClientRect().height)
-    }
-  }, [])
+  const fillColorExpression = ['interpolate', ['linear'], ['*', ['to-number', ['get', active.property]], 100], 0, '#ff0000', 100, '#0000ff']
+  const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
+  const bounds = [[-122.121674, 21.199061], [-69.915619,48.365146]]
 
-  // const [mapContainerWidth, setMapContainerWidth] = useState(null)
-  const mapContainerWidth = window.innerWidth
-  const [mapContainerHeight, setMapContainerHeight] = useState(null)
-  const viewportHeight = document.body.clientHeight
-  const calculatedMapContainerHeight = viewportHeight - headerHeight - 215
-  console.log('mapContainerWidth', mapContainerWidth)
 
   useEffect(() => {
-    setMapContainerHeight(calculatedMapContainerHeight)
-  }, [mapContainerHeight])
+      const map = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: 'mapbox://styles/mtcolvard/ckiwk8jxb4vpf19pfm556o1dq',
+        center: [-96.09, 38.83],
+        zoom: 2.1,
+        attributionControl: true,
+        trackResize: true,
+        doubleClickZoom: false,
+        scrollZoom: false,
+        bounds: bounds,
+        fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}},
+      })
+      // map.scrollZoom.disable()
 
-  useEffect(() => {
-    setCSSVariables()
+      map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org'], compact: false}), 'bottom-left')
+
+      map.on('load', () => {
+        map.addSource('vectorElectionNumbers', {
+          'type': 'vector',
+          'url': 'mapbox://mtcolvard.9cx8ngi9',
+        })
+
+      map.addLayer({
+       'id': 'vector-fill-layer',
+       'type': 'fill',
+       'source': 'vectorElectionNumbers',
+       'source-layer': 'elections_vector_and_data',
+      })
+
+      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+      map.on('mouseenter', 'vector-fill-layer', (e) => {
+          map.getCanvas().style.cursor = 'pointer'
+        })
+      map.on('mouseleave', 'vector-fill-layer', (e) => {
+        map.getCanvas().style.cursor = ''
+      })
+
+      let hoveredStateId = null
+      map.on('mousemove', 'vector-fill-layer', (e) => {
+        if (e.features.length > 0) {
+          if (hoveredStateId) {
+            map.setFeatureState({
+              source: 'vectorElectionNumbers',
+              sourceLayer: 'elections_vector_and_data',
+              id: hoveredStateId
+            }, {
+              hover: false
+            })
+          }
+          hoveredStateId = e.features[0].id
+          map.setFeatureState({
+            source: 'vectorElectionNumbers',
+            sourceLayer: 'elections_vector_and_data',
+            id: hoveredStateId
+          }, {
+            hover: true
+          })
+        }
+      })
+      map.on('mouseleave', 'vector-fill-layer', () => {
+        if (hoveredStateId) {
+          map.setFeatureState({
+            source: 'vectorElectionNumbers',
+            sourceLayer: 'elections_vector_and_data',
+            id: hoveredStateId
+          }, {
+              hover: false
+            })
+          tooltipRef.current
+            .remove()
+          }
+        hoveredStateId = null
+      })
+      map.on('mousemove', (e) => {
+        const features = map.queryRenderedFeatures(e.point)
+        if (features.length) {
+          const feature = features[0]
+          const tooltipNode = document.createElement('div')
+          // tooltipNode.setAttribute('style', 'margin-right: -24px;')
+          ReactDOM.render(<Tooltip feature={feature} active={activeRef}/>, tooltipNode)
+          tooltipRef.current
+            .setLngLat(e.lngLat)
+            .setDOMContent(tooltipNode)
+            .addTo(map)
+          }
+        })
+      setMap(map)
+    })
+    return () => map.remove()
   }, [])
 
-  // const [canvas, setCanvas] = useState(230)
-  // setCanvas(canvas)
-
-
-  const mapCanvasHeight = null
-  const mapCanvasWidth = null
-  console.log('mapCanvasWidth', mapCanvasWidth)
-  console.log('mapCanvasHeight', mapCanvasHeight)
-  // const mapCanvasWidth = 375
-  const setCSSVariables = () => {
-      document.documentElement.style.setProperty(`--${mapCanvasHeight}`, mapContainerHeight)
-      document.documentElement.style.setProperty(`--${mapCanvasWidth}`, mapContainerWidth)
-      // element.style.setProperty(`--${mapCanvasHeight}`, mapContainerHeight)
-  //     document.documentElement.style.setProperty(`--${mapCanvasWidth}`, viewportWidth)
-    }
-
-
-
-  const [canvas, setCanvas] = useState(null)
-  const [gl, setGL] = useState(null)
-
   useEffect(() => {
-    setCanvas(document.querySelector('.mapboxgl-canvas'))
-    // setGL(canvas.getContext("webgl"))
-  }, [])
-  const resizeCanvasToDisplaySize = (canvas) => {
-    const displayHeight = mapContainerHeight
-    const displayWidth = mapContainerWidth
-    const needResize = canvas.width !== displayWidth || canvas.height !== displayHeight
-    if (needResize) {
-      canvas.width = displayWidth
-      canvas.height = displayHeight
+    paint()
+  }, [active])
+
+  const paint = () => {
+    if (map) {
+      map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+      map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
     }
-    return needResize
   }
 
-
+  const changeState = i => {
+    setActive(options[i])
+    activeRef.current = options[i]
+    map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
+    map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
+  }
 
   return (
-  <div className="divOne">
-    <div className="divTwo">
-      <div ref={measureHeaderRef}>
-        <div  className='headline '>
-          <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
-          </h1>
-        </div>
-        <div className='mt6'>
-          <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-          <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
-        </div>
+    <div className="divOne">
+      <div className="divTwo">
+          <div  className='headline'>
+            <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
+            </h1>
+          </div>
+          <div className='mt6'>
+            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
+          </div>
+        <div className="flex-parent flex-parent--column">
+        <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
       </div>
-      {mapCanvasHeight &&
-        <MapContainer
-          map={map}
-          active={active}
-        />
-      }
-
-        <div className="absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
+        <div className="flex-child absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
           <div>
             <Optionsfield
               options={options}
               property={active.property}
               changeState={changeState}
-              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z2"}
+              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z5"}
             />
           </div>
           <div>
             <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
           </div>
+        </div>
       </div>
     </div>
-  </div>
   )
 }
 

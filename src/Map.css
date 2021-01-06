@@ -1,24 +1,10 @@
-/* body {
-  background-color: #800080;
-} */
-
-
-/* :root {
-  --mapCanvasHeight: 250px;
-  --mapCanvasWidth: 500px;
-} */
-
 html {
   height: 100%;
+
 }
 body {
   height: 100%;
 }
-
-/* canvas {
-  height: 400px;
-  width: 300px;
-} */
 
 .divZero {
   height: 100%;
@@ -36,77 +22,42 @@ body {
 
 .map-container {
   position: relative;
-  height: calc(var(--mapCanvasHeight) * 1px);
-  /* height: 100%; */
-  width: 100%;
-
-  /* overflow: visible; */
-  /* height: calc(100vh - 215px - var(--height) + 'px'); */
-  /* width:66%; /*
-  /* width: calc(var(--mapCanvasWidth) * 1px);
-  /* calc(var(--mapContainerHeight) * 1px) */
 }
-
 
 .mapboxgl-canvas-container {
   position: relative;
-  /* height: calc(var(--mapCanvasHeight) * 1px); */
-  height: 100%;
-  width: 100%;
-
-  /* height: 100%; */
-  /* width: 66%; */
-  /* width: calc(var(--mapCanvasWidth) * 1px); */
 }
 
 .mapboxgl-canvas {
   position: relative;
-  /* height: 230px; */
-  height: calc(var(--mapCanvasHeight) * 1px);
-  width: 100%;
-  display: block;
-  /* height: inherit; */
-
-  /* width: 66%; */
-  /* width: calc(var(--mapCanvasWidth) * 1px); */
-  /* height: 200px;
-  width: 300px; */
 }
 
 .divThree {
-  position: absolute;
-  height: 100%;
+  position: relative;
+  bottom: 0px;
   width: 100%;
 }
 
-/* .setMapContainer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap:  wrap;
-} */
 
-/* .map-container {
+.mapboxgl-popup-close-button {
   position: absolute;
-  top: 0;
   bottom: 0;
-  left: 0;
   right: 0;
-} */
-
+  top: auto;
+  margin-right: 6px;
+  margin-left: 6px;
+}
 
 .mapboxgl-popup {
-  max-width: 400px;
-  min-width: 120px;
+  min-width: 64px;
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  margin: 0px;
+  margin-right: 1px;
   padding: 0px;
   border-width: 0px;
-  /* height: 50px; */
 }
 
 .headline {
   background: linear-gradient(42deg, red 0%, #800080 36%, #800080 63%, blue 100%);
-  /* text-padding: 0.5em; */
   font-size: 2.5em;
   padding: 0.25em 0.5em 0.25em 0.5em ;
   color: hsl(300, 78%, 18%);
@@ -116,7 +67,6 @@ body {
 
 .lineOne {
   background-image: linear-gradient(42deg, #FFFFFF 0%, #FFFFFF 7%, #FF0000 32%,  #FFFFFF 47%, #FFFFFF 53%,  #0000FF 68%, #FFFFFF 93%, #FFFFFF 100%);
-  /* background-size: 100%; */
   -webkit-background-clip: text;
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
