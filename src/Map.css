@@ -75,12 +75,24 @@ body {
 
 .lineTwo {
   color: #800080;
+  /* background-image: linear-gradient( #FFFFFF 0%, #FFFFFF 7%, #800080 32%, #800080 68%, #FFFFFF 93%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent; */
+
+  /* background-color: #800080;
+  color: #FFFFFF; */
+
   line-height: 1;
 }
 
 .lineThree {
+  /* background-color: #800080;
+  color: #FFFFFF; */
   color: #800080;
-  font: Georgia, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 1;
+
 }
 
 .blue-state {
