@@ -239,19 +239,23 @@ const Maps = () => {
           </div>
         <div className="flex-parent flex-parent--column">
         <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
-      </div>
-        <div className="flex-child absolute bottom right-mm  w-full w-auto-mm z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  ">
-          <div>
-            <Optionsfield
-              options={options}
-              property={active.property}
-              changeState={changeState}
-              classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z5"}
-            />
-          </div>
-          <div>
-            <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
-          </div>
+      <div className="flex-child absolute bottom w-full">
+        <div className="grid">
+            <div className="col col--6 col--offl3 z5 z1-mm bg-white shadow-darken10 round">
+              <div>
+                <Optionsfield
+                  options={options}
+                  property={active.property}
+                  changeState={changeState}
+                  classNames={"toggle-group toggle-group--s relative bottom mb3 border border--2 border--white bg-white shadow-darken10 z5"}
+                />
+              </div>
+              <div>
+                <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
+              </div>
+            </div>
+        </div>
+        </div>
         </div>
       </div>
     </div>
@@ -259,3 +263,5 @@ const Maps = () => {
 }
 
 export default Maps
+
+// <div className="flex-child z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  mx30-mm">
