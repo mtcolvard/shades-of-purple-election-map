@@ -62,7 +62,6 @@ body {
   /* padding: 0.25em 0.5em 0.25em 0.5em ; */
   color: hsl(300, 78%, 18%);
   /* display: inline-block; */
-  line-height: 0.8;
 }
 
 .lineOne {
@@ -71,6 +70,8 @@ body {
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
+  line-height: 0.85;
+
 }
 
 .lineTwo {

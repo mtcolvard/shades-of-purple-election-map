@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/shades_of_purple_election_map/static/css/main.c25baf30.chunk.css",
+    "main.js": "/shades_of_purple_election_map/static/js/main.0f25667f.chunk.js",
+    "main.js.map": "/shades_of_purple_election_map/static/js/main.0f25667f.chunk.js.map",
+    "runtime-main.js": "/shades_of_purple_election_map/static/js/runtime-main.7ae1875a.js",
+    "runtime-main.js.map": "/shades_of_purple_election_map/static/js/runtime-main.7ae1875a.js.map",
+    "static/js/2.ad440f0a.chunk.js": "/shades_of_purple_election_map/static/js/2.ad440f0a.chunk.js",
+    "static/js/2.ad440f0a.chunk.js.map": "/shades_of_purple_election_map/static/js/2.ad440f0a.chunk.js.map",
+    "static/js/3.e8f8e2c5.chunk.js": "/shades_of_purple_election_map/static/js/3.e8f8e2c5.chunk.js",
+    "static/js/3.e8f8e2c5.chunk.js.map": "/shades_of_purple_election_map/static/js/3.e8f8e2c5.chunk.js.map",
+    "index.html": "/shades_of_purple_election_map/index.html",
+    "static/css/main.c25baf30.chunk.css.map": "/shades_of_purple_election_map/static/css/main.c25baf30.chunk.css.map",
+    "static/js/2.ad440f0a.chunk.js.LICENSE.txt": "/shades_of_purple_election_map/static/js/2.ad440f0a.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7ae1875a.js",
+    "static/js/2.ad440f0a.chunk.js",
+    "static/css/main.c25baf30.chunk.css",
+    "static/js/main.0f25667f.chunk.js"
+  ]
+}
