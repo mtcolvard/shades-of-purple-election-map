@@ -124,9 +124,15 @@ const Maps = () => {
         attributionControl: true,
         trackResize: true,
         doubleClickZoom: false,
+        touchZoomRotate: false,
+        touchPitch: false,
+        pitchWithRotate: false,
+        clickTolerance: '20px',
+        dragPan: false,
+        dragRotate:false,
         scrollZoom: false,
         bounds: bounds,
-        fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}},
+        fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}}
       })
       // map.scrollZoom.disable()
 
@@ -153,6 +159,10 @@ const Maps = () => {
       map.on('mouseleave', 'vector-fill-layer', (e) => {
         map.getCanvas().style.cursor = ''
       })
+
+      // map.on('touchstart', (e) => {
+      //   e.preventDefault()
+      // })
 
       let hoveredStateId = null
       map.on('mousemove', 'vector-fill-layer', (e) => {
@@ -225,17 +235,31 @@ const Maps = () => {
     map.setPaintProperty('vector-fill-layer', 'fill-color', fillColorExpression)
     map.setPaintProperty('vector-fill-layer', 'fill-opacity', fillOpacityExpression)
   }
+  // <h1 className='lineOne py12-mm align-center w-full'> We are much less polarized than the Electoral College map leads us to believe.
+  // </h1>
+
+  // <h1 className='lineOne py12-mm align-center w-full'> We are much less polarized than an Electoral College map makes us believe.
+  // </h1>
+  // <h1 className='lineOne py12-mm align-center w-full'> The United States is much less polarized than an <br/> Electoral College map makes us to believe.
+  // </h1>
+
+
+
+  // <h1 className='lineOne py12-mm align-center w-full'> We are much less polarized than an  <br/> Electoral College map would make us believe.
+  // </h1>
+
+
 
   return (
     <div className="divOne">
       <div className="divTwo">
-          <div  className='headline pt18 pb24'>
-            <h1 className='lineOne py12-mm align-center w-full'> We are much less polarized than the Electoral College map makes us believe.
+          <div  className='headline '>
+            <h1 className='lineOne pt12 pb24 py12-mm align-center w-full'> The United States <br/> is much less polarized than the<br/> Electoral College map leads us to believe.
             </h1>
           </div>
           <div className='mt6'>
-            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Honestly, we're mostly all just shades of purple.</h4>
+            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '>There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
+            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">By and large, we're shades of purple.</h4>
           </div>
         <div className="flex-parent flex-parent--column">
         <div ref={mapContainerRef} className="map-container align-middle hmin240 h300-mm mt18-mm mb30-mm mx36-mm  flex-child" />
