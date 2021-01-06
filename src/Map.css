@@ -59,9 +59,9 @@ body {
 .headline {
   background: linear-gradient(42deg, red 0%, #800080 36%, #800080 63%, blue 100%);
   font-size: 2.5em;
-  padding: 0.25em 0.5em 0.25em 0.5em ;
+  /* padding: 0.25em 0.5em 0.25em 0.5em ; */
   color: hsl(300, 78%, 18%);
-  display: inline-block;
+  /* display: inline-block; */
   line-height: 0.8;
 }
 

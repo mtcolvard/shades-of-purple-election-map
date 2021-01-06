@@ -229,20 +229,20 @@ const Maps = () => {
   return (
     <div className="divOne">
       <div className="divTwo">
-          <div  className='headline'>
-            <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
+          <div  className='headline pt18 pb24'>
+            <h1 className='lineOne py12-mm align-center w-full'> We are much less polarized than the Electoral College map makes us believe.
             </h1>
           </div>
           <div className='mt6'>
             <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
+            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Honestly, we're mostly all just shades of purple.</h4>
           </div>
         <div className="flex-parent flex-parent--column">
-        <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
-      <div className="flex-child absolute bottom w-full">
+        <div ref={mapContainerRef} className="map-container align-middle hmin240 h300-mm mt18-mm mb30-mm mx36-mm  flex-child" />
+      <div className="flex-child absolute bottom w-full mb12-mm">
         <div className="grid">
-            <div className="col col--6 col--offl3 z5 z1-mm bg-white shadow-darken10 round">
-              <div>
+            <div className="col col--6-mm col--offl3-mm z5 z1-mm bg-white shadow-darken10 round">
+              <div className="align-center">
                 <Optionsfield
                   options={options}
                   property={active.property}
@@ -251,7 +251,7 @@ const Maps = () => {
                 />
               </div>
               <div>
-                <Legend active={active} classNames={" right-mm z5 py12 px24  "} />
+                <Legend active={active} classNames={" right-mm z5 pt6 pb12 px24  "} />
               </div>
             </div>
         </div>
