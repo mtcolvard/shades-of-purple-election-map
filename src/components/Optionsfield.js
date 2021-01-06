@@ -1,5 +1,4 @@
 import React from "react"
-// props.useTooltip(i)
 
 const Optionsfield = (props) => {
   const renderOptions = (option, i) => {

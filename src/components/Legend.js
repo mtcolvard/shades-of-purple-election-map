@@ -1,7 +1,12 @@
 import React, { useState, useEffect} from 'react'
 import electionData from '../data_for_legend_calculations_minus_dc.json'
 import _ from 'lodash'
-var d3 = require('d3')
+// import ceil from 'lodash/ceil'
+// import maxBy from 'lodash/maxBy'
+// import minBy from 'lodash/minBy'
+// import keys from 'lodash/keys'
+// import values from 'lodash/values'
+import { scaleLinear } from 'd3-scale'
 
 const Legend = (props) => {
   const stateKey = {
@@ -27,9 +32,7 @@ const Legend = (props) => {
     findleastPolarizedState()
   }, [props.active])
 
-
-
-  const purpleScale = d3.scaleLinear()
+  const purpleScale = scaleLinear()
   .domain([0, 100])
   .range(['#FF0000', '#0000FF'])
 

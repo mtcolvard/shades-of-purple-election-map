@@ -1,15 +1,10 @@
-import React, {useLayoutEffect, useCallback, useRef, useEffect, useState } from 'react'
+import React, {useRef, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import _ from 'lodash'
-import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import './Map.css'
 import Optionsfield from './components/Optionsfield'
 import Legend from './components/Legend'
 import Tooltip from './components/Tooltip'
-import electionData from './historicElectionResults.json'
-const electionDataLayer = require('./electionResultsKeyed.json')
-var d3 = require('d3')
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoibXRjb2x2YXJkIiwiYSI6ImNraHF2MXA4aDBkajUyem1zaXRmYWJjbDUifQ.97qiz4KJ02kEjzajDF-WFw'
@@ -108,23 +103,6 @@ const Maps = () => {
   const activeRef = useRef(options[0])
   const [active, setActive] = useState(options[0])
   const [map, setMap] = useState(null)
-  const [mapCounter, setMapCounter] = useState(0)
-  const [mapTrue, setMapTrue] = useState(false)
-  const [headerHeight, setHeaderHeight] = useState(0)
-  const measureHeaderRef = useCallback(node => {
-    if (node !== null) {
-      setHeaderHeight(node.getBoundingClientRect().height)
-    }
-  }, [])
-  const mapContainerWidth = window.innerWidth
-  const [mapCanvasHeight, setMapCanvasHeight] = useState(null)
-  const viewportHeight = document.body.clientHeight
-  const calculatedMapContainerHeight = viewportHeight - headerHeight - 215
-
-
-  const updateCSSVariables = () => {
-      document.documentElement.style.setProperty(`--${mapCanvasHeight}`, mapCanvasHeight)
-    }
 
   const tooltipRef = useRef(new mapboxgl.Popup({
     anchor: 'left',
@@ -138,33 +116,7 @@ const Maps = () => {
   const fillOpacityExpression = ['case', ['boolean', ['feature-state', 'hover'], false], 1, 1]
   const bounds = [[-122.121674, 21.199061], [-69.915619,48.365146]]
 
-  useEffect(() => {
-    if (mapCounter <= 3) {
-      setMapCanvasHeight(calculatedMapContainerHeight)
-      updateCSSVariables()
-      setMapCounter(mapCounter + 1)
-      console.log('mapCounter', mapCounter)
-      console.log('mapCanvasHeight', mapCanvasHeight)
-      console.log('map container ref', mapContainerRef.current)
-    }
-  })
 
-  // useEffect(() => {
-  //   if (mapCounter < 2) {
-  //     setMapTrue(false)
-  //   } else {
-  //     setMapTrue(true)
-  //     console.log('mapCounter', mapCounter)
-  //   }
-  // })
-
-  // useEffect(() => {
-    // if (mapCounter === 3) {
-      // initializeMap()
-    // }
-  // })
-  // Initialize map when component mounts
-  // const initializeMap = () => {
   useEffect(() => {
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
@@ -175,19 +127,10 @@ const Maps = () => {
         trackResize: true,
         bounds: bounds,
         fitBoundsOptions: { padding: {left:20, right:20, top:5, bottom:5}},
-        // maxBounds: bounds
       })
-
-      // map.setPadding({left:1, right:1, top:1, bottom:1})
       map.scrollZoom.disable()
 
       map.addControl(new mapboxgl.AttributionControl({customAttribution: ['Data: census.gov','electproject.org']}), 'bottom-left')
-      // const containerForBounds = map.cameraForBounds(bounds)
-      // map.setZoom(containerForBounds[1])
-
-      // map.resize()
-      // map.setMaxBounds(bounds)
-      // map.getCanvas()
 
       map.on('load', () => {
         map.addSource('vectorElectionNumbers', {
@@ -259,25 +202,10 @@ const Maps = () => {
             .addTo(map)
           }
         })
-      // map.once('load', () => {
-      //   map.resize()
-      //   console.log('A resize event has occured')
-      // })
       setMap(map)
     })
     return () => map.remove()
-    // Clean up on unmount
   }, [])
-
-
-  // useEffect(() => {
-  //   if (map){
-  //     map.once('idle', () => {
-  //       map.resize()
-  //     })
-  //     console.log('A resize event has occured')
-  //   }
-  // }, [mapCanvasHeight])
 
   useEffect(() => {
     paint()
@@ -300,7 +228,6 @@ const Maps = () => {
   return (
     <div className="divOne">
       <div className="divTwo">
-        <div ref={measureHeaderRef}>
           <div  className='headline '>
             <h1 className='lineOne pb12 align-center '> We are much less polarized than the Electoral College map leads us to believe.
             </h1>
@@ -309,7 +236,6 @@ const Maps = () => {
             <h4 className='lineTwo txt-h4 txt-h2-mm align-center '> There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
             <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">Mostly, we're shades of purple.</h4>
           </div>
-        </div>
         <div className="flex-parent flex-parent--column">
         <div ref={mapContainerRef} className="map-container align-middle hmin240 my30-mm mx120-mm flex-child" />
       </div>
@@ -332,5 +258,3 @@ const Maps = () => {
 }
 
 export default Maps
-
-// absolute bottom right-mm
