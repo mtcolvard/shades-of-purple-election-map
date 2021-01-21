@@ -249,18 +249,19 @@ const Maps = () => {
   // </h1>
 
 
+  // <div className='mt6'>
+  //   <h4 className='lineTwo txt-h4 txt-h2-mm align-center '>.</h4>
+  //   <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">.</h4>
+  // </div>
 
   return (
     <div className="divOne">
       <div className="divTwo">
           <div  className='headline '>
-            <h1 className='lineOne pt12 pb24 py12-mm align-center w-full'> The United States <br/> is much less polarized than the<br/> Electoral College maps lead us to believe.
+            <h1 className='lineOne pt12 pb24 py12-mm align-center w-full mb-12'> The United States <br/> is much less polarized than the<br/> Electoral College maps lead us to believe.
             </h1>
           </div>
-          <div className='mt6'>
-            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '>.</h4>
-            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">.</h4>
-          </div>
+          <div className='mb12'></div>
         <div className="flex-parent flex-parent--column">
         <div ref={mapContainerRef} className="map-container align-middle hmin240 h300-mm mt18-mm mb30-mm mx36-mm  flex-child" />
       <div className="flex-child absolute bottom w-full mb12-mm">
