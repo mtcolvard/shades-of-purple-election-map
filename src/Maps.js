@@ -287,5 +287,3 @@ const Maps = () => {
 }
 
 export default Maps
-
-// <div className="flex-child z5 z1-mm bg-white shadow-darken10 round  mr3-mm mb3-mm  mx30-mm">
