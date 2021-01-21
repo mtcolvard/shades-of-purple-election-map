@@ -258,7 +258,7 @@ const Maps = () => {
     <div className="divOne">
       <div className="divTwo">
           <div  className='headline '>
-            <h1 className='lineOne pt12 pb24 py12-mm align-center w-full mb-12'> The United States <br/> is much less polarized than the<br/> Electoral College maps lead us to believe.
+            <h1 className='lineOne pt12 pb24 py12-mm align-center w-full mb-12'> The United States <br/> is much less polarized than the<br/> Electoral College map leads us to believe.
             </h1>
           </div>
           <div className='mb12'></div>
