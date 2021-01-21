@@ -128,7 +128,7 @@ const Maps = () => {
         touchPitch: false,
         pitchWithRotate: false,
         clickTolerance: '20px',
-        dragPan: false,
+        // dragPan: false,
         dragRotate:false,
         scrollZoom: false,
         bounds: bounds,
@@ -258,8 +258,8 @@ const Maps = () => {
             </h1>
           </div>
           <div className='mt6'>
-            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '>There are no <span className="red-state"> red</span><span> states or  </span><span className="blue-state">blue</span> states.</h4>
-            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">By and large, we're shades of purple.</h4>
+            <h4 className='lineTwo txt-h4 txt-h2-mm align-center '>.</h4>
+            <h4 className="lineTwo txt-h4 txt-h2-mm align-center ">.</h4>
           </div>
         <div className="flex-parent flex-parent--column">
         <div ref={mapContainerRef} className="map-container align-middle hmin240 h300-mm mt18-mm mb30-mm mx36-mm  flex-child" />
